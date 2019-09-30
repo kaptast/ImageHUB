@@ -1,14 +1,16 @@
 ﻿import React from 'react';
-import { Route } from 'react-router';
+import { Route, Switch } from 'react-router';
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Counter from './components/Counter';
-import FetchData from './components/FetchData';
+import Profile from './components/Profile';
+import Messages from './components/Messages';
 
 export default () => (
   <Layout>
-    <Route exact path='/' component={Home} />
-    <Route path='/counter' component={Counter} />
-    <Route path='/fetchdata/:startDateIndex?' component={FetchData} />
+    <Switch>
+      <Route exact path='/' component={Home} />
+      <Route path='/profile' component={Profile} />
+      <Route path='/messages' component={Messages} />
+    </Switch>
   </Layout>
 );

@@ -1,5 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -9,6 +7,8 @@ import { createBrowserHistory } from 'history';
 import configureStore from './store/configureStore';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import red from '@material-ui/core/colors/red';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -20,12 +20,26 @@ const store = configureStore(history, initialState);
 
 const rootElement = document.getElementById('root');
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#37474f',
+    },
+    secondary: red,
+    error: red,
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+  },
+});
+
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
-  </Provider>,
+  <MuiThemeProvider theme={theme}>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Provider>
+  </MuiThemeProvider>,
   rootElement);
 
 registerServiceWorker();

@@ -23,7 +23,7 @@ const rootElement = document.getElementById('root');
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#37474f',
+      main: '#BDBDBD',
     },
     secondary: red,
     error: red,

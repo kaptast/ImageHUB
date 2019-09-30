@@ -1,16 +1,32 @@
 import React from 'react';
-import { Col, Grid, Row } from 'react-bootstrap';
-import NavMenu from './NavMenu';
+import SearchBar from './SearchBar';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
 
-export default props => (
-  <Grid fluid>
-    <Row>
-      <Col sm={3}>
-        <NavMenu />
-      </Col>
-      <Col sm={9}>
-        {props.children}
-      </Col>
-    </Row>
-  </Grid>
-);
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  }
+}));
+
+export default function (props) {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <SearchBar />
+      <div className={classes.heroContent}>
+        <Container maxWidth="xl">
+          {props.children}
+        </Container>
+      </div>
+    </div>
+  );
+}

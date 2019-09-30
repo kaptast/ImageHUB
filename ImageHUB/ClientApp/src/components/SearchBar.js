@@ -12,8 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
@@ -27,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
+      textDecoration: 'none'
     },
   },
   search: {
@@ -83,7 +83,6 @@ export default function SearchBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   function handleProfileMenuOpen(event) {
@@ -103,34 +102,6 @@ export default function SearchBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   }
 
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem>
-          <Link to={'/counter'}>Counter</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to={'/fetchdata'}>Fetch data</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to={'/exchangerate'}>Exchange rates</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to={'/match'}>Match</Link>
-        </MenuItem>
-      </Menu>
-  );
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -142,29 +113,16 @@ export default function SearchBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem to={`/messages`} component={props => <Link {...props}/>}>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
+          <Badge badgeContent={0} color="secondary">
+            <MessageIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+      <MenuItem to={`/profile`} component={props => <Link {...props}/>}>
+        <IconButton edge="end" aria-label="account of current user" color="inherit">
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -176,16 +134,9 @@ export default function SearchBar() {
     <div className={classes.grow}>
       <AppBar>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+          
+          <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props}/>}>
+            ImageHUB
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -202,25 +153,13 @@ export default function SearchBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
+            <IconButton aria-label="show 4 new mails" color="inherit"to={`/messages`} component={props => <Link {...props}/>}>
+              <Badge badgeContent={0} color="secondary">
+                <MessageIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
+            <IconButton edge="end" aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props}/>}>
+              <AccountCircle/> 
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -237,7 +176,6 @@ export default function SearchBar() {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }

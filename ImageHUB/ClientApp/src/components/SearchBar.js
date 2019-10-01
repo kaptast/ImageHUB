@@ -10,10 +10,12 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Icon } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -32,9 +34,9 @@ const useStyles = makeStyles(theme => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: fade('#bdbdbd', 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade('#bdbdbd', 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -113,6 +115,12 @@ export default function SearchBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem to={`/`} component={props => <Link {...props}/>}>
+        <IconButton aria-label="feed" color="inherit">
+          <HomeIcon />
+        </IconButton>
+        <p>Feed</p>
+      </MenuItem>
       <MenuItem to={`/messages`} component={props => <Link {...props}/>}>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">

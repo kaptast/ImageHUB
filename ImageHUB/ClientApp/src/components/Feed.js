@@ -6,6 +6,7 @@ import Post from './Post/Post';
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
+        padding: 5
     },
 }));
 

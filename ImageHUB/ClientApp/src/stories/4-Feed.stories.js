@@ -1,5 +1,6 @@
 import React from 'react';
 import Feed from '../components/Feed';
+import ProfileFeed from '../components/ProfileFeed';
 
 export default {
     title: 'Feed',
@@ -41,3 +42,8 @@ const posts = [
 export const HomeFeed = () => (
     <Feed posts={posts} />
   );
+
+export const Profile = () => (
+    <ProfileFeed posts={posts} />
+  );
+

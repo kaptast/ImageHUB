@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom'
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Profile from './components/Profile';
+import ProfileFeed from './components/ProfileFeed';
 import Messages from './components/Messages';
 
 export default () => (
@@ -11,7 +11,7 @@ export default () => (
     <Layout>
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/profile' component={Profile} />
+        <Route path='/profile' component={ProfileFeed} />
         <Route path='/messages' component={Messages} />
       </Switch>
     </Layout>

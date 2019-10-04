@@ -7,7 +7,7 @@ import Header from './Header';
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: '100%',
-        [theme.breakpoints.up('xs')]: {
+        [theme.breakpoints.up('sm')]: {
             maxWidth: 800,
         },
     },

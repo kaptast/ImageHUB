@@ -17,12 +17,13 @@ const useStyles = makeStyles(theme => ({
 export default function ProfileFeed(props) {
     const classes = useStyles();
     const theme = useTheme();
+    
     const style = useMediaQuery(theme.breakpoints.up('sm')) ? "row" : "column";
     const itemSize = useMediaQuery(theme.breakpoints.up('sm')) ? 4 : 12;
-    var remainder = props.posts.length % 3;
-    var emptyCount = (remainder == 0) ? 0 : 3 - remainder;
+    const remainder = props.posts.length % 3;
+    const emptyCount = (remainder == 0) ? 0 : 3 - remainder;
 
-    for (var i = 0; i < emptyCount; i++) {
+    for (let i = 0; i < emptyCount; i++) {
         props.posts.push(
             {
                 show: false

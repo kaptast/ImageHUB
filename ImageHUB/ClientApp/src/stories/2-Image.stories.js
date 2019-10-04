@@ -2,6 +2,7 @@ import React from 'react';
 import Image from '../components/Post/Image';
 import Post from '../components/Post/Post';
 import Header from '../components/Post/Header';
+import Actions from '../components/Post/Actions';
 
 export default {
   title: 'Image',
@@ -24,4 +25,8 @@ export const SinglePost = () => (
 
 export const PostHeader = () => (
   <Header value={post} />
+);
+
+export const PostAction = () => (
+  <Actions value={post}/>
 );

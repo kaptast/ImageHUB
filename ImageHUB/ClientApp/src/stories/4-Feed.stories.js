@@ -11,31 +11,36 @@ const posts = [
         image: "https://i.imgur.com/jp5z1s0.jpg",
         avatar: "https://i.imgur.com/jp5z1s0.jpg",
         userName: "Gipsz Jakab",
-        title: "single image"
+        title: "single image",
+        show: true
     },
     {
         image: "https://i.imgur.com/jp5z1s0.jpg",
         avatar: "https://i.imgur.com/jp5z1s0.jpg",
         userName: "Gipsz Jakab",
-        title: "single image"
+        title: "single image",
+        show: true
     },
     {
         image: "https://i.imgur.com/jp5z1s0.jpg",
         avatar: "https://i.imgur.com/jp5z1s0.jpg",
         userName: "Gipsz Jakab",
-        title: "single image"
+        title: "single image",
+        show: true
     },
     {
         image: "https://i.imgur.com/jp5z1s0.jpg",
         avatar: "https://i.imgur.com/jp5z1s0.jpg",
         userName: "Gipsz Jakab",
-        title: "single image"
+        title: "single image",
+        show: true
     },
     {
         image: "https://i.imgur.com/jp5z1s0.jpg",
         avatar: "https://i.imgur.com/jp5z1s0.jpg",
         userName: "Gipsz Jakab",
-        title: "single image"
+        title: "single image",
+        show: true
     }
 ]
 

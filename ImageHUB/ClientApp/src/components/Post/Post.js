@@ -19,11 +19,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function Post(props) {
     const classes = useStyles();
-
-    return (
-        <Card className={classes.card}>
-            <Image value={props.value} />
-            <Header value={props.value} />
-        </Card>
-    );
+    if (props.value.show) {
+        return (
+            <Card className={classes.card}>
+                <Image value={props.value} />
+                <Header value={props.value} />
+            </Card>
+        );
+    } else {
+        return (
+            <span />
+        );
+    }
 }

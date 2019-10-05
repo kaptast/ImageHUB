@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from '../components/Post/Image';
-import Post from '../components/Post/Post';
+import { PostWithHeader, PostWithoutHeader } from '../components/Post/Post';
 import Header from '../components/Post/Header';
 import Actions from '../components/Post/Actions';
 
@@ -21,7 +21,11 @@ export const SingleImageMedia = () => (
 );
 
 export const SinglePost = () => (
-  <Post value={post} />
+  <PostWithHeader value={post} />
+);
+
+export const SinglePostWithoutHeader = () => (
+  <PostWithoutHeader value={post} />
 );
 
 export const PostHeader = () => (

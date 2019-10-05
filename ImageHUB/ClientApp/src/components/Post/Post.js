@@ -17,13 +17,28 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function Post(props) {
+export function PostWithHeader(props) {
     const classes = useStyles();
     if (props.value.show) {
         return (
             <Card className={classes.card}>
                 <Image value={props.value} />
                 <Header value={props.value} />
+            </Card>
+        );
+    } else {
+        return (
+            <span />
+        );
+    }
+}
+
+export function PostWithoutHeader(props) {
+    const classes = useStyles();
+    if (props.value.show) {
+        return (
+            <Card className={classes.card}>
+                <Image value={props.value} />
             </Card>
         );
     } else {

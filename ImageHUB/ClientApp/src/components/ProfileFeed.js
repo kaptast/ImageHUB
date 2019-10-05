@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../store/Counter';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Post from './Post/Post';
+import { PostWithoutHeader } from '../components/Post/Post';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +36,7 @@ export default function ProfileFeed(props) {
             <Grid container direction={style} alignItems="center" justify="center" spacing={3}>
                 {props.posts.map(post => (
                     <Grid item key={post.title} xs={itemSize}>
-                        <Post value={post} />
+                        <PostWithoutHeader value={post} />
                     </Grid>
                 ))}
             </Grid>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Post from './Post/Post';
+import { PostWithHeader } from './Post/Post';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,7 +20,7 @@ export default function Feed(props) {
             <Grid container direction="column" alignItems="center" justify="center" spacing={3}>
                 {props.posts.map(post => (
                     <Grid item key={post.title} xs={12}>
-                        <Post value={post} />
+                        <PostWithHeader value={post} />
                     </Grid>
                 ))}
             </Grid>

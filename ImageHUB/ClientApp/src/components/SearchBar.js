@@ -9,13 +9,11 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Icon } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -63,7 +61,10 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
+      width: 120,
+      '&:focus': {
+        width: 200,
+      },
     },
   },
   sectionDesktop: {
@@ -115,22 +116,22 @@ export default function SearchBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem to={`/`} component={props => <Link {...props}/>}>
+      <MenuItem to={`/`} component={props => <Link {...props} />}>
         <IconButton aria-label="feed" color="inherit">
           <HomeIcon />
         </IconButton>
         <p>Feed</p>
       </MenuItem>
-      <MenuItem to={`/messages`} component={props => <Link {...props}/>}>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+      <MenuItem to={`/messages`} component={props => <Link {...props} />}>
+        <IconButton aria-label="show new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">
             <MessageIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem to={`/profile`} component={props => <Link {...props}/>}>
-        <IconButton edge="end" aria-label="account of current user" color="inherit">
+      <MenuItem to={`/profile`} component={props => <Link {...props} />}>
+        <IconButton edge="account" aria-label="account of current user" color="inherit">
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -142,8 +143,8 @@ export default function SearchBar() {
     <div className={classes.grow}>
       <AppBar>
         <Toolbar>
-          
-          <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props}/>}>
+
+          <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props} />}>
             ImageHUB
           </Typography>
           <div className={classes.search}>
@@ -161,13 +162,13 @@ export default function SearchBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit"to={`/messages`} component={props => <Link {...props}/>}>
+            <IconButton aria-label="show 4 new mails" color="inherit" to={`/messages`} component={props => <Link {...props} />}>
               <Badge badgeContent={0} color="secondary">
                 <MessageIcon />
               </Badge>
             </IconButton>
-            <IconButton edge="end" aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props}/>}>
-              <AccountCircle/> 
+            <IconButton edge="end" aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
+              <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import ProfileFeed from './components/ProfileFeed';
 import Messages from './components/Messages';
+import Login from './components/Login/Login';
 
 export default () => (
   <BrowserRouter>
@@ -13,6 +14,7 @@ export default () => (
         <Route exact path='/' component={Home} />
         <Route path='/profile' component={ProfileFeed} />
         <Route path='/messages' component={Messages} />
+        <Route path='/login' component={Login} />
       </Switch>
     </Layout>
   </BrowserRouter>

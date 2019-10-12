@@ -47,7 +47,7 @@ class UploadForm extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <form onSubmit={this.onFormSubmit}>
+                <form onSubmit={this.onFormSubmit} style={{ padding: 20 }}>
                     <Grid container className={classes.container} spacing={2}>
                         <Grid item xs={12}>
                             <DropzoneArea acceptedFiles={['image/*']} filesLimit={1} name="img" onChange={this.onChange.bind(this)} />
@@ -56,7 +56,7 @@ class UploadForm extends Component {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="secondary"
+                                color="inherit"
                                 className={classes.button}
                                 startIcon={<PublishIcon />}
                             >

@@ -14,6 +14,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import UploadButton from './Upload/Upload';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -116,6 +117,10 @@ export default function SearchBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem>
+        <UploadButton />
+        <p>Upload</p>
+      </MenuItem>
       <MenuItem to={`/`} component={props => <Link {...props} />}>
         <IconButton aria-label="feed" color="inherit">
           <HomeIcon />
@@ -162,6 +167,7 @@ export default function SearchBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <UploadButton />
             <IconButton aria-label="show 4 new mails" color="inherit" to={`/messages`} component={props => <Link {...props} />}>
               <Badge badgeContent={0} color="secondary">
                 <MessageIcon />

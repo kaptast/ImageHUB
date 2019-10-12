@@ -17,7 +17,6 @@ function UploadDialog(props){
 
     return (
         <Dialog onClose={handleClose} open={open}>
-            <DialogTitle>Upload an image</DialogTitle>
             <UploadForm />
         </Dialog>
     );

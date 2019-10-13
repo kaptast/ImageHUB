@@ -18,15 +18,13 @@ const styles = theme => ({
       },
 });
 
-
 class UploadForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: []
+            file: {}
         };
     }
-
 
     onChange(files) {
         this.setState({
@@ -37,20 +35,20 @@ class UploadForm extends Component {
     onFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", this.state.file);
         axios.post("api/image/upload", formData, {
             headers: { 'content-type': 'multipart/form-data' }
-        });
+        }).then(this.props.parentCallback());
     }
 
     render() {
         const { classes } = this.props;
         return (
             <div>
-                <form onSubmit={this.onFormSubmit} style={{ padding: 20 }}>
+                <form onSubmit={this.onFormSubmit.bind(this)} style={{ padding: 20 }}>
                     <Grid container className={classes.container} spacing={2}>
                         <Grid item xs={12}>
-                            <DropzoneArea acceptedFiles={['image/*']} filesLimit={1} name="img" onChange={this.onChange.bind(this)} />
+                            <DropzoneArea acceptedFiles={['image/*']} filesLimit={1} name="files" onChange={this.onChange.bind(this)} />
                         </Grid>
                         <Grid item xs={12}>
                             <Button

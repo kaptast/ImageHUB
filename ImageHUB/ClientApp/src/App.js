@@ -10,8 +10,8 @@ import Login from './components/Login/Login';
 
 export default function App() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [name, setName] = useState("")
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [name, setName] = useState("test");
 
   useEffect(() => {
     axios.get("api/auth/isloggedin")
@@ -24,26 +24,25 @@ export default function App() {
         console.log(err)
         console.log("failed to log in.")
         setIsLoggedIn(false)
-      })
-  })
+      });
+  });
 
   const logout = () => {
+    console.log("logout");
     axios.get("api/auth/logout")
       .then(res => {
-        setIsLoggedIn(false)
-      })
+        setIsLoggedIn(false);
+      });
   }
 
-  console.log(isLoggedIn);
-
-  if (!isLoggedIn) {
+  if (isLoggedIn) { // TODO: remove faking
     return <Login />;
   } else {
     return (
       <BrowserRouter>
-        <Layout>
+        <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
           <Switch>
-            <Route exact path='/' component={Home} />
+            <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
             <Route path='/profile' component={Profile} />
             <Route path='/messages' component={Messages} />
             <Route path='/login' component={Login} />

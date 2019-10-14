@@ -24,7 +24,7 @@ namespace ImageHUB.Services
                 throw new System.Exception("Invalid file.");
             }
 
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), this.configuration["ImageSavePath"], file.FileName);
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), this.configuration["Image.SavePath"], file.FileName);
             using (var fileStream = new FileStream(pathToSave, FileMode.Create))
             {
                await file.CopyToAsync(fileStream);

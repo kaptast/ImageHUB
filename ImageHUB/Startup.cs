@@ -40,7 +40,7 @@ namespace ImageHUB
 
             services.AddSingleton<IImageRepository, ImageRepository>();
             services.AddScoped<IImageStorage, ImageStorage>();
-            services.AddSingleton<IImageService, ImageService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddAuthentication(options =>
             {

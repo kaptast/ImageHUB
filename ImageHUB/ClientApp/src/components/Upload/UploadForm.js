@@ -36,7 +36,7 @@ class UploadForm extends Component {
         event.preventDefault();
         const formData = new FormData();
         formData.append("file", this.state.file);
-        axios.post("api/image/upload", formData, {
+        axios.post("api/images/upload", formData, {
             headers: { 'content-type': 'multipart/form-data' }
         }).then(this.props.parentCallback());
     }

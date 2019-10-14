@@ -1,3 +1,5 @@
+using ImageHUB.Repositories;
+using ImageHUB.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ImageHUB
 {
@@ -30,6 +35,11 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
+
+            services.AddSingleton<IImageRepository, ImageRepository>();
+            services.AddScoped<IImageStorage, ImageStorage>();
+            services.AddSingleton<IImageService, ImageService>();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -48,7 +58,7 @@ namespace ImageHUB
 
 
             // repository missing 
-           // services.AddHttpClient<IRepository<Image>, ImageRepository>();
+          //  services.AddHttpClient<IRepository<Image>, ImageRepository>();
 
         }
 
@@ -69,7 +79,34 @@ namespace ImageHUB
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseAuthentication();
-            
+
+
+            app.UseHttpsRedirection();
+
+            var pfp = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
+
+            app.UseSpaStaticFiles();
+
+           // app.UseRouting();
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
+
+
 
             app.UseMvc(routes =>
             {

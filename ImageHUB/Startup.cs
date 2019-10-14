@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ImageHUB
@@ -23,6 +26,8 @@ namespace ImageHUB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDirectoryBrowser();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -53,7 +58,7 @@ namespace ImageHUB
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -66,10 +71,22 @@ namespace ImageHUB
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["Image.SavePath"]));
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
+
             app.UseSpaStaticFiles();
             app.UseAuthentication();
-            
 
             app.UseMvc(routes =>
             {

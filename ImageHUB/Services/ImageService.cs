@@ -18,12 +18,12 @@ namespace ImageHUB.Services
             this.imageRepository = imageRepository;
             this.imageStorage = imageStorage;
         }
-        public async Task SaveImageAsync(IFormFile file)
+        public async Task SaveImageAsync(IFormFile file, string id, string userName)
         {
             await this.imageStorage.StoreAsync(file);
-            this.imageRepository.Save(Path.Combine("img", file.FileName));
+            this.imageRepository.Save(Path.Combine("images", file.FileName), id, userName);
         }
 
-        public IEnumerable<string> GetAllImageUrls() => this.imageRepository.GetAll();
+        public IEnumerable<Post> GetAllImageUrls() => this.imageRepository.GetAll();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ImageHUB.Repositories;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace ImageHUB.Services
 {
     public interface IImageService
     {
-        Task SaveImageAsync(IFormFile file);
+        Task SaveImageAsync(IFormFile file, string id, string userName);
 
-        IEnumerable<string> GetAllImageUrls();
+        IEnumerable<Post> GetAllImageUrls();
     }
 }

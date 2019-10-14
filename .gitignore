@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 ImageHUB/wwwroot/images/
+
+ImageHUB/ClientApp/public/images/

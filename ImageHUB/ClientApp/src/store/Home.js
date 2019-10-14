@@ -3,10 +3,14 @@ const receiveHomePostsType = 'RECEIVE_HOME_POSTS';
 const initialState = { homePosts: [], isLoading: false};
 
 export const actionCreators = {
-    requestHomePosts: index => async (dispatch, getState) =>{
+    requestHomePosts: index => async (dispatch, getState) => {
+        if (index === getState().homePosts.index) {
+            return;
+        }
+
         dispatch({type: requestHomePostsType, index});
 
-        const url = `api/Posts/GetPosts`
+        const url = `api/images`
         const response = await fetch(url);
         const homePosts = await response.json();
 

@@ -8,9 +8,9 @@ namespace ImageHUB.Repositories
     
         public interface IImageRepository
         {
-            void Save(string path);
+            void Save(string path, string id, string userName);
 
-            IEnumerable<string> GetAll();
+            IEnumerable<Post> GetAll();
         }
     
 }

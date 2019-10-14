@@ -8,15 +8,23 @@ namespace ImageHUB.Repositories
 {
     public class ImageRepository : IImageRepository
     {
-        private readonly ConcurrentBag<string> imageUrls;
+        private readonly ConcurrentBag<Post> imageUrls;
 
         public ImageRepository()
         {
-            this.imageUrls = new ConcurrentBag<string>();
+            this.imageUrls = new ConcurrentBag<Post>();
         }
 
-        public void Save(string path) => this.imageUrls.Add(path);
+        public void Save(string path, string id, string userName)
+        {
+            this.imageUrls.Add(new Post()
+            {
+                Image = path,
+                UserName = userName,
+                ID = id
+            });
+        }
 
-        public IEnumerable<string> GetAll() => this.imageUrls;
+        public IEnumerable<Post> GetAll() => this.imageUrls;
     }
 }

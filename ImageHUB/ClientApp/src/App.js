@@ -20,7 +20,6 @@ export default function App() {
       .then(res => {
           console.log("ok.");
           setIsLoggedIn(true);
-          console.log(res);
           setName(res.data.name);
           setID(res.data.id);
           setEmail(res.data.email);

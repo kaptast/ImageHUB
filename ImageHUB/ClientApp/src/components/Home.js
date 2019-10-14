@@ -9,14 +9,9 @@ class Home extends Component {
     this.props.requestHomePosts(0);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.props.requestHomePosts(0);
-  }
-
   render() {
     return (
       <div>
-      <p>{this.props.name}</p>
       <Feed posts={this.props.homePosts} />
       </div>
     );

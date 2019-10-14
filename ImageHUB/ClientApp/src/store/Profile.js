@@ -3,7 +3,10 @@ const receiveProfileType = 'RECEIVE_PROFILE';
 const initialState = { profile: [], isLoading: false};
 
 export const actionCreators = {
-    requestProfile: index => async (dispatch, getState) =>{
+    requestProfile: index => async (dispatch, getState) => {
+        if (index === getState().profile.index) {
+            return;
+        }
         dispatch({type: requestProfileType, index});
 
         const url = `api/Profiles/GetProfile?id=${index}`

@@ -13,13 +13,14 @@ const useStyles = makeStyles(theme => ({
 export default function Feed(props) {
     const classes = useStyles();
 
-    console.log(props);
+    console.log("Feed posts");
+    console.log(props.posts);
 
     return (
         <div className={classes.root}>
             <Grid container direction="column" alignItems="center" justify="center" spacing={3}>
                 {props.posts.map(post => (
-                    <Grid item key={post.title} xs={12}>
+                    <Grid item xs={12}>
                         <PostWithHeader value={post} />
                     </Grid>
                 ))}

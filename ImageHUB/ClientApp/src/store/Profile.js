@@ -1,6 +1,12 @@
 const requestProfileType = 'REQUEST_PROFILE';
 const receiveProfileType = 'RECEIVE_PROFILE';
-const initialState = { profile: [], isLoading: false};
+
+const defaultProfile = {
+  name: "",
+  posts: [],
+}
+
+const initialState = { profile: defaultProfile, isLoading: false};
 
 export const actionCreators = {
     requestProfile: index => async (dispatch, getState) => {
@@ -9,9 +15,12 @@ export const actionCreators = {
         }
         dispatch({type: requestProfileType, index});
 
-        const url = `api/Profiles/GetProfile?id=${index}`
+        const url = `api/profile`;
+        console.log(url);
         const response = await fetch(url);
         const profile = await response.json();
+
+        console.log(response);
 
         dispatch({type: receiveProfileType, index, profile});
     }

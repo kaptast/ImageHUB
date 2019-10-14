@@ -12,5 +12,7 @@ namespace ImageHUB.Services
         Task SaveImageAsync(IFormFile file, string id, string userName);
 
         IEnumerable<Post> GetAllImageUrls();
+
+        IEnumerable<Post> GetImageUrlsById(string id);
     }
 }

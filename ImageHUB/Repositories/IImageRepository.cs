@@ -11,6 +11,8 @@ namespace ImageHUB.Repositories
             void Save(string path, string id, string userName);
 
             IEnumerable<Post> GetAll();
+
+        IEnumerable<Post> GetById(string id);
         }
     
 }

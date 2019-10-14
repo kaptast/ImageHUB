@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actionCreators } from '../store/Profile';
 import Feed from './ProfileFeed';
+import Header from './Profile/Header';
 
 class Profile extends Component {
   componentWillMount() {
@@ -16,14 +17,18 @@ class Profile extends Component {
   }
 
   render() {
+    console.log(this.props.profile);
     return (
-      <Feed posts={this.props.homePosts} />
+      <div>
+        <Header profile={this.props.profile} />
+        <Feed posts={this.props.profile.posts} />
+      </div>
     );
   }
 }
 
 export default connect(
-  state => state.homePosts,
+  state => state.profile,
   dispatch => bindActionCreators(actionCreators, dispatch)
 )(Profile);
 

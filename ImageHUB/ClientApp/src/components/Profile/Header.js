@@ -23,26 +23,28 @@ const useStyles = makeStyles({
 export default function Header(props) {
     const classes = useStyles();
 
-    let friends = props.value.friends == 1 ? "friend" : "friends";
-    let posts = props.value.posts.length == 1 ? "post" : "posts";
+    console.log(props);
+
+    let friends = "friends";//props.value.friends == 1 ? "friend" : "friends";
+    let posts = props.profile.posts.length == 1 ? "post" : "posts";
 
     return (
         <div className={classes.container}>
             <Grid container spacing={2}>
                 <Grid item>
-                    <Avatar alt={props.value.userName} src={props.value.avatar} className={classes.avatar} />
+                    <Avatar alt={props.profile.userName} src={props.profile.avatar} className={classes.avatar} />
                 </Grid>
                 <Grid item xs={4} className={classes.container}>
                     <Grid container>
                         <Grid item xs>
-                            <Typography variant="h5">{props.value.userName}</Typography>
+                            <Typography variant="h5">{props.profile.userName}</Typography>
                         </Grid>
                         <Grid item container spacing={1}>
                             <Grid item>
-                                <Typography variant="subtitle1"><strong>{props.value.friends}</strong> {friends}</Typography>
+                                <Typography variant="subtitle1"><strong>{0/*props.value.friends*/}</strong> {friends}</Typography>
                             </Grid>
                             <Grid item>
-                                <Typography variant="subtitle1"><strong>{props.value.posts.length}</strong> {posts}</Typography>
+                                <Typography variant="subtitle1"><strong>{props.profile.posts.length}</strong> {posts}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>

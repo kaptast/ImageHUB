@@ -25,5 +25,8 @@ namespace ImageHUB.Services
         }
 
         public IEnumerable<Post> GetAllImageUrls() => this.imageRepository.GetAll();
+
+        public IEnumerable<Post> GetImageUrlsById(string id) => this.imageRepository.GetById(id);
+
     }
 }

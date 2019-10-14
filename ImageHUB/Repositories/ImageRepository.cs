@@ -26,5 +26,10 @@ namespace ImageHUB.Repositories
         }
 
         public IEnumerable<Post> GetAll() => this.imageUrls;
+
+        public IEnumerable<Post> GetById(string id)
+        {
+            return this.imageUrls.Where(x => x.ID.Equals(id)).ToList();
+        }
     }
 }

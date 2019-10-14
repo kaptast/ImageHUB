@@ -11,19 +11,24 @@ import Login from './components/Login/Login';
 export default function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [name, setName] = useState("test");
+  const [name, setName] = useState("");
+  const [id, setID] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     axios.get("api/auth/isloggedin")
       .then(res => {
-        console.log("ok.")
-        setIsLoggedIn(true)
-        setName(res.data)
+          console.log("ok.");
+          setIsLoggedIn(true);
+          console.log(res);
+          setName(res.data.name);
+          setID(res.data.id);
+          setEmail(res.data.email);
       })
       .catch(err => {
-        console.log(err)
-        console.log("failed to log in.")
-        setIsLoggedIn(false)
+          console.log(err);
+          console.log("failed to log in.");
+          setIsLoggedIn(false);
       });
   });
 
@@ -35,7 +40,7 @@ export default function App() {
       });
   }
 
-  if (!isLoggedIn) { // TODO: remove faking
+  if (!isLoggedIn) {
     return <Login />;
   } else {
     return (

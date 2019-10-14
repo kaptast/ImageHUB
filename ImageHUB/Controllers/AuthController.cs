@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
@@ -16,9 +17,16 @@ namespace ImageHUB.Controllers
     {
         [Route("isloggedin")]
         [Authorize]
-        public IActionResult IsLoggedIn()
+        public UserDTO IsLoggedIn()
         {
-            return Ok();
+            UserDTO user = new UserDTO()
+            {
+                ID = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Name = User.FindFirstValue(ClaimTypes.Name),
+                Email = User.FindFirstValue(ClaimTypes.Email)
+            };
+
+            return user;
         }
 
         [Route("signin")]
@@ -37,10 +45,19 @@ namespace ImageHUB.Controllers
             return this.LocalRedirect(returnUrl);
         }
 
-
-        // TO DO : LOGOUT
-
-
+        [Route("logout")]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return this.Ok();
+        }
     }
 
+    public class UserDTO
+    {
+        public string Name { get; set; }
+        public string ID { get; set; }
+        public string Email { get; set; }
+    }
 }

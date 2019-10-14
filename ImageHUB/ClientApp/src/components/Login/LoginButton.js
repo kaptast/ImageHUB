@@ -3,8 +3,10 @@ import './LoginButton.css';
 
 export default function LoginButton() {
     return (
-        <button class="loginBtn loginBtn--facebook">
-            Login with Facebook
-        </button>
+        <form id="external-login" method="post" action="api/auth/signin">
+            <button class="loginBtn loginBtn--facebook">
+                Login with Facebook
+            </button>
+        </form>
     );
 }

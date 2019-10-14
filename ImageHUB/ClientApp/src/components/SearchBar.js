@@ -15,6 +15,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import UploadButton from './Upload/Upload';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -82,7 +84,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -104,6 +106,10 @@ export default function SearchBar() {
 
   function handleMobileMenuOpen(event) {
     setMobileMoreAnchorEl(event.currentTarget);
+  }
+
+  function handleLogout(event) {
+    props.logout();
   }
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -141,6 +147,12 @@ export default function SearchBar() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem onClick={handleLogout} >
+        <IconButton edge="account" aria-label="account of current user" color="inherit">
+          <ExitToAppIcon />
+        </IconButton>
+        <p>Logout</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -173,8 +185,11 @@ export default function SearchBar() {
                 <MessageIcon />
               </Badge>
             </IconButton>
-            <IconButton edge="end" aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
+            <IconButton aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
               <AccountCircle />
+            </IconButton>
+            <IconButton edge="end" color="inherit" onClick={handleLogout}>
+              <ExitToAppIcon />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

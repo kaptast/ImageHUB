@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/AddAPhoto';
 import UploadForm from './UploadForm';
 
 function UploadDialog(props){

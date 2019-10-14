@@ -15,7 +15,10 @@ class Home extends Component {
 
   render() {
     return (
+      <div>
+      <p>{this.props.name}</p>
       <Feed posts={this.props.homePosts} />
+      </div>
     );
   }
 }

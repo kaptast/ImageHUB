@@ -16,9 +16,10 @@ namespace ImageHUB.Controllers
     {
         [Route("isloggedin")]
         [Authorize]
-        public IActionResult IsLoggedIn()
+        public string IsLoggedIn()
         {
-            return Ok();
+            return HttpContext.User.Identity.Name;
+            //return Ok();
         }
 
         [Route("signin")]
@@ -37,9 +38,13 @@ namespace ImageHUB.Controllers
             return this.LocalRedirect(returnUrl);
         }
 
-
-        // TO DO : LOGOUT
-
+        [Route("logout")]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return this.Ok();
+        }
 
     }
 

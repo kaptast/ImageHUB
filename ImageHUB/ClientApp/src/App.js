@@ -35,7 +35,7 @@ export default function App() {
       });
   }
 
-  if (isLoggedIn) { // TODO: remove faking
+  if (!isLoggedIn) { // TODO: remove faking
     return <Login />;
   } else {
     return (

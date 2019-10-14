@@ -29,6 +29,8 @@ namespace ImageHUB
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddDirectoryBrowser();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -76,15 +78,8 @@ namespace ImageHUB
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-            app.UseAuthentication();
 
-
-            app.UseHttpsRedirection();
-
-            var pfp = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
+            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["Image.SavePath"]));
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = pfp,
@@ -98,6 +93,10 @@ namespace ImageHUB
             });
 
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
+
+
+            app.UseHttpsRedirection();
 
            // app.UseRouting();
 
@@ -105,8 +104,6 @@ namespace ImageHUB
             //{
             //    endpoints.MapControllers();
             //});
-
-
 
             app.UseMvc(routes =>
             {

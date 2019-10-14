@@ -65,16 +65,16 @@ const profile2 = {
 }
 
 export const ProfileHeader = () => (
-  <Header value={profile} />
+  <Header profile={profile} />
 );
 
 export const ProfileHeaderWith1Value = () => (
-  <Header value={profile2} />
+  <Header profile={profile2} />
 );
 
 export const ProfileWithFeed = () => (
   <div>
-    <Header value={profile} />
+    <Header profile={profile} />
     <ProfileFeed posts={profile.posts} />
   </div>
 );

@@ -26,8 +26,13 @@ namespace ImageHUB.Controllers
         {
             string userName = User.FindFirstValue(ClaimTypes.Name);
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string email = User.FindFirstValue(ClaimTypes.Email);
 
-            return this.profileService.GetProfileByID(id, userName);
+            var profile = this.profileService.GetProfileByID(id, userName);
+            profile.Avatar = id;
+            profile.Email = email;
+
+            return profile;
         }
     }
 }

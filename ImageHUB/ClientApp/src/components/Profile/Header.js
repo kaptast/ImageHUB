@@ -28,11 +28,13 @@ export default function Header(props) {
     let friends = "friends";//props.value.friends == 1 ? "friend" : "friends";
     let posts = props.profile.posts.length == 1 ? "post" : "posts";
 
+    const avatar = 'http://graph.facebook.com/'+ props.profile.avatar +'/picture?type=large';
+
     return (
         <div className={classes.container}>
             <Grid container spacing={2}>
                 <Grid item>
-                    <Avatar alt={props.profile.userName} src={props.profile.avatar} className={classes.avatar} />
+                    <Avatar alt={props.profile.userName} src={avatar} className={classes.avatar} />
                 </Grid>
                 <Grid item xs={4} className={classes.container}>
                     <Grid container>

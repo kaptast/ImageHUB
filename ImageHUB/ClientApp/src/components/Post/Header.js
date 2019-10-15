@@ -20,9 +20,12 @@ const useStyles = makeStyles({
 
 export default function Header(props) {
     const classes = useStyles();
+
+    const avatar = 'http://graph.facebook.com/'+ props.value.id +'/picture?type=large';
+
     return (
         <div className={classes.container}>
-                <Avatar alt={props.value.userName} src={props.value.avatar} className={classes.avatar} />
+                <Avatar alt={props.value.userName} src={avatar} className={classes.avatar} />
                 <Typography variant="subtitle2">{props.value.userName}</Typography>
                 <div className={classes.actions}>
                     <Actions />

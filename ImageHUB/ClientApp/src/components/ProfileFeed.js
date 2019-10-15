@@ -18,8 +18,8 @@ export default function ProfileFeed(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    const style = useMediaQuery(theme.breakpoints.up('sm')) ? "row" : "column";
-    const itemSize = useMediaQuery(theme.breakpoints.up('sm')) ? 4 : 12;
+    const style = useMediaQuery(theme.breakpoints.up('md')) ? "row" : "column";
+    const itemSize = useMediaQuery(theme.breakpoints.up('md')) ? 4 : 12;
     const remainder = props.posts.length % 3;
     const emptyCount = (remainder == 0) ? 0 : 3 - remainder;
 

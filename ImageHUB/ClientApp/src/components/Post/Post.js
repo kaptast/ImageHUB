@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import Image from './Image';
+import { Image, SmallImage } from './Image';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './Header';
 
@@ -40,7 +40,7 @@ export function PostWithoutHeader(props) {
     if (props.value.show) {
         return (
             <Card className={classes.card}>
-                <Image value={props.value} />
+                <SmallImage value={props.value} />
             </Card>
         );
     } else {

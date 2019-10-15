@@ -12,7 +12,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-      <Feed posts={this.props.homePosts} />
+      <Feed posts={this.props.homePosts} isLoading={this.props.isLoading} />
       </div>
     );
   }

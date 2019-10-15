@@ -17,11 +17,10 @@ class Profile extends Component {
   }
 
   render() {
-    console.log(this.props.profile);
     return (
       <div>
         <Header profile={this.props.profile} />
-        <Feed posts={this.props.profile.posts} />
+        <Feed posts={this.props.profile.posts} isLoading={this.props.isLoading} />
       </div>
     );
   }

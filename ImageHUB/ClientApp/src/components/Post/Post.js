@@ -19,8 +19,6 @@ const useStyles = makeStyles(theme => ({
 
 export function PostWithHeader(props) {
     const classes = useStyles();
-    console.log("PostWithHeader");
-    console.log(props);
     if (props.value.show) {
         return (
             <Card className={classes.card}>

@@ -262,3 +262,6 @@ __pycache__/
 ImageHUB/wwwroot/images/
 
 ImageHUB/ClientApp/public/images/
+.vscode/launch.json
+.vscode/tasks.json
+ImageHUB/ImageHUB.code-workspace

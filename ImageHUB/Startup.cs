@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -36,6 +37,8 @@ namespace ImageHUB
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration));
 
 
             services.AddSingleton<IImageRepository, ImageRepository>();
@@ -98,13 +101,6 @@ namespace ImageHUB
 
 
             app.UseHttpsRedirection();
-
-           // app.UseRouting();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
 
             app.UseMvc(routes =>
             {

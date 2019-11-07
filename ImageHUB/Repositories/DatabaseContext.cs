@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ImageHUB.Repositories
@@ -8,19 +10,25 @@ namespace ImageHUB.Repositories
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; } 
 
-        public IEnumerable<Post> GetAll()
+        public async Task<IEnumerable<Post>> GetAllPosts()
         {
-            throw new System.NotImplementedException();
+            return await this.Posts.ToListAsync();
         }
 
-        public IEnumerable<Post> GetById(string id)
+        public IEnumerable<Post> GetPostByID(string id)
         {
-            throw new System.NotImplementedException();
+            return this.Posts.Where(p => p.ID.Equals(id)).ToList();
         }
 
-        public void Save(string path, string id, string userName)
+        public void SaveImage(string path, string id, string userName)
         {
-            throw new System.NotImplementedException();
+            this.Posts.Add(new Post(){
+                Image = path,
+                ID = id,
+                UserName = userName
+            });
+
+            this.SaveChanges();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

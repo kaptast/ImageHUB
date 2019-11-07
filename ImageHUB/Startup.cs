@@ -38,9 +38,9 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration));
+            services.AddDbContext<DatabaseContext>();
 
-
+            
             services.AddSingleton<IImageRepository, ImageRepository>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();

@@ -8,15 +8,13 @@ namespace ImageHUB.Repositories
     public class Profile
     {
         public IEnumerable<Post> Posts { get; set; }
+        public IEnumerable<Profile> Friends { get; set; }
+
+        public string ID {get; set;}
         public string UserName { get; set; }
 
-        public string Avatar {get; set;}
+        public string Avatar { get; set; }
 
-        public string Email {get; set;}
-
-        public Profile()
-        {
-            this.Posts = new List<Post>();
-        }
+        public string Email { get; set; }
     }
 }

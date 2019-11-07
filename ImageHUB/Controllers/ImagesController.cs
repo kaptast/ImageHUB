@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ImageHUB.Repositories;
 using ImageHUB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,12 @@ namespace ImageHUB.Controllers
     public class ImagesController : ControllerBase
     {
         private readonly IImageService imageService;
+        private DatabaseContext context;
 
-        public ImagesController(IImageService imageService)
+        public ImagesController(IImageService imageService, DatabaseContext context)
         {
             this.imageService = imageService;
+            this.context = context;
         }
 
         [HttpPost]
@@ -29,11 +32,11 @@ namespace ImageHUB.Controllers
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string name = User.FindFirstValue(ClaimTypes.Name);
 
-            await this.imageService.SaveImageAsync(file, id, name);
+            await this.imageService.SaveImageAsync(this.context, file, id, name);
         }
 
         [HttpGet]
         [Authorize]
-        public IEnumerable<Repositories.Post> Get() => this.imageService.GetAllImageUrls();
+        public IEnumerable<Repositories.Post> Get() => this.imageService.GetAllImageUrls(this.context);
     }
 }

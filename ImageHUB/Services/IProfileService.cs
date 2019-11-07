@@ -9,6 +9,6 @@ namespace ImageHUB.Services
 {
     public interface IProfileService
     {
-        Profile GetProfileByID(string id, string userName);
+        Profile GetProfileByID(DatabaseContext context, string id, string userName);
     }
 }

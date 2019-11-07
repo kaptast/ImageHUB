@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ImageHUB.Repositories;
 using ImageHUB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,12 @@ namespace ImageHUB.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService profileService;
+        private DatabaseContext context;
 
-        public ProfileController(IProfileService profileService)
+        public ProfileController(IProfileService profileService, DatabaseContext context)
         {
             this.profileService = profileService;
+            this.context = context;
         }
 
         [HttpGet]
@@ -28,7 +31,7 @@ namespace ImageHUB.Controllers
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string email = User.FindFirstValue(ClaimTypes.Email);
 
-            var profile = this.profileService.GetProfileByID(id, userName);
+            var profile = this.profileService.GetProfileByID(this.context, id, userName);
             profile.Avatar = id;
             profile.Email = email;
 

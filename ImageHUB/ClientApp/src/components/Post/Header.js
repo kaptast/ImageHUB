@@ -17,6 +17,14 @@ const useStyles = makeStyles({
     avatar: {
         margin: 10
     },
+    link: {
+        textDecoration: 'none',
+        color: 'black',
+        '&:focus, &:hover, &:visited, &:link, &:active':{
+            textDecoration: 'none',
+            color: 'black'
+        }
+    },
 });
 
 export default function Header(props) {
@@ -26,7 +34,7 @@ export default function Header(props) {
     return (
         <div className={classes.container}>
                 <Avatar alt={props.value.userName} src={avatar} className={classes.avatar} />
-                <Typography variant="subtitle2"><Link to={profileLink}>{props.value.owner.userName}</Link></Typography>
+                <Typography variant="subtitle2"><Link to={profileLink} className={classes.link}>{props.value.owner.userName}</Link></Typography>
                 <div className={classes.actions}>
                     <Actions />
                 </div>

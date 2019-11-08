@@ -37,5 +37,23 @@ namespace ImageHUB.Controllers
 
             return profile;
         }
+
+        [HttpGet]
+        [Route("GetById")]
+        public Repositories.Profile GetById(string id)
+        {
+            if (id.Equals("0"))
+            {
+                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+
+            string userName = User.FindFirstValue(ClaimTypes.Name);
+            string email = User.FindFirstValue(ClaimTypes.Email);
+
+            var profile = this.profileService.GetProfileByID(this.context, id, userName);
+            profile.Avatar = id;
+
+            return profile;
+        }
     }
 }

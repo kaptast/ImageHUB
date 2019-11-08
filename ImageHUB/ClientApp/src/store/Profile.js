@@ -5,6 +5,7 @@ const receiveProfileType = 'RECEIVE_PROFILE';
 
 const defaultProfile = {
   name: "",
+  index: "asd",
   posts: [],
 }
 
@@ -13,11 +14,14 @@ const initialState = { profile: defaultProfile, isLoading: false };
 export const actionCreators = {
   requestProfile: index => async (dispatch, getState) => {
     if (index === getState().profile.index) {
+      console.log("Same ID");
+      console.log(index);
       return;
     }
     dispatch({ type: requestProfileType, index });
 
-    const url = `api/profile`;
+    const url = `api/profile/GetById?id=${index}`;
+    console.log(url);
     axios.get(url)
       .then(res => {
         console.log("ok home store.");

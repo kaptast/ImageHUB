@@ -10,23 +10,21 @@ namespace ImageHUB.Services
 {
     public class ImageService : IImageService
     {
-        private readonly IImageRepository imageRepository;
         private readonly IImageStorage imageStorage;
 
-        public ImageService(IImageRepository imageRepository, IImageStorage imageStorage)
+        public ImageService(IImageStorage imageStorage)
         {
-            this.imageRepository = imageRepository;
             this.imageStorage = imageStorage;
         }
-        public async Task SaveImageAsync(DatabaseContext context, IFormFile file, string id, string userName)
+        public async Task SaveImageAsync(DatabaseContext context, IFormFile file, Profile owner)
         {
             await this.imageStorage.StoreAsync(file);
-            context.SaveImage(Path.Combine("images", file.FileName), id, userName);
+            context.SaveImage(Path.Combine("images", file.FileName), owner);
         }
 
         public IEnumerable<Post> GetAllImageUrls(DatabaseContext context) => context.GetAllPosts().Result;
 
-        public IEnumerable<Post> GetImageUrlsById(DatabaseContext context, string id) => context.GetPostByID(id);
+        public IEnumerable<Post> GetImageUrlsById(DatabaseContext context, string id) => context.GetPostByUserID(id);
 
     }
 }

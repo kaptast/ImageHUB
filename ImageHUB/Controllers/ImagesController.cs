@@ -32,7 +32,9 @@ namespace ImageHUB.Controllers
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string name = User.FindFirstValue(ClaimTypes.Name);
 
-            await this.imageService.SaveImageAsync(this.context, file, id, name);
+            var owner = context.GetProfileByID(id);
+
+            await this.imageService.SaveImageAsync(this.context, file, owner); 
         }
 
         [HttpGet]

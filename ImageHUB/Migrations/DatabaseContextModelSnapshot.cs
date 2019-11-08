@@ -17,18 +17,16 @@ namespace ImageHUB.Migrations
 
             modelBuilder.Entity("ImageHUB.Repositories.Post", b =>
                 {
-                    b.Property<string>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Image");
 
-                    b.Property<string>("ProfileID");
-
-                    b.Property<string>("UserName");
+                    b.Property<string>("OwnerID");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProfileID");
+                    b.HasIndex("OwnerID");
 
                     b.ToTable("Posts");
                 });
@@ -55,9 +53,9 @@ namespace ImageHUB.Migrations
 
             modelBuilder.Entity("ImageHUB.Repositories.Post", b =>
                 {
-                    b.HasOne("ImageHUB.Repositories.Profile")
+                    b.HasOne("ImageHUB.Repositories.Profile", "Owner")
                         .WithMany("Posts")
-                        .HasForeignKey("ProfileID");
+                        .HasForeignKey("OwnerID");
                 });
 
             modelBuilder.Entity("ImageHUB.Repositories.Profile", b =>

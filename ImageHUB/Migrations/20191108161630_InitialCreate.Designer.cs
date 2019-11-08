@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageHUB.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191107120753_InitialCreate")]
+    [Migration("20191108161630_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,18 +19,16 @@ namespace ImageHUB.Migrations
 
             modelBuilder.Entity("ImageHUB.Repositories.Post", b =>
                 {
-                    b.Property<string>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Image");
 
-                    b.Property<string>("ProfileID");
-
-                    b.Property<string>("UserName");
+                    b.Property<string>("OwnerID");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProfileID");
+                    b.HasIndex("OwnerID");
 
                     b.ToTable("Posts");
                 });
@@ -57,9 +55,9 @@ namespace ImageHUB.Migrations
 
             modelBuilder.Entity("ImageHUB.Repositories.Post", b =>
                 {
-                    b.HasOne("ImageHUB.Repositories.Profile")
+                    b.HasOne("ImageHUB.Repositories.Profile", "Owner")
                         .WithMany("Posts")
-                        .HasForeignKey("ProfileID");
+                        .HasForeignKey("OwnerID");
                 });
 
             modelBuilder.Entity("ImageHUB.Repositories.Profile", b =>

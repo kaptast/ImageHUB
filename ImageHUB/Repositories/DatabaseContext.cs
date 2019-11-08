@@ -15,18 +15,39 @@ namespace ImageHUB.Repositories
             return await this.Posts.ToListAsync();
         }
 
-        public IEnumerable<Post> GetPostByID(string id)
+        public IEnumerable<Post> GetPostByUserID(string id)
         {
-            return this.Posts.Where(p => p.ID.Equals(id)).ToList();
+            return this.Posts.Where(p => p.Owner.ID.Equals(id))?.ToList();
         }
 
-        public void SaveImage(string path, string id, string userName)
+        public void SaveImage(string path, Profile owner)
         {
             this.Posts.Add(new Post(){
                 Image = path,
-                ID = id,
-                UserName = userName
+                Owner = owner
             });
+
+            this.SaveChanges();
+        }
+
+        public async Task<IEnumerable<Profile>> GetProfiles()
+        {
+            return await this.Profiles.ToListAsync();
+        }
+
+        public IEnumerable<Profile> GetFriendsByID(string id)
+        {
+            return this.Profiles.AsEnumerable();
+        }
+
+        public Profile GetProfileByID(string id)
+        {
+            return this.Profiles.Where(p => p.ID.Equals(id)).SingleOrDefault();
+        }
+
+        public void AddNewProfile(Profile profile)
+        {
+            this.Profiles.Add(profile);
 
             this.SaveChanges();
         }

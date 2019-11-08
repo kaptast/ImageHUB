@@ -31,26 +31,26 @@ namespace ImageHUB.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    UserName = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    ID = table.Column<string>(nullable: false),
-                    ProfileID = table.Column<string>(nullable: true)
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OwnerID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Posts_Profiles_ProfileID",
-                        column: x => x.ProfileID,
+                        name: "FK_Posts_Profiles_OwnerID",
+                        column: x => x.OwnerID,
                         principalTable: "Profiles",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_ProfileID",
+                name: "IX_Posts_OwnerID",
                 table: "Posts",
-                column: "ProfileID");
+                column: "OwnerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Profiles_ProfileID",

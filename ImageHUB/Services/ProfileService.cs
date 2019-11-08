@@ -15,19 +15,22 @@ namespace ImageHUB.Services
         }
         public Profile GetProfileByID(DatabaseContext context, string id, string userName)
         {
-            var posts = this.imageService.GetImageUrlsById(context, id);
-
-            if (posts != null) {
-                Profile profile = new Profile()
-                {
-                    UserName = userName,
-                    Posts = posts
-                };
-
+            var profile = context.GetProfileByID(id);
+            
+            if (profile != null){
+                profile.Posts = this.imageService.GetImageUrlsById(context, profile.ID);
                 return profile;
             }
+            else {
+                profile = new Profile(){
+                    ID = id,
+                    UserName = userName
+                };
 
-            return null;
+                context.AddNewProfile(profile);
+            }
+
+            return profile;
         }
     }
 }

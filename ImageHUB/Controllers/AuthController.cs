@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ImageHUB.Repositories;
+using ImageHUB.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
@@ -15,16 +17,23 @@ namespace ImageHUB.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly IProfileService profileService;
+        private DatabaseContext context;
+
+        public AuthController(IProfileService profileService, DatabaseContext context)
+        {
+            this.profileService = profileService;
+            this.context = context;
+        }
+
         [Route("isloggedin")]
         [Authorize]
-        public UserDTO IsLoggedIn()
+        public Profile IsLoggedIn()
         {
-            UserDTO user = new UserDTO()
-            {
-                ID = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Name = User.FindFirstValue(ClaimTypes.Name),
-                Email = User.FindFirstValue(ClaimTypes.Email)
-            };
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = User.FindFirstValue(ClaimTypes.Name);
+
+            var user = this.profileService.GetProfileByID(this.context, id, username);
 
             return user;
         }
@@ -52,12 +61,5 @@ namespace ImageHUB.Controllers
             await HttpContext.SignOutAsync();
             return this.Ok();
         }
-    }
-
-    public class UserDTO
-    {
-        public string Name { get; set; }
-        public string ID { get; set; }
-        public string Email { get; set; }
     }
 }

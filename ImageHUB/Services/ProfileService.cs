@@ -17,14 +17,17 @@ namespace ImageHUB.Services
         {
             var profile = context.GetProfileByID(id);
             
-            if (profile != null){
+            if (profile != null)
+            {
                 profile.Posts = this.imageService.GetImageUrlsById(context, profile.ID);
-                return profile;
             }
-            else {
-                profile = new Profile(){
+            else
+            {
+                profile = new Profile()
+                {
                     ID = id,
-                    UserName = userName
+                    UserName = userName,
+                    Posts = new List<Post>()
                 };
 
                 context.AddNewProfile(profile);

@@ -18,7 +18,6 @@ export default function App() {
   useEffect(() => {
     axios.get("api/auth/isloggedin")
       .then(res => {
-          console.log("ok.");
           setIsLoggedIn(true);
           setName(res.data.name);
           setID(res.data.id);
@@ -47,7 +46,7 @@ export default function App() {
         <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
           <Switch>
             <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
-            <Route path='/profile' component={Profile} />
+            <Route path='/profile/:index?' component={Profile} />
             <Route path='/messages' component={Messages} />
             <Route path='/login' component={Login} />
           </Switch>

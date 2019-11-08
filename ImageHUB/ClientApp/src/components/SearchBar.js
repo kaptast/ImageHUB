@@ -16,7 +16,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import UploadButton from './Upload/Upload';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
+import Search from 'material-ui-search-bar';
 
 const useStyles = makeStyles(theme => ({
   grow: {

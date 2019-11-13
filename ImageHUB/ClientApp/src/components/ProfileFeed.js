@@ -28,7 +28,7 @@ export default function ProfileFeed(props) {
     const style = useMediaQuery(theme.breakpoints.up('md')) ? "row" : "column";
     const itemSize = useMediaQuery(theme.breakpoints.up('md')) ? 4 : 12;
     const remainder = props.posts.length % 3;
-    const emptyCount = (remainder == 0) ? 0 : 3 - remainder;
+    const emptyCount = (remainder === 0) ? 0 : 3 - remainder;
 
     for (let i = 0; i < emptyCount; i++) {
         props.posts.push(

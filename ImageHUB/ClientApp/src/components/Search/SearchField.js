@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchBar from 'material-ui-search-bar';
 import axios from 'axios';
@@ -30,15 +30,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function SearchField() {
     const [value, setValue] = useState("");
-    const results = [];
+    var results = [];
 
-    const load = () => {
-        const url = `api/profile/GetAll`;
-        axios.get(url)
+    useEffect(() => {
+        axios.get("api/profile/GetAll")
             .then(res => {
                 results = res.data;
+                console.log(results);
             })
-    }
+            .catch(err => {
+                console.log(err);
+                console.log("failed to get profiles");
+            });
+    });
 
     const classes = useStyles();
     return (

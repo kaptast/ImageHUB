@@ -26,7 +26,7 @@ export default function Header(props) {
     console.log(props);
 
     let friends = "friends";//props.value.friends == 1 ? "friend" : "friends";
-    let posts = props.profile.posts.length == 1 ? "post" : "posts";
+    let posts = props.profile.posts.length === 1 ? "post" : "posts";
 
     const avatar = 'http://graph.facebook.com/'+ props.profile.avatar +'/picture?type=large';
 

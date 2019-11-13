@@ -10,5 +10,7 @@ namespace ImageHUB.Services
     public interface IProfileService
     {
         Profile GetProfileByID(DatabaseContext context, string id, string userName);
+
+        IEnumerable<Profile> GetAll(DatabaseContext context);
     }
 }

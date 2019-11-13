@@ -27,14 +27,16 @@ namespace ImageHUB.Controllers
         [HttpPost]
         [Route("upload")]
         [Authorize]
-        public async Task Upload(IFormFile file)
+        public async Task<IActionResult> Upload(IFormFile file)
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string name = User.FindFirstValue(ClaimTypes.Name);
 
             var owner = context.GetProfileByID(id);
 
-            await this.imageService.SaveImageAsync(this.context, file, owner); 
+            await this.imageService.SaveImageAsync(this.context, file, owner);
+
+            return Redirect("/");
         }
 
         [HttpGet]

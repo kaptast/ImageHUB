@@ -12,12 +12,12 @@ namespace ImageHUB.Repositories
 
         public async Task<IEnumerable<Post>> GetAllPosts()
         {
-            return await this.Posts.Include("Owner").ToListAsync();
+            return await this.Posts.Include("Owner").OrderByDescending(p => p.ID).ToListAsync();
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)
         {
-            return this.Posts.Include("Owner").Where(p => p.Owner.ID.Equals(id))?.ToList();
+            return this.Posts.Include("Owner").Where(p => p.Owner.ID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
         }
 
         public void SaveImage(string path, Profile owner)

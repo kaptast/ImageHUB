@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchBar from '../components/SearchBar';
+import SearchField from '../components/Search/SearchField';
 import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
@@ -26,4 +27,8 @@ export const searchbar = () => (
             <SearchBar />
         </BrowserRouter>
     </MuiThemeProvider>
+);
+
+export const searchField = () => (
+    <SearchField />
 );

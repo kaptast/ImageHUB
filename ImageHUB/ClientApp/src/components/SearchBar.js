@@ -5,18 +5,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import HomeIcon from '@material-ui/icons/Home';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import UploadButton from './Upload/Upload';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Search from 'material-ui-search-bar';
+import SearchField from './Search/SearchField';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -164,19 +163,7 @@ export default function SearchBar(props) {
           <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props} />}>
             ImageHUB
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+          <SearchField />
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <UploadButton />

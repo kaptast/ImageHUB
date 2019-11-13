@@ -55,5 +55,12 @@ namespace ImageHUB.Controllers
 
             return profile;
         }
+
+        [HttpGet]
+        [Route("GetAll")]
+        public IEnumerable<Repositories.Profile> GetAll()
+        {
+            return this.profileService.GetAll(this.context);
+        }
     }
 }

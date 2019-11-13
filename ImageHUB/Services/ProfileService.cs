@@ -13,6 +13,7 @@ namespace ImageHUB.Services
         {
             this.imageService = imageService;
         }
+
         public Profile GetProfileByID(DatabaseContext context, string id, string userName)
         {
             var profile = context.GetProfileByID(id);
@@ -34,6 +35,11 @@ namespace ImageHUB.Services
             }
 
             return profile;
+        }
+
+        public IEnumerable<Profile> GetAll(DatabaseContext context)
+        {
+            return context.GetProfiles().Result;
         }
     }
 }

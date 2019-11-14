@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import SearchBar from 'material-ui-search-bar';
 import axios from 'axios';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles(theme => ({
@@ -14,42 +17,109 @@ const useStyles = makeStyles(theme => ({
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
-        height: '40px',
         width: '100%',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing(3),
             width: 'auto',
-            marginTop: '5px',
-            marginBottom: '5px',
         },
-        webkitBoxShadow: 'none',
-        mozBoxShadow: 'none',
-        boxShadow: 'none',
+    },
+    searchIcon: {
+        width: theme.spacing(7),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 7),
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+            width: 120,
+            '&:focus': {
+                width: 300,
+            },
+        },
     },
 }));
 
 export default function SearchField() {
-    const [value, setValue] = useState("");
+    const [open, setOpen] = React.useState(false);
+    const [options, setOptions] = React.useState([]);
+    const loading = open && options.length === 0;
+
     var results = [];
 
     useEffect(() => {
-        axios.get("api/profile/GetAll")
-            .then(res => {
-                results = res.data;
-                console.log(results);
-            })
-            .catch(err => {
-                console.log(err);
-                console.log("failed to get profiles");
-            });
-    });
+        let active = true;
+
+        if (!loading) {
+            return undefined;
+        }
+        (async () => {
+            axios.get("api/profile/GetAll")
+                .then(res => {
+                    results = res.data;
+                })
+                .catch(err => {
+                    console.log(err);
+                    console.log("failed to get profiles");
+                });
+        })();
+
+        return () => {
+            active = false;
+        };
+
+    }, [loading]);
+
+    React.useEffect(() => {
+        if (!open) {
+            setOptions([]);
+        }
+    }, [open]);
 
     const classes = useStyles();
-    return (
-        <SearchBar className={classes.search}
-            dataSource={results}
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
-            onRequestSearch={() => console.log('onRequestSearch')} />
+    return (<Autocomplete
+        id="searchField"
+        open={open}
+        onOpen={() => {
+            setOpen(true);
+        }}
+        onClose={() => {
+            setOpen(false);
+        }}
+        getOptionLabel={option => option.name}
+        options={options}
+        loading={loading}
+        renderInput={params => (
+            <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                    <SearchIcon />
+                </div>
+                <InputBase
+                    placeholder="Search…"
+                    classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                    }}
+                    InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                            <React.Fragment>
+                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                {params.InputProps.endAdornment}
+                            </React.Fragment>
+                        ),
+                    }}
+                />
+            </div>
+        )}
+    />
     );
 }

@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { fade, withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-
-const useStyles = makeStyles(theme => ({
+  const styles = theme => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -46,58 +44,34 @@ const useStyles = makeStyles(theme => ({
             },
         },
     },
-}));
+});
 
-export default function SearchField() {
-    const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState([]);
-    const loading = open && options.length === 0;
+class SearchField extends React.Component {
 
-    var results = [];
-
-    useEffect(() => {
-        let active = true;
-
-        if (!loading) {
-            return undefined;
-        }
-        (async () => {
-            axios.get("api/profile/GetAll")
-                .then(res => {
-                    results = res.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                    console.log("failed to get profiles");
-                });
-        })();
-
-        return () => {
-            active = false;
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchInputValue: ""
         };
+    }
 
-    }, [loading]);
-
-    React.useEffect(() => {
-        if (!open) {
-            setOptions([]);
+    catchReturn (event) {
+        if (event.key == 'Enter') {
+            event.preventDefault();
+            console.log(this.state.searchInputValue);
+            this.props.history.push('/profile');
         }
-    }, [open]);
+    }
 
-    const classes = useStyles();
-    return (<Autocomplete
-        id="searchField"
-        open={open}
-        onOpen={() => {
-            setOpen(true);
-        }}
-        onClose={() => {
-            setOpen(false);
-        }}
-        getOptionLabel={option => option.name}
-        options={options}
-        loading={loading}
-        renderInput={params => (
+    handleChange (event) {
+        this.setState({
+            searchInputValue: event.target.value
+        });
+    }
+
+    render(){
+        const { classes } = this.props;
+        return (
             <div className={classes.search}>
                 <div className={classes.searchIcon}>
                     <SearchIcon />
@@ -108,18 +82,12 @@ export default function SearchField() {
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     }}
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                        ),
-                    }}
+                    onKeyPress={this.catchReturn.bind(this)}
+                    value={this.state.searchInputValue}
+                    onChange={this.handleChange.bind(this)}
                 />
             </div>
-        )}
-    />
-    );
+        );
+    }
 }
+export default withRouter(connect()(withStyles(styles)(SearchField)));

@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import { DropzoneArea } from 'material-ui-dropzone';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PublishIcon from '@material-ui/icons/Publish';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const styles = theme => ({
     container: {
@@ -38,7 +40,7 @@ class UploadForm extends Component {
         formData.append("file", this.state.file);
         axios.post("api/images/upload", formData, {
             headers: { 'content-type': 'multipart/form-data' }
-        }).then(this.props.parentCallback());
+        }).then(this.props.parentCallback()).then(this.props.history.push('/'));
     }
 
     render() {
@@ -72,4 +74,4 @@ UploadForm.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(UploadForm);
+export default withRouter(connect()(withStyles(styles)(UploadForm)));

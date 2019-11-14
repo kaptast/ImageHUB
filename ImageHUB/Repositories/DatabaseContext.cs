@@ -52,6 +52,11 @@ namespace ImageHUB.Repositories
             this.SaveChanges();
         }
 
+        public IEnumerable<Profile> GetProfilesByName(string name)
+        {
+            return this.Profiles.Where(x => x.UserName.Contains(name)).ToList();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=imgHub.db");
     }

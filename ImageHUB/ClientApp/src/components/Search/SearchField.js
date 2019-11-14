@@ -5,7 +5,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-  const styles = theme => ({
+const styles = theme => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -55,21 +55,20 @@ class SearchField extends React.Component {
         };
     }
 
-    catchReturn (event) {
+    catchReturn(event) {
         if (event.key == 'Enter') {
             event.preventDefault();
-            console.log(this.state.searchInputValue);
-            this.props.history.push('/profile');
+            this.props.history.push('/search/'+ this.state.searchInputValue);
         }
     }
 
-    handleChange (event) {
+    handleChange(event) {
         this.setState({
             searchInputValue: event.target.value
         });
     }
 
-    render(){
+    render() {
         const { classes } = this.props;
         return (
             <div className={classes.search}>

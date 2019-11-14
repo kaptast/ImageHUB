@@ -12,5 +12,7 @@ namespace ImageHUB.Services
         Profile GetProfileByID(DatabaseContext context, string id, string userName);
 
         IEnumerable<Profile> GetAll(DatabaseContext context);
+
+        IEnumerable<Profile> GetAllByName(DatabaseContext context, string name);
     }
 }

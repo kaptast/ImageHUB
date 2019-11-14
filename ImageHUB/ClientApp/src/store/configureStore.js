@@ -5,13 +5,15 @@ import * as Counter from './Counter';
 import * as WeatherForecasts from './WeatherForecasts';
 import * as Home from './Home';
 import * as Profile from './Profile';
+import * as Search from './Search';
 
 export default function configureStore(history, initialState) {
   const reducers = {
     counter: Counter.reducer,
     weatherForecasts: WeatherForecasts.reducer,
     homePosts: Home.reducer,
-    profile: Profile.reducer
+    profile: Profile.reducer,
+    results: Search.reducer
   };
 
   const middleware = [

@@ -41,5 +41,10 @@ namespace ImageHUB.Services
         {
             return context.GetProfiles().Result;
         }
+
+        public IEnumerable<Profile> GetAllByName(DatabaseContext context, string name)
+        {
+            return context.GetProfilesByName(name);
+        }
     }
 }

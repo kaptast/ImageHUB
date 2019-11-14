@@ -7,6 +7,7 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import Messages from './components/Messages';
 import Login from './components/Login/Login';
+import Search from './components/Search/SearchResults';
 
 export default function App() {
 
@@ -48,6 +49,7 @@ export default function App() {
             <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
             <Route path='/profile/:index?' component={Profile} />
             <Route path='/messages' component={Messages} />
+            <Route path='/search/:index?' component={Search} />
             <Route path='/login' component={Login} />
           </Switch>
         </Layout>

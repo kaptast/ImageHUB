@@ -14,6 +14,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { Link } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 
 const styles = theme => ({
@@ -26,12 +29,16 @@ const styles = theme => ({
     link: {
         textDecoration: 'none',
         color: 'black',
-        '&:focus, &:hover, &:visited, &:link, &:active':{
+        '&:focus, &:hover, &:visited, &:link, &:active': {
             textDecoration: 'none',
             color: 'black'
         }
     },
 });
+
+function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+}
 
 
 class SearchResults extends React.Component {
@@ -66,17 +73,14 @@ class SearchResults extends React.Component {
                 <Grid container direction="column" alignItems="center" justify="center">
                     <Grid item xs={12}>
                         <Paper className={classes.root}>
-                            <List>
+                            <List component="nav">
                                 {this.props.results.map(result => (
-                                    <Link to={'/profile/' + result.id} className={classes.link}>
-                                        <ListItem alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <Avatar alt={result.userName} src={'http://graph.facebook.com/' + result.id + '/picture?type=large'} />
-                                            </ListItemAvatar>
-                                            <ListItemText primary={result.userName} />
-                                        </ListItem>
-                                        <Divider variant="inset" component="li" />
-                                    </Link>
+                                    <ListItem button component={Link} to={'/profile/' + result.id}>
+                                        <ListItemAvatar>
+                                            <Avatar alt={result.userName} src={'http://graph.facebook.com/' + result.id + '/picture?type=large'} />
+                                        </ListItemAvatar>
+                                        <ListItemText primary={result.userName} />
+                                    </ListItem>
                                 ))}
                             </List>
                         </Paper>

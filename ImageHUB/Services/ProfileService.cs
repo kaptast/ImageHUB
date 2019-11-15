@@ -46,5 +46,18 @@ namespace ImageHUB.Services
         {
             return context.GetProfilesByName(name);
         }
+
+        public void AddFriend(DatabaseContext context, string userID, string friendID)
+        {
+            if (!this.IsFriendsWith(context, userID, friendID))
+            {
+                context.AddFriend(userID, friendID);
+            }
+        }
+
+        public bool IsFriendsWith(DatabaseContext context, string userID, string friendID)
+        {
+            return context.GetFriends(userID).Where(f => f.ID.Equals(friendID)).Count() > 0;
+        }
     }
 }

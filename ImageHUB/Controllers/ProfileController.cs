@@ -42,16 +42,27 @@ namespace ImageHUB.Controllers
         [Route("GetById")]
         public Repositories.Profile GetById(string id)
         {
+            string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id.Equals("0"))
             {
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                id = userID;
             }
 
             string userName = User.FindFirstValue(ClaimTypes.Name);
-            string email = User.FindFirstValue(ClaimTypes.Email);
 
             var profile = this.profileService.GetProfileByID(this.context, id, userName);
             profile.Avatar = id;
+
+            if (profile.ID.Equals(userID))
+            {
+                profile.ShowFriendButton = false;
+                profile.IsFriend = false;
+            } else
+            {
+                profile.IsFriend = this.profileService.IsFriendsWith(this.context, userID, profile.ID);
+                profile.ShowFriendButton = !profile.IsFriend;
+            }
 
             return profile;
         }

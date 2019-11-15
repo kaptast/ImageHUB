@@ -24,6 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp/public/images/" />
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

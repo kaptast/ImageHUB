@@ -57,6 +57,22 @@ namespace ImageHUB.Repositories
             return this.Profiles.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
         }
 
+        public IEnumerable<Profile> GetFriends(string userID)
+        {
+            var result = this.Profiles.Include(p => p.FriendsWith).ThenInclude(p => p.Friend);
+            return result.Where(p => p.ID.Equals(userID));
+        }
+
+        public void AddFriend(string userID, string friendID)
+        {
+            var friendProfile = this.GetProfileByID(friendID);
+
+            var user = this.GetProfileByID(userID);
+            user.FriendsWith.Add(new ProfileFriend { Profile = user, Friend = friendProfile, Accepted = false });
+
+            this.SaveChanges();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=imgHub.db");
 

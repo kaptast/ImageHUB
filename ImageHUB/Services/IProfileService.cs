@@ -14,5 +14,9 @@ namespace ImageHUB.Services
         IEnumerable<Profile> GetAll(DatabaseContext context);
 
         IEnumerable<Profile> GetAllByName(DatabaseContext context, string name);
+
+        void AddFriend(DatabaseContext context, string userID, string friendID);
+
+        bool IsFriendsWith(DatabaseContext context, string userID, string friendID);
     }
 }

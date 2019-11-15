@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,9 @@ namespace ImageHUB.Repositories
     public class Profile
     {
         public IEnumerable<Post> Posts { get; set; }
+
         public ICollection<ProfileFriend> FriendsTo { get; set; }
+
         public ICollection<ProfileFriend> FriendsWith { get; set; }
 
         public string ID {get; set;}
@@ -17,6 +20,12 @@ namespace ImageHUB.Repositories
         public string Avatar { get; set; }
 
         public string Email { get; set; }
+
+        [NotMapped]
+        public bool ShowFriendButton { get; set; }
+
+        [NotMapped]
+        public bool IsFriend { get; set; }
     }
 
     public class ProfileFriend

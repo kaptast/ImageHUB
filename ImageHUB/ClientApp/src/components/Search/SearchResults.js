@@ -10,13 +10,15 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { Link } from "react-router-dom";
+import Typography from '@material-ui/core/Typography';
 
 
 const styles = theme => ({
     root: {
-        width: '100%',
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
+        minWidth: 500
     },
     inline: {
         display: 'inline',
@@ -29,11 +31,11 @@ class SearchResults extends React.Component {
         const index = this.props.match.params.index || "";
         this.props.requestSearchResults(index);
     }
-    
-      componentWillReceiveProps(nextProps) {
-        const index = nextProps.match.params.index|| "";
+
+    componentWillReceiveProps(nextProps) {
+        const index = nextProps.match.params.index || "";
         this.props.requestSearchResults(index);
-      }
+    }
 
     constructor(props) {
         super(props);
@@ -41,21 +43,39 @@ class SearchResults extends React.Component {
 
     render() {
         const { classes } = this.props;
-        return (
-            <List className={classes.root}>
-                {this.props.results.map(result => (
-                    <div>
-                        <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
-                                <Avatar alt={result.userName} src="/static/images/avatar/1.jpg" />
-                            </ListItemAvatar>
-                            <ListItemText primary={result.userName}/>
-                        </ListItem>
-                        <Divider variant="inset" component="li" />
-                    </div>
-                ))}
-            </List>
-        );
+        if (this.props.results.length === 0) {
+            return (
+                <Grid container direction="column" alignItems="center" justify="center">
+                    <Grid item xs={12}>
+                        <Typography color="inherit" variant="h5" noWrap1>
+                            No results.
+                        </Typography>
+                    </Grid>
+                </Grid>
+            );
+        } else {
+            return (
+                <Grid container direction="column" alignItems="center" justify="center">
+                    <Grid item xs={12}>
+                        <Paper className={classes.root}>
+                            <List>
+                                {this.props.results.map(result => (
+                                    <Link to={'/profile/' + result.id}>
+                                        <ListItem alignItems="flex-start">
+                                            <ListItemAvatar>
+                                                <Avatar alt={result.userName} src={'http://graph.facebook.com/' + result.id + '/picture?type=large'} />
+                                            </ListItemAvatar>
+                                            <ListItemText primary={result.userName} />
+                                        </ListItem>
+                                        <Divider variant="inset" component="li" />
+                                    </Link>
+                                ))}
+                            </List>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            );
+        }
     }
 }
 

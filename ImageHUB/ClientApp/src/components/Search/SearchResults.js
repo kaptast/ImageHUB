@@ -23,6 +23,14 @@ const styles = theme => ({
     inline: {
         display: 'inline',
     },
+    link: {
+        textDecoration: 'none',
+        color: 'black',
+        '&:focus, &:hover, &:visited, &:link, &:active':{
+            textDecoration: 'none',
+            color: 'black'
+        }
+    },
 });
 
 
@@ -60,7 +68,7 @@ class SearchResults extends React.Component {
                         <Paper className={classes.root}>
                             <List>
                                 {this.props.results.map(result => (
-                                    <Link to={'/profile/' + result.id}>
+                                    <Link to={'/profile/' + result.id} className={classes.link}>
                                         <ListItem alignItems="flex-start">
                                             <ListItemAvatar>
                                                 <Avatar alt={result.userName} src={'http://graph.facebook.com/' + result.id + '/picture?type=large'} />

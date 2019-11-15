@@ -26,5 +26,7 @@ namespace ImageHUB.Repositories
         public string FriendID { get; set; }
         public Profile Friend { get; set; }
 
+        public bool Accepted { get; set; }
+
     }
 }

@@ -8,7 +8,8 @@ namespace ImageHUB.Repositories
     public class Profile
     {
         public IEnumerable<Post> Posts { get; set; }
-        public IEnumerable<Profile> Friends { get; set; }
+        public ICollection<ProfileFriend> FriendsTo { get; set; }
+        public ICollection<ProfileFriend> FriendsWith { get; set; }
 
         public string ID {get; set;}
         public string UserName { get; set; }
@@ -16,5 +17,14 @@ namespace ImageHUB.Repositories
         public string Avatar { get; set; }
 
         public string Email { get; set; }
+    }
+
+    public class ProfileFriend
+    {
+        public string ProfileID { get; set; }
+        public Profile Profile { get; set; }
+        public string FriendID { get; set; }
+        public Profile Friend { get; set; }
+
     }
 }

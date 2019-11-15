@@ -54,7 +54,7 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Profile> GetProfilesByName(string name)
         {
-            return this.Profiles.Where(x => x.UserName.Contains(name)).ToList();
+            return this.Profiles.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

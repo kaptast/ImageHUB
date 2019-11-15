@@ -7,6 +7,7 @@ const defaultProfile = {
   name: "",
   index: "asd",
   posts: [],
+  showFriendButton: false,
 }
 
 const initialState = { profile: defaultProfile, isLoading: false };

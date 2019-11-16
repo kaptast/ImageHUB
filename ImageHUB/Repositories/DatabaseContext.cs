@@ -10,9 +10,9 @@ namespace ImageHUB.Repositories
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; } 
 
-        public async Task<IEnumerable<Post>> GetAllPosts()
+        public async Task<IEnumerable<Post>> GetAllPosts(string userID)
         {
-            return await this.Posts.Include("Owner").OrderByDescending(p => p.ID).ToListAsync();
+            return await this.Posts.Include("Owner").Where(p => p.Owner.ID.Equals(userID) || this.GetFriends(userID).Contains(p.Owner)).OrderByDescending(p => p.ID).ToListAsync();
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)

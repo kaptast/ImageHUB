@@ -41,6 +41,10 @@ namespace ImageHUB.Controllers
 
         [HttpGet]
         [Authorize]
-        public IEnumerable<Repositories.Post> Get() => this.imageService.GetAllImageUrls(this.context);
+        public IEnumerable<Repositories.Post> Get()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return this.imageService.GetAllImageUrls(this.context, id);
+        }
     }
 }

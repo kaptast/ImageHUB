@@ -11,7 +11,7 @@ namespace ImageHUB.Services
     {
         Task SaveImageAsync(DatabaseContext context, IFormFile file, Profile owner);
 
-        IEnumerable<Post> GetAllImageUrls(DatabaseContext context);
+        IEnumerable<Post> GetAllImageUrls(DatabaseContext context, string userID);
 
         IEnumerable<Post> GetImageUrlsById(DatabaseContext context, string id);
     }

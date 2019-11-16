@@ -12,7 +12,7 @@ namespace ImageHUB.Repositories
 
         public async Task<IEnumerable<Post>> GetAllPosts(string userID)
         {
-            return await this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || this.GetFriends(userID).Contains(p.Owner)).OrderByDescending(p => p.ID).ToListAsync();
+            return await this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || this.GetFriends(userID, false).Contains(p.Owner)).OrderByDescending(p => p.ID).ToListAsync();
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)
@@ -35,11 +35,6 @@ namespace ImageHUB.Repositories
             return await this.Profiles.ToListAsync();
         }
 
-        public IEnumerable<Profile> GetFriendsByID(string id)
-        {
-            return this.Profiles.AsEnumerable();
-        }
-
         public Profile GetProfileByID(string id)
         {
             return this.Profiles.Where(p => p.ID.Equals(id)).Include(p => p.FriendsTo).ThenInclude(p => p.Friend).SingleOrDefault();
@@ -48,7 +43,6 @@ namespace ImageHUB.Repositories
         public void AddNewProfile(Profile profile)
         {
             this.Profiles.Add(profile);
-
             this.SaveChanges();
         }
 
@@ -57,21 +51,25 @@ namespace ImageHUB.Repositories
             return this.Profiles.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
         }
 
-        public IEnumerable<Profile> GetFriends(string userID)
+        public IEnumerable<Profile> GetFriends(string userID, bool selectPending = false)
         {
             var user = this.GetProfileByID(userID);
-            return user.FriendsTo.Select(x => x.Friend)?.ToList();
+            return user.FriendsTo.Where(p => p.Accepted || selectPending).Select(x => x.Friend)?.ToList();
+        }
+
+        public ProfileFriend GetFriendShip(string userID, string friendID)
+        {
+            var user = this.GetProfileByID(userID);
+            return user.FriendsTo.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
         }
 
         public void AddFriend(string userID, string friendID)
         {
             var friendProfile = this.GetProfileByID(friendID);
-
             var user = this.GetProfileByID(userID);
             var p2f = new ProfileFriend();
             p2f.Profile = user;
             p2f.Friend = friendProfile;
-
             user.FriendsTo.Add(p2f);
 
             this.SaveChanges();

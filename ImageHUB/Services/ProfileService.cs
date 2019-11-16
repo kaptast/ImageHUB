@@ -49,15 +49,22 @@ namespace ImageHUB.Services
 
         public void AddFriend(DatabaseContext context, string userID, string friendID)
         {
-            if (!this.IsFriendsWith(context, userID, friendID))
+            if (this.IsFriendsWith(context, userID, friendID) == FriendStatus.NotFriends)
             {
                 context.AddFriend(userID, friendID);
             }
         }
 
-        public bool IsFriendsWith(DatabaseContext context, string userID, string friendID)
+        public FriendStatus IsFriendsWith(DatabaseContext context, string userID, string friendID)
         {
-            return context.GetFriends(userID).Where(f => f.ID.Equals(friendID)).Count() > 0;
+            var friendShip = context.GetFriendShip(userID, friendID);
+            
+            if (friendID != null)
+            {
+                return friendShip.Accepted ? FriendStatus.Friends : FriendStatus.Pending;
+            }
+
+            return FriendStatus.NotFriends;
         }
     }
 }

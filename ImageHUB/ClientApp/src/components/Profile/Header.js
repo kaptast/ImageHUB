@@ -23,9 +23,12 @@ const useStyles = makeStyles({
 
 function handleClick(id) {
     let url = `api/friend/AddFriend?id=${id}`;
-    console.log(url);
     axios.post(url);
-    console.log(url);
+}
+
+function acceptClick(id) {
+    let url = `api/friend/AcceptFriend?id=${id}`;
+    axios.post(url);
 }
 
 export default function Header(props) {
@@ -60,6 +63,16 @@ export default function Header(props) {
                         {props.profile.showFriendButton && (
                             <Grid item xs={4}>
                                 <Button variant="outlined" onClick={() => handleClick(props.profile.id)}>Add Friend</Button>
+                            </Grid>
+                        )}
+                        {props.profile.status == 1 && (
+                            <Grid item xs={4}>
+                                <Button variant="outlined" disabled>Pending</Button>
+                            </Grid>
+                        )}
+                        {props.profile.status == 3 && (
+                            <Grid item xs={4}>
+                                <Button variant="outlined" onClick={() => acceptClick(props.profile.id)}>Accept friend</Button>
                             </Grid>
                         )}
                     </Grid>

@@ -25,7 +25,15 @@ namespace ImageHUB.Repositories
         public bool ShowFriendButton { get; set; }
 
         [NotMapped]
-        public bool IsFriend { get; set; }
+        public FriendStatus Status { get; set; }
+    }
+
+    public enum FriendStatus
+    {
+        NotFriends = 0,
+        Pending = 1,
+        Friends = 2,
+        Waiting = 3
     }
 
     public class ProfileFriend

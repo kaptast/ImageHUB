@@ -6,9 +6,9 @@ const initialState = { homePosts: [], isLoading: false };
 
 export const actionCreators = {
   requestHomePosts: index => async (dispatch, getState) => {
-    if (index === getState().homePosts.index) {
+    /*if (index === getState().homePosts.index) {
       return;
-    }
+    }*/
 
     dispatch({ type: requestHomePostsType, index });
 

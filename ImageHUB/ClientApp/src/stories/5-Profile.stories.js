@@ -10,6 +10,7 @@ const profile = {
   avatar: "https://i.imgur.com/jp5z1s0.jpg",
   userName: "Gipsz Jakab",
   friends: 15,
+  id: 123123132,
   posts: [
     {
       image: "https://i.imgur.com/jp5z1s0.jpg",
@@ -46,13 +47,15 @@ const profile = {
       title: "single image",
       show: true
     }
-  ]
+  ],
+  showFriendButton: true,
 }
 
 const profile2 = {
   avatar: "https://i.imgur.com/jp5z1s0.jpg",
   userName: "Gipsz Jakab",
   friends: 1,
+  id: 123123132,
   posts: [
     {
       image: "https://i.imgur.com/jp5z1s0.jpg",
@@ -61,7 +64,8 @@ const profile2 = {
       title: "single image",
       show: true
     }
-  ]
+  ],
+  showFriendButton: false,
 }
 
 export const ProfileHeader = () => (

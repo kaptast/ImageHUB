@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Typography, Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
 
 const useStyles = makeStyles({
     container: {
@@ -20,6 +21,13 @@ const useStyles = makeStyles({
     },
 });
 
+function handleClick(id) {
+    let url = `api/friend/AddFriend?id=${id}`;
+    console.log(url);
+    axios.post(url);
+    console.log(url);
+}
+
 export default function Header(props) {
     const classes = useStyles();
 
@@ -28,7 +36,7 @@ export default function Header(props) {
     let friends = "friends";//props.value.friends == 1 ? "friend" : "friends";
     let posts = props.profile.posts.length === 1 ? "post" : "posts";
 
-    const avatar = 'http://graph.facebook.com/'+ props.profile.avatar +'/picture?type=large';
+    const avatar = 'http://graph.facebook.com/' + props.profile.avatar + '/picture?type=large';
 
     return (
         <div className={classes.container}>
@@ -49,13 +57,14 @@ export default function Header(props) {
                                 <Typography variant="subtitle1"><strong>{props.profile.posts.length}</strong> {posts}</Typography>
                             </Grid>
                         </Grid>
+                        {props.profile.showFriendButton && (
+                            <Grid item xs={4}>
+                                <Button variant="outlined" onClick={() => handleClick(props.profile.id)}>Add Friend</Button>
+                            </Grid>
+                        )}
                     </Grid>
                 </Grid>
-                {props.profile.showFriendButton && (
-                    <Grid item xs={4}>
-                        <Button>Add Friend!</Button>
-                    </Grid>
-                )}
+
             </Grid>
         </div >
     );

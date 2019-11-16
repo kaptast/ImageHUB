@@ -42,7 +42,7 @@ namespace ImageHUB.Repositories
 
         public Profile GetProfileByID(string id)
         {
-            return this.Profiles.Where(p => p.ID.Equals(id)).SingleOrDefault();
+            return this.Profiles.Where(p => p.ID.Equals(id)).Include(p => p.FriendsTo).ThenInclude(p => p.Friend).SingleOrDefault();
         }
 
         public void AddNewProfile(Profile profile)
@@ -59,8 +59,8 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Profile> GetFriends(string userID)
         {
-            var result = this.Profiles.Include(p => p.FriendsWith).ThenInclude(p => p.Friend);
-            return result.Where(p => p.ID.Equals(userID));
+            var user = this.GetProfileByID(userID);
+            return user.FriendsTo.Select(x => x.Friend)?.ToList();
         }
 
         public void AddFriend(string userID, string friendID)
@@ -68,7 +68,11 @@ namespace ImageHUB.Repositories
             var friendProfile = this.GetProfileByID(friendID);
 
             var user = this.GetProfileByID(userID);
-            user.FriendsWith.Add(new ProfileFriend { Profile = user, Friend = friendProfile, Accepted = false });
+            var p2f = new ProfileFriend();
+            p2f.Profile = user;
+            p2f.Friend = friendProfile;
+
+            user.FriendsTo.Add(p2f);
 
             this.SaveChanges();
         }

@@ -31,5 +31,14 @@ namespace ImageHUB.Controllers
 
             this.profileService.AddFriend(this.context, userId, id);
         }
+
+        [HttpPost]
+        [Route("AcceptFriend")]
+        public void AcceptFriend(string id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            this.profileService.AcceptFriend(this.context, userId, id);
+        }
     }
 }

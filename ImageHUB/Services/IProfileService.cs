@@ -17,6 +17,8 @@ namespace ImageHUB.Services
 
         void AddFriend(DatabaseContext context, string userID, string friendID);
 
+        void AcceptFriend(DatabaseContext context, string userID, string friendID);
+
         FriendStatus IsFriendsWith(DatabaseContext context, string userID, string friendID);
     }
 }

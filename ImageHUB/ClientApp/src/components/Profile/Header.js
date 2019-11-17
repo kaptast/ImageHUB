@@ -36,7 +36,7 @@ export default function Header(props) {
 
     console.log(props);
 
-    let friends = "friends";//props.value.friends == 1 ? "friend" : "friends";
+    let friends = props.profile.friends.length == 1 ? "friend" : "friends";
     let posts = props.profile.posts.length === 1 ? "post" : "posts";
 
     const avatar = 'http://graph.facebook.com/' + props.profile.avatar + '/picture?type=large';
@@ -54,7 +54,7 @@ export default function Header(props) {
                         </Grid>
                         <Grid item container spacing={1}>
                             <Grid item>
-                                <Typography variant="subtitle1"><strong>{0/*props.value.friends*/}</strong> {friends}</Typography>
+                                <Typography variant="subtitle1"><strong>{props.profile.friends.length}</strong> {friends}</Typography>
                             </Grid>
                             <Grid item>
                                 <Typography variant="subtitle1"><strong>{props.profile.posts.length}</strong> {posts}</Typography>

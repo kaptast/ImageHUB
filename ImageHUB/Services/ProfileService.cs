@@ -21,6 +21,7 @@ namespace ImageHUB.Services
             if (profile != null)
             {
                 profile.Posts = this.imageService.GetImageUrlsById(context, profile.ID);
+                profile.Friends = context.GetFriends(profile.ID);
             }
             else
             {
@@ -55,13 +56,38 @@ namespace ImageHUB.Services
             }
         }
 
+        public void AcceptFriend(DatabaseContext context, string userID, string friendID)
+        {
+            var friendShip = context.GetFriendShip(userID, friendID);
+
+            if (friendShip == null)
+            {
+                friendShip = context.GetFriendShip(friendID, userID);
+            }
+
+            if (friendShip == null) return;
+
+            friendShip.Accepted = true;
+            context.Update(friendShip);
+            context.SaveChanges();
+        }
+
         public FriendStatus IsFriendsWith(DatabaseContext context, string userID, string friendID)
         {
             var friendShip = context.GetFriendShip(userID, friendID);
             
-            if (friendID != null)
+            if (friendShip != null)
             {
                 return friendShip.Accepted ? FriendStatus.Friends : FriendStatus.Pending;
+            }
+            else
+            {
+                friendShip = context.GetFriendShip(friendID, userID);
+
+                if (friendShip != null)
+                {
+                    return friendShip.Accepted ? FriendStatus.Friends : FriendStatus.Waiting;
+                }
             }
 
             return FriendStatus.NotFriends;

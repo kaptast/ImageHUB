@@ -22,6 +22,9 @@ namespace ImageHUB.Repositories
         public string Email { get; set; }
 
         [NotMapped]
+        public IEnumerable<Profile> Friends { get; set; }
+
+        [NotMapped]
         public bool ShowFriendButton { get; set; }
 
         [NotMapped]

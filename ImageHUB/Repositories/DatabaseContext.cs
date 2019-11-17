@@ -12,7 +12,8 @@ namespace ImageHUB.Repositories
 
         public async Task<IEnumerable<Post>> GetAllPosts(string userID)
         {
-            return await this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || this.GetFriends(userID, false).Contains(p.Owner)).OrderByDescending(p => p.ID).ToListAsync();
+            var friends = this.GetFriends(userID, false);
+            return await this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || friends.Contains(p.Owner)).OrderByDescending(p => p.ID).ToListAsync();
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)
@@ -37,7 +38,7 @@ namespace ImageHUB.Repositories
 
         public Profile GetProfileByID(string id)
         {
-            return this.Profiles.Where(p => p.ID.Equals(id)).Include(p => p.FriendsTo).ThenInclude(p => p.Friend).SingleOrDefault();
+            return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
         }
 
         public void AddNewProfile(Profile profile)
@@ -54,7 +55,10 @@ namespace ImageHUB.Repositories
         public IEnumerable<Profile> GetFriends(string userID, bool selectPending = false)
         {
             var user = this.GetProfileByID(userID);
-            return user.FriendsTo.Where(p => p.Accepted || selectPending).Select(x => x.Friend)?.ToList();
+            var friendsTo = user.FriendsTo?.Where(p => p.Accepted || selectPending).Select(x => x.Friend)?.ToList();
+            var friendsWith = user.FriendsWith?.Where(p => p.Accepted || selectPending).Select(x => x.Profile)?.ToList();
+            var friends = friendsTo.Concat(friendsWith);
+            return friends;
         }
 
         public ProfileFriend GetFriendShip(string userID, string friendID)

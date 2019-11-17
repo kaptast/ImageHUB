@@ -25,6 +25,13 @@ namespace ImageHUB.Services
             }
 
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), this.configuration["Image.SavePath"], file.FileName);
+
+            var path = Path.GetDirectoryName(pathToSave);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             using (var fileStream = new FileStream(pathToSave, FileMode.Create))
             {
                await file.CopyToAsync(fileStream);

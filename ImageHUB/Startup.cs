@@ -40,7 +40,7 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddDbContext<DatabaseContext>();
+            services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();

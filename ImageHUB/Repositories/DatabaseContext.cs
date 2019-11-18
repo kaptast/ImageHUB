@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImageHUB.Repositories
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext, IDatabaseContext
     {
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; }
@@ -132,6 +132,12 @@ namespace ImageHUB.Repositories
             modelBuilder.Entity<ProfileFriend>().HasKey(bc => new { bc.ProfileID, bc.FriendID });
             modelBuilder.Entity<ProfileFriend>().HasOne(bc => bc.Profile).WithMany(b => b.FriendsTo).HasForeignKey(bc => bc.ProfileID);
             modelBuilder.Entity<ProfileFriend>().HasOne(bc => bc.Friend).WithMany(c => c.FriendsWith).HasForeignKey(bc => bc.FriendID);
+        }
+
+        public void UpdateFriendShip(ProfileFriend friendship)
+        {
+            this.Update(friendship);
+            this.SaveChanges();
         }
     }
 }

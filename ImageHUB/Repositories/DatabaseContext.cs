@@ -12,6 +12,12 @@ namespace ImageHUB.Repositories
 
         private object lockObject = new object();
 
+        public DatabaseContext()
+            : base()
+        {
+            Database.Migrate();
+        }
+
         public IEnumerable<Post> GetAllPosts(string userID)
         {
             lock (lockObject)
@@ -125,7 +131,7 @@ namespace ImageHUB.Repositories
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=imgHub.db");
+            => options.UseSqlite("Data Source=database/imgHub.db");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

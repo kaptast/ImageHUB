@@ -12,14 +12,6 @@ namespace ImageHUB.Repositories
 
         private object lockObject = new object();
 
-        public DatabaseContext()
-        {
-            lock (lockObject)
-            {
-                Database.Migrate();
-            }
-        }
-
         public IEnumerable<Post> GetAllPosts(string userID)
         {
             lock (lockObject)

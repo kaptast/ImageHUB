@@ -34,12 +34,6 @@ namespace ImageHUB
 
             services.AddDirectoryBrowser();
 
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
-
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();
@@ -51,21 +45,26 @@ namespace ImageHUB
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddFacebook(options=>
+            })
+            .AddFacebook(options =>
             {
                 options.AppId = "392909324720070";
                 options.AppSecret = "7a4ebaea0b2885e714b540bb16e0de2c";
-            }).AddCookie(options=>
-            options.Events.OnRedirectToLogin = context=>
+            })
+            .AddCookie(options =>
             {
-                context.Response.StatusCode = 401;
-                return Task.CompletedTask;
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
             });
 
-
-            // repository missing 
-          //  services.AddHttpClient<IRepository<Image>, ImageRepository>();
-
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,9 +97,9 @@ namespace ImageHUB
 
             app.UseSpaStaticFiles();
             app.UseAuthentication();
-            app.UseMvc(routes =>
+            app.UseMvc(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });

@@ -10,90 +10,122 @@ namespace ImageHUB.Repositories
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; }
 
+        private object lockObject = new object();
+
         public DatabaseContext()
         {
             Database.Migrate();
         }
 
-        public async Task<IEnumerable<Post>> GetAllPosts(string userID)
+        public IEnumerable<Post> GetAllPosts(string userID)
         {
-            var friends = this.GetFriends(userID, false);
-            return await this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || friends.Contains(p.Owner)).OrderByDescending(p => p.ID).ToListAsync();
+            lock (lockObject)
+            {
+                var friends = this.GetFriends(userID, false);
+                return this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || friends.Contains(p.Owner)).OrderByDescending(p => p.ID).ToList();
+            }
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)
         {
-            return this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
+            lock (lockObject)
+            {
+                return this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
+            }
         }
 
         public void SaveImage(string path, Profile owner)
         {
-            using (var transaction = this.Database.BeginTransaction())
+            lock (lockObject)
             {
-                this.Posts.Add(new Post()
+                using (var transaction = this.Database.BeginTransaction())
                 {
-                    Image = path,
-                    Owner = owner
-                });
+                    this.Posts.Add(new Post()
+                    {
+                        Image = path,
+                        Owner = owner
+                    });
 
-                this.SaveChanges();
-                transaction.Commit();
+                    this.SaveChanges();
+                    transaction.Commit();
+                }
             }
         }
 
-        public async Task<IEnumerable<Profile>> GetProfiles()
+        public IEnumerable<Profile> GetProfiles()
         {
-            return await this.Profiles.ToListAsync();
+            lock (lockObject)
+            {
+                return this.Profiles.ToList();
+            }
         }
 
         public Profile GetProfileByID(string id)
         {
-            return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
+            lock (lockObject)
+            {
+                return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
+            }
         }
 
         public void AddNewProfile(Profile profile)
         {
-            using (var transaction = this.Database.BeginTransaction())
+            lock (lockObject)
             {
-                this.Profiles.Add(profile);
-                this.SaveChanges();
-                transaction.Commit();
+                using (var transaction = this.Database.BeginTransaction())
+                {
+                    this.Profiles.Add(profile);
+                    this.SaveChanges();
+                    transaction.Commit();
+                }
             }
         }
 
         public IEnumerable<Profile> GetProfilesByName(string name)
         {
-            return this.Profiles.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
+            lock (lockObject)
+            {
+                return this.Profiles.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
+            }
         }
 
         public IEnumerable<Profile> GetFriends(string userID, bool selectPending = false)
         {
-            var user = this.GetProfileByID(userID);
-            var friendsTo = user.FriendsTo?.Where(p => p.Accepted || selectPending).Select(x => x.Friend)?.ToList();
-            var friendsWith = user.FriendsWith?.Where(p => p.Accepted || selectPending).Select(x => x.Profile)?.ToList();
-            var friends = friendsTo.Concat(friendsWith);
-            return friends;
+            lock (lockObject)
+            {
+                var user = this.GetProfileByID(userID);
+                var friendsTo = user.FriendsTo?.Where(p => p.Accepted || selectPending).Select(x => x.Friend)?.ToList();
+                var friendsWith = user.FriendsWith?.Where(p => p.Accepted || selectPending).Select(x => x.Profile)?.ToList();
+                var friends = friendsTo.Concat(friendsWith);
+                return friends;
+            }
         }
 
         public ProfileFriend GetFriendShip(string userID, string friendID)
         {
-            var user = this.GetProfileByID(userID);
-            return user.FriendsTo.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
+            lock (lockObject)
+            {
+                var user = this.GetProfileByID(userID);
+                return user.FriendsTo.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
+            }
         }
 
         public void AddFriend(string userID, string friendID)
         {
-            using (var transaction = this.Database.BeginTransaction())
+            lock (lockObject)
             {
-                var friendProfile = this.GetProfileByID(friendID);
-                var user = this.GetProfileByID(userID);
-                var p2f = new ProfileFriend();
-                p2f.Profile = user;
-                p2f.Friend = friendProfile;
-                user.FriendsTo.Add(p2f);
+                using (var transaction = this.Database.BeginTransaction())
+                {
+                    var friendProfile = this.GetProfileByID(friendID);
+                    var user = this.GetProfileByID(userID);
+                    var p2f = new ProfileFriend();
+                    p2f.Profile = user;
+                    p2f.Friend = friendProfile;
+                    user.FriendsTo.Add(p2f);
 
-                this.SaveChanges();
-                transaction.Commit();
+                    this.SaveChanges();
+                    transaction.Commit();
+                }
             }
         }
 

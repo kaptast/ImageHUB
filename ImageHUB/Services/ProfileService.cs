@@ -40,7 +40,7 @@ namespace ImageHUB.Services
 
         public IEnumerable<Profile> GetAll(DatabaseContext context)
         {
-            return context.GetProfiles().Result;
+            return context.GetProfiles();
         }
 
         public IEnumerable<Profile> GetAllByName(DatabaseContext context, string name)

@@ -25,7 +25,7 @@ export default function Feed(props) {
                     ))
                     ) : (
                         <Grid item xs={12}>
-                            <Skeleton variant="rect" width={800} height={800} />;
+                            <Skeleton variant="rect" width={800} height={800} />
                         </Grid>
                     )}
             </Grid>

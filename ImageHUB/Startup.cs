@@ -48,8 +48,8 @@ namespace ImageHUB
             })
             .AddFacebook(options =>
             {
-                options.AppId = "392909324720070";
-                options.AppSecret = "7a4ebaea0b2885e714b540bb16e0de2c";
+                options.AppId = this.Configuration["Facebook:AppId"];
+                options.AppSecret = this.Configuration["Facebook:Secret"];
             })
             .AddCookie(options =>
             {
@@ -82,7 +82,7 @@ namespace ImageHUB
 
             app.UseHttpsRedirection();
 
-            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["Image.SavePath"]));
+            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = pfp,

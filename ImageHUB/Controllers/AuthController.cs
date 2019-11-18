@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using ImageHUB.Repositories;
 using ImageHUB.Services;
@@ -25,18 +22,19 @@ namespace ImageHUB.Controllers
 
         [Route("isloggedin")]
         [Authorize]
-        public Profile IsLoggedIn()
+        public string IsLoggedIn()
         {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            /*var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var username = User.FindFirstValue(ClaimTypes.Name);
 
             var user = this.profileService.GetProfileByID(id, username);
 
-            return user;
+            return user;*/
+            return HttpContext.User.Identity.Name;
         }
 
         [Route("signin")]
-        public IActionResult SingInWithFacebook()
+        public IActionResult SignInWithFacebook()
         {
             var redirectUrl = Url.Action(nameof(AuthController.SignInCallback), "Auth", new { returnUrl = "/" });
             return Challenge(new AuthenticationProperties { RedirectUri = redirectUrl }, FacebookDefaults.AuthenticationScheme);
@@ -46,8 +44,8 @@ namespace ImageHUB.Controllers
         [HttpGet]
         public async Task<IActionResult> SignInCallback(string returnUrl)
         {
-            var authencticateResult = await HttpContext.AuthenticateAsync();
-            await HttpContext.SignInAsync(authencticateResult.Ticket.Principal);
+            var authenticateResult = await HttpContext.AuthenticateAsync();
+            await HttpContext.SignInAsync(authenticateResult.Ticket.Principal);
             return this.LocalRedirect(returnUrl);
         }
 

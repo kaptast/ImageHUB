@@ -22,7 +22,7 @@ namespace ImageHUB.Services
             context.SaveImage(Path.Combine("img", file.FileName), owner);
         }
 
-        public IEnumerable<Post> GetAllImageUrls(DatabaseContext context, string userID) => context.GetAllPosts(userID).Result;
+        public IEnumerable<Post> GetAllImageUrls(DatabaseContext context, string userID) => context.GetAllPosts(userID);
 
         public IEnumerable<Post> GetImageUrlsById(DatabaseContext context, string id) => context.GetPostByUserID(id);
 

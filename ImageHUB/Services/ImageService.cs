@@ -19,7 +19,7 @@ namespace ImageHUB.Services
         public async Task SaveImageAsync(DatabaseContext context, IFormFile file, Profile owner)
         {
             await this.imageStorage.StoreAsync(file);
-            context.SaveImage(Path.Combine("images", file.FileName), owner);
+            context.SaveImage(Path.Combine("img", file.FileName), owner);
         }
 
         public IEnumerable<Post> GetAllImageUrls(DatabaseContext context, string userID) => context.GetAllPosts(userID).Result;

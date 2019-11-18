@@ -98,10 +98,6 @@ namespace ImageHUB
 
             app.UseSpaStaticFiles();
             app.UseAuthentication();
-
-
-            app.UseHttpsRedirection();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

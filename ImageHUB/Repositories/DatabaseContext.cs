@@ -10,6 +10,10 @@ namespace ImageHUB.Repositories
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; } 
 
+        public DatabaseContext(){
+            Database.Migrate();
+        }
+
         public async Task<IEnumerable<Post>> GetAllPosts(string userID)
         {
             var friends = this.GetFriends(userID, false);

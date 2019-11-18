@@ -94,10 +94,8 @@ namespace ImageHUB.Repositories
 
         public ProfileFriend GetFriendShip(string userID, string friendID)
         {
-
                 var user = this.GetProfileByID(userID);
-                return user.FriendsTo.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
-
+                return user.FriendsTo?.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
         }
 
         public void AddFriend(string userID, string friendID)

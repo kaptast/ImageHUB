@@ -50,15 +50,7 @@ namespace ImageHUB
             {
                 options.AppId = this.Configuration["Facebook:AppId"];
                 options.AppSecret = this.Configuration["Facebook:Secret"];
-            })
-            .AddCookie(options =>
-            {
-                options.Events.OnRedirectToLogin = context =>
-                {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-            });
+            }).AddCookie();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -8,9 +8,10 @@ namespace ImageHUB.Repositories
     public class DatabaseContext : DbContext
     {
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Profile> Profiles { get; set; } 
+        public DbSet<Profile> Profiles { get; set; }
 
-        public DatabaseContext(){
+        public DatabaseContext()
+        {
             Database.Migrate();
         }
 
@@ -27,12 +28,17 @@ namespace ImageHUB.Repositories
 
         public void SaveImage(string path, Profile owner)
         {
-            this.Posts.Add(new Post(){
-                Image = path,
-                Owner = owner
-            });
+            using (var transaction = this.Database.BeginTransaction())
+            {
+                this.Posts.Add(new Post()
+                {
+                    Image = path,
+                    Owner = owner
+                });
 
-            this.SaveChanges();
+                this.SaveChanges();
+                transaction.Commit();
+            }
         }
 
         public async Task<IEnumerable<Profile>> GetProfiles()
@@ -47,8 +53,12 @@ namespace ImageHUB.Repositories
 
         public void AddNewProfile(Profile profile)
         {
-            this.Profiles.Add(profile);
-            this.SaveChanges();
+            using (var transaction = this.Database.BeginTransaction())
+            {
+                this.Profiles.Add(profile);
+                this.SaveChanges();
+                transaction.Commit();
+            }
         }
 
         public IEnumerable<Profile> GetProfilesByName(string name)
@@ -73,14 +83,18 @@ namespace ImageHUB.Repositories
 
         public void AddFriend(string userID, string friendID)
         {
-            var friendProfile = this.GetProfileByID(friendID);
-            var user = this.GetProfileByID(userID);
-            var p2f = new ProfileFriend();
-            p2f.Profile = user;
-            p2f.Friend = friendProfile;
-            user.FriendsTo.Add(p2f);
+            using (var transaction = this.Database.BeginTransaction())
+            {
+                var friendProfile = this.GetProfileByID(friendID);
+                var user = this.GetProfileByID(userID);
+                var p2f = new ProfileFriend();
+                p2f.Profile = user;
+                p2f.Friend = friendProfile;
+                user.FriendsTo.Add(p2f);
 
-            this.SaveChanges();
+                this.SaveChanges();
+                transaction.Commit();
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

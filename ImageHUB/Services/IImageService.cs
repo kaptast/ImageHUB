@@ -9,10 +9,10 @@ namespace ImageHUB.Services
 {
     public interface IImageService
     {
-        Task SaveImageAsync(DatabaseContext context, IFormFile file, Profile owner);
+        Task SaveImageAsync(IFormFile file, Profile owner);
 
-        IEnumerable<Post> GetAllImageUrls(DatabaseContext context, string userID);
+        IEnumerable<Post> GetAllImageUrls(string userID);
 
-        IEnumerable<Post> GetImageUrlsById(DatabaseContext context, string id);
+        IEnumerable<Post> GetImageUrlsById(string id);
     }
 }

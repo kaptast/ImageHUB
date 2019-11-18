@@ -41,7 +41,7 @@ namespace ImageHUB
             });
 
             services.AddDbContext<DatabaseContext>();
-
+            services.AddSingleton<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IProfileService, ProfileService>();

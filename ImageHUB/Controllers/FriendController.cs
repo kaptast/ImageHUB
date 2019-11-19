@@ -15,12 +15,10 @@ namespace ImageHUB.Controllers
     public class FriendController : ControllerBase
     {
         private readonly IProfileService profileService;
-        private DatabaseContext context;
 
-        public FriendController(IProfileService profileService, DatabaseContext context)
+        public FriendController(IProfileService profileService)
         {
             this.profileService = profileService;
-            this.context = context;
         }
 
         [HttpPost]
@@ -29,7 +27,7 @@ namespace ImageHUB.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            this.profileService.AddFriend(this.context, userId, id);
+            this.profileService.AddFriend(userId, id);
         }
 
         [HttpPost]
@@ -38,7 +36,7 @@ namespace ImageHUB.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            this.profileService.AcceptFriend(this.context, userId, id);
+            this.profileService.AcceptFriend(userId, id);
         }
     }
 }

@@ -14,7 +14,10 @@ namespace ImageHUB.Repositories
 
         public DatabaseContext()
         {
-            Database.Migrate();
+            lock (lockObject)
+            {
+                Database.Migrate();
+            }
         }
 
         public IEnumerable<Post> GetAllPosts(string userID)

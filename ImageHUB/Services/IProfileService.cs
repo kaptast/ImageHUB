@@ -9,16 +9,16 @@ namespace ImageHUB.Services
 {
     public interface IProfileService
     {
-        Profile GetProfileByID(DatabaseContext context, string id, string userName);
+        Profile GetProfileByID(string id, string userName);
 
-        IEnumerable<Profile> GetAll(DatabaseContext context);
+        IEnumerable<Profile> GetAll();
 
-        IEnumerable<Profile> GetAllByName(DatabaseContext context, string name);
+        IEnumerable<Profile> GetAllByName(string name);
 
-        void AddFriend(DatabaseContext context, string userID, string friendID);
+        void AddFriend(string userID, string friendID);
 
-        void AcceptFriend(DatabaseContext context, string userID, string friendID);
+        void AcceptFriend(string userID, string friendID);
 
-        FriendStatus IsFriendsWith(DatabaseContext context, string userID, string friendID);
+        FriendStatus IsFriendsWith(string userID, string friendID);
     }
 }

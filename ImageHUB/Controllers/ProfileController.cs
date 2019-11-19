@@ -16,12 +16,10 @@ namespace ImageHUB.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService profileService;
-        private DatabaseContext context;
 
-        public ProfileController(IProfileService profileService, DatabaseContext context)
+        public ProfileController(IProfileService profileService)
         {
             this.profileService = profileService;
-            this.context = context;
         }
 
         [HttpGet]
@@ -31,7 +29,7 @@ namespace ImageHUB.Controllers
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string email = User.FindFirstValue(ClaimTypes.Email);
 
-            var profile = this.profileService.GetProfileByID(this.context, id, userName);
+            var profile = this.profileService.GetProfileByID(id, userName);
             profile.Avatar = id;
             profile.Email = email;
 
@@ -51,7 +49,7 @@ namespace ImageHUB.Controllers
 
             string userName = User.FindFirstValue(ClaimTypes.Name);
 
-            var profile = this.profileService.GetProfileByID(this.context, id, userName);
+            var profile = this.profileService.GetProfileByID(id, userName);
             profile.Avatar = id;
 
             if (profile.ID.Equals(userID))
@@ -60,7 +58,7 @@ namespace ImageHUB.Controllers
                 profile.Status = FriendStatus.NotFriends;
             } else
             {
-                profile.Status = this.profileService.IsFriendsWith(this.context, userID, profile.ID);
+                profile.Status = this.profileService.IsFriendsWith(userID, profile.ID);
                 profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
             }
 
@@ -71,14 +69,14 @@ namespace ImageHUB.Controllers
         [Route("GetAll")]
         public IEnumerable<Repositories.Profile> GetAll()
         {
-            return this.profileService.GetAll(this.context);
+            return this.profileService.GetAll();
         }
 
         [HttpGet]
         [Route("GetAllByName")]
         public IEnumerable<Repositories.Profile> GetAllByName(string name)
         {
-            return this.profileService.GetAllByName(this.context, name);
+            return this.profileService.GetAllByName(name);
         }
     }
 }

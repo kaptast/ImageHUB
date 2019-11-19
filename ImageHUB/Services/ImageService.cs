@@ -11,20 +11,22 @@ namespace ImageHUB.Services
     public class ImageService : IImageService
     {
         private readonly IImageStorage imageStorage;
+        private readonly IRepository repository;
 
-        public ImageService(IImageStorage imageStorage)
+        public ImageService(IImageStorage imageStorage, IRepository repo)
         {
             this.imageStorage = imageStorage;
+            this.repository = repo;
         }
-        public async Task SaveImageAsync(DatabaseContext context, IFormFile file, Profile owner)
+        public async Task SaveImageAsync(IFormFile file, Profile owner)
         {
             await this.imageStorage.StoreAsync(file);
-            context.SaveImage(Path.Combine("img", file.FileName), owner);
+            repository.SaveImage(Path.Combine("img", file.FileName), owner);
         }
 
-        public IEnumerable<Post> GetAllImageUrls(DatabaseContext context, string userID) => context.GetAllPosts(userID);
+        public IEnumerable<Post> GetAllImageUrls(string userID) => repository.GetAllPosts(userID);
 
-        public IEnumerable<Post> GetImageUrlsById(DatabaseContext context, string id) => context.GetPostByUserID(id);
+        public IEnumerable<Post> GetImageUrlsById(string id) => repository.GetPostByUserID(id);
 
     }
 }

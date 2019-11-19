@@ -18,12 +18,9 @@ namespace ImageHUB.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IProfileService profileService;
-        private DatabaseContext context;
-
-        public AuthController(IProfileService profileService, DatabaseContext context)
+        public AuthController(IProfileService profileService)
         {
             this.profileService = profileService;
-            this.context = context;
         }
 
         [Route("isloggedin")]
@@ -33,7 +30,7 @@ namespace ImageHUB.Controllers
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var username = User.FindFirstValue(ClaimTypes.Name);
 
-            var user = this.profileService.GetProfileByID(this.context, id, username);
+            var user = this.profileService.GetProfileByID(id, username);
 
             return user;
         }

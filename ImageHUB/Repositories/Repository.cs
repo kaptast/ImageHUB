@@ -9,8 +9,8 @@ namespace ImageHUB.Repositories
 {
     public class Repository : IRepository
     {
-        private DatabaseContext context;
-        public Repository(DatabaseContext context)
+        private IDatabaseContext context;
+        public Repository(IDatabaseContext context)
         {
             this.context = context;
         }
@@ -67,8 +67,7 @@ namespace ImageHUB.Repositories
 
         public void UpdateFriendShip(ProfileFriend friendShip)
         {
-            this.context.Update(friendShip);
-            this.context.SaveChanges();
+            this.context.UpdateFriendShip(friendShip);
         }
     }
 }

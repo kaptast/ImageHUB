@@ -34,13 +34,7 @@ namespace ImageHUB
 
             services.AddDirectoryBrowser();
 
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
-
-            services.AddDbContext<DatabaseContext>();
+            services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();
@@ -48,24 +42,21 @@ namespace ImageHUB
 
             services.AddAuthentication(options =>
             {
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddFacebook(options=>
+            })
+            .AddFacebook(options =>
             {
-                options.AppId = "392909324720070";
-                options.AppSecret = "7a4ebaea0b2885e714b540bb16e0de2c";
-            }).AddCookie(options=>
-            options.Events.OnRedirectToLogin = context=>
+                options.AppId = this.Configuration["Facebook:AppId"];
+                options.AppSecret = this.Configuration["Facebook:Secret"];
+            }).AddCookie();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
             {
-                context.Response.StatusCode = 401;
-                return Task.CompletedTask;
+                configuration.RootPath = "ClientApp/build";
             });
-
-
-            // repository missing 
-          //  services.AddHttpClient<IRepository<Image>, ImageRepository>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,7 +74,7 @@ namespace ImageHUB
 
             app.UseHttpsRedirection();
 
-            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["Image.SavePath"]));
+            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = pfp,
@@ -98,9 +89,9 @@ namespace ImageHUB
 
             app.UseSpaStaticFiles();
             app.UseAuthentication();
-            app.UseMvc(routes =>
+            app.UseMvc(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });

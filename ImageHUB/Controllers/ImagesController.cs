@@ -13,15 +13,18 @@ namespace ImageHUB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class ImagesController : ControllerBase
     {
         private readonly IImageService imageService;
         private readonly IProfileService profileService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ImagesController(IImageService imageService, IProfileService profileService)
+        public ImagesController(IImageService imageService, IProfileService profileService, IHttpContextAccessor httpContextAccessor)
         {
             this.imageService = imageService;
             this.profileService = profileService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -29,8 +32,8 @@ namespace ImageHUB.Controllers
         [Authorize]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string name = User.FindFirstValue(ClaimTypes.Name);
+            string name = HttpContext.User.Identity.Name;
+            string id = Hashes.ComputeSha256Hash(name);
 
             var owner = this.profileService.GetProfileByID(id, name);
 
@@ -43,7 +46,9 @@ namespace ImageHUB.Controllers
         [Authorize]
         public IEnumerable<Repositories.Post> Get()
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string name = HttpContext.User.Identity.Name;
+            string id = Hashes.ComputeSha256Hash(name);
+
             return this.imageService.GetAllImageUrls(id);
         }
     }

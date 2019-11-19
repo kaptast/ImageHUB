@@ -13,41 +13,46 @@ namespace ImageHUB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService profileService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ProfileController(IProfileService profileService)
+        public ProfileController(IProfileService profileService, IHttpContextAccessor httpContextAccessor)
         {
             this.profileService = profileService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
+        [Authorize]
         public Repositories.Profile Get()
         {
-            string userName = User.FindFirstValue(ClaimTypes.Name);
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string email = User.FindFirstValue(ClaimTypes.Email);
+            string userName = HttpContext.User.Identity.Name;
+            string id = Hashes.ComputeSha256Hash(userName);
+            //string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var profile = this.profileService.GetProfileByID(id, userName);
             profile.Avatar = id;
-            profile.Email = email;
 
             return profile;
         }
 
         [HttpGet]
         [Route("GetById")]
+        [Authorize]
         public Repositories.Profile GetById(string id)
         {
-            string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userName = HttpContext.User.Identity.Name;
+
+            //string userID = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userID = Hashes.ComputeSha256Hash(userName);
             if (id.Equals("0"))
             {
 
                 id = userID;
             }
-
-            string userName = User.FindFirstValue(ClaimTypes.Name);
 
             var profile = this.profileService.GetProfileByID(id, userName);
             profile.Avatar = id;

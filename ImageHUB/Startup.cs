@@ -3,6 +3,7 @@ using ImageHUB.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -28,14 +29,23 @@ namespace ImageHUB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDirectoryBrowser();
 
-            services.AddSingleton<IDatabaseContext, DatabaseContext>();
-            services.AddSingleton<IRepository, Repository>();
+            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
+            {
+                options.UseSqlite("Data Source=database/imgHub.db");
+            }, ServiceLifetime.Transient);
+
+            //services.AddSingleton<IDatabaseContext, DatabaseContext>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IProfileService, ProfileService>();
@@ -89,6 +99,7 @@ namespace ImageHUB
 
             app.UseSpaStaticFiles();
             app.UseAuthentication();
+            app.UseIdentity();
             app.UseMvc(endpoints =>
             {
                 endpoints.MapRoute(

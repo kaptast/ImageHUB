@@ -14,8 +14,11 @@ export const actionCreators = {
 
     const url = `api/images`
 
-    axios.get(url)
-      .then(res => {
+    axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
         console.log("ok home store.");
         console.log(res);
         const homePosts = res.data;

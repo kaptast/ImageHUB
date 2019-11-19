@@ -62,11 +62,15 @@ namespace ImageHUB.Repositories
 
         public void SaveImage(string path, Profile owner)
         {
+            if (owner == null) return;
+
             this.context.SaveImage(path, owner);
         }
 
         public void UpdateFriendShip(ProfileFriend friendShip)
         {
+            if (friendShip == null) return;
+
             this.context.UpdateFriendShip(friendShip);
         }
     }

@@ -19,8 +19,11 @@ export const actionCreators = {
 
     const url = `api/profile/GetAllByName?name=${index}`;
     console.log(url);
-    axios.get(url)
-      .then(res => {
+    axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
         const results = res.data;
         console.log(results);
         dispatch({ type: receiveSearchResultsType, index, results });

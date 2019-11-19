@@ -12,8 +12,8 @@ namespace ImageHUB.Repositories
 
         private object lockObject = new object();
 
-        public DatabaseContext()
-            : base()
+        public DatabaseContext(DbContextOptions options)
+            : base(options)
         {
             Database.Migrate();
         }
@@ -22,13 +22,13 @@ namespace ImageHUB.Repositories
         {
 
                 var friends = this.GetFriends(userID, false);
-                return this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || friends.Contains(p.Owner)).OrderByDescending(p => p.ID).ToList();
+                return this.Posts?.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || friends.Contains(p.Owner)).OrderByDescending(p => p.ID).ToList();
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)
         {
 
-                return this.Posts.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
+                return this.Posts?.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
 
         }
 
@@ -52,15 +52,16 @@ namespace ImageHUB.Repositories
         public IEnumerable<Profile> GetProfiles()
         {
 
-                return this.Profiles.ToList();
+                return this.Profiles?.ToList();
 
         }
 
         public Profile GetProfileByID(string id)
         {
-
-                return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
-
+            lock (lockObject)
+            {
+                return this.Profiles?.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
+            }
         }
 
         public void AddNewProfile(Profile profile)
@@ -68,7 +69,7 @@ namespace ImageHUB.Repositories
 
                 using (var transaction = this.Database.BeginTransaction())
                 {
-                    this.Profiles.Add(profile);
+                    this.Profiles?.Add(profile);
                     this.SaveChanges();
                     transaction.Commit();
                 }
@@ -77,7 +78,7 @@ namespace ImageHUB.Repositories
         public IEnumerable<Profile> GetProfilesByName(string name)
         {
 
-                return this.Profiles.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
+                return this.Profiles?.Where(x => x.UserName.ToLower().Contains(name.ToLower())).ToList();
 
         }
 
@@ -87,15 +88,17 @@ namespace ImageHUB.Repositories
                 var user = this.GetProfileByID(userID);
                 var friendsTo = user.FriendsTo?.Where(p => p.Accepted || selectPending).Select(x => x.Friend)?.ToList();
                 var friendsWith = user.FriendsWith?.Where(p => p.Accepted || selectPending).Select(x => x.Profile)?.ToList();
-                var friends = friendsTo.Concat(friendsWith);
+                var friends = friendsTo?.Concat(friendsWith);
                 return friends;
 
         }
 
         public ProfileFriend GetFriendShip(string userID, string friendID)
         {
-                var user = this.GetProfileByID(userID);
-                return user.FriendsTo?.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
+            var user = this.GetProfileByID(userID);
+            if (user == null) return null;
+
+            return user.FriendsTo?.Where(pf => pf.ProfileID.Equals(userID) && pf.FriendID.Equals(friendID)).SingleOrDefault();
         }
 
         public void AddFriend(string userID, string friendID)
@@ -115,8 +118,8 @@ namespace ImageHUB.Repositories
                 }
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=database/imgHub.db");
+        /*protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlite("Data Source=database/imgHub.db");*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

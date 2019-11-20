@@ -74,7 +74,13 @@ namespace ImageHUB
 
             app.UseHttpsRedirection();
 
-            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
+            var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            var pfp = new PhysicalFileProvider(path);
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = pfp,

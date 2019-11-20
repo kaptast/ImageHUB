@@ -16,12 +16,12 @@ namespace ImageHUB.Controllers
     public class ImagesController : ControllerBase
     {
         private readonly IImageService imageService;
-        private DatabaseContext context;
+        private readonly IProfileService profileService;
 
-        public ImagesController(IImageService imageService, DatabaseContext context)
+        public ImagesController(IImageService imageService, IProfileService profileService)
         {
             this.imageService = imageService;
-            this.context = context;
+            this.profileService = profileService;
         }
 
         [HttpPost]
@@ -32,9 +32,9 @@ namespace ImageHUB.Controllers
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string name = User.FindFirstValue(ClaimTypes.Name);
 
-            var owner = context.GetProfileByID(id);
+            var owner = this.profileService.GetProfileByID(id, name);
 
-            await this.imageService.SaveImageAsync(this.context, file, owner);
+            await this.imageService.SaveImageAsync(file, owner);
 
             return Redirect("/");
         }
@@ -44,7 +44,7 @@ namespace ImageHUB.Controllers
         public IEnumerable<Repositories.Post> Get()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return this.imageService.GetAllImageUrls(this.context, id);
+            return this.imageService.GetAllImageUrls(id);
         }
     }
 }

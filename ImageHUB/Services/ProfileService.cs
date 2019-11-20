@@ -9,19 +9,21 @@ namespace ImageHUB.Services
     public class ProfileService : IProfileService
     {
         private readonly IImageService imageService;
-        public ProfileService(IImageService imageService)
+        private readonly IRepository repository;
+        public ProfileService(IImageService imageService, IRepository repo)
         {
             this.imageService = imageService;
+            this.repository = repo;
         }
 
-        public Profile GetProfileByID(DatabaseContext context, string id, string userName)
+        public Profile GetProfileByID(string id, string userName)
         {
-            var profile = context.GetProfileByID(id);
+            var profile = repository.GetProfileByID(id);
             
             if (profile != null)
             {
-                profile.Posts = this.imageService.GetImageUrlsById(context, profile.ID);
-                profile.Friends = context.GetFriends(profile.ID);
+                profile.Posts = this.imageService.GetImageUrlsById(profile.ID);
+                profile.Friends = repository.GetFriends(profile.ID);
             }
             else
             {
@@ -32,49 +34,48 @@ namespace ImageHUB.Services
                     Posts = new List<Post>()
                 };
 
-                context.AddNewProfile(profile);
+                repository.AddNewProfile(profile);
             }
 
             return profile;
         }
 
-        public IEnumerable<Profile> GetAll(DatabaseContext context)
+        public IEnumerable<Profile> GetAll()
         {
-            return context.GetProfiles().Result;
+            return repository.GetProfiles();
         }
 
-        public IEnumerable<Profile> GetAllByName(DatabaseContext context, string name)
+        public IEnumerable<Profile> GetAllByName(string name)
         {
-            return context.GetProfilesByName(name);
+            return repository.GetProfilesByName(name);
         }
 
-        public void AddFriend(DatabaseContext context, string userID, string friendID)
+        public void AddFriend(string userID, string friendID)
         {
-            if (this.IsFriendsWith(context, userID, friendID) == FriendStatus.NotFriends)
+            if (this.IsFriendsWith(userID, friendID) == FriendStatus.NotFriends)
             {
-                context.AddFriend(userID, friendID);
+                repository.AddFriend(userID, friendID);
             }
         }
 
-        public void AcceptFriend(DatabaseContext context, string userID, string friendID)
+        public void AcceptFriend(string userID, string friendID)
         {
-            var friendShip = context.GetFriendShip(userID, friendID);
+            var friendShip = repository.GetFriendShip(userID, friendID);
 
             if (friendShip == null)
             {
-                friendShip = context.GetFriendShip(friendID, userID);
+                friendShip = repository.GetFriendShip(friendID, userID);
             }
 
             if (friendShip == null) return;
 
             friendShip.Accepted = true;
-            context.Update(friendShip);
-            context.SaveChanges();
+            repository.UpdateFriendShip(friendShip);
         }
 
-        public FriendStatus IsFriendsWith(DatabaseContext context, string userID, string friendID)
+        public FriendStatus IsFriendsWith(string userID, string friendID)
         {
-            var friendShip = context.GetFriendShip(userID, friendID);
+            var friendShip = repository.GetFriendShip(userID, friendID);
             
             if (friendShip != null)
             {
@@ -82,7 +83,7 @@ namespace ImageHUB.Services
             }
             else
             {
-                friendShip = context.GetFriendShip(friendID, userID);
+                friendShip = repository.GetFriendShip(friendID, userID);
 
                 if (friendShip != null)
                 {

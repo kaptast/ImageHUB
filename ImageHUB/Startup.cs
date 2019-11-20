@@ -28,10 +28,7 @@ namespace ImageHUB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
+            services.AddControllersWithViews();
             services.AddDirectoryBrowser();
 
             // In production, the React files will be served from this directory
@@ -40,32 +37,26 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddDbContext<DatabaseContext>();
-
-            services.AddScoped<IImageStorage, ImageStorage>();
-            services.AddScoped<IImageService, ImageService>();
-            services.AddScoped<IProfileService, ProfileService>();
 
             services.AddAuthentication(options =>
             {
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddFacebook(options=>
-            {
-                options.AppId = "392909324720070";
-                options.AppSecret = "7a4ebaea0b2885e714b540bb16e0de2c";
-            }).AddCookie(options=>
-            options.Events.OnRedirectToLogin = context=>
-            {
-                context.Response.StatusCode = 401;
-                return Task.CompletedTask;
-            });
-
-
-            // repository missing 
-          //  services.AddHttpClient<IRepository<Image>, ImageRepository>();
-
+            })
+             .AddFacebook(options =>
+             {
+                 options.AppId = this.Configuration["Facebook:AppId"];
+                 options.AppSecret = this.Configuration["Facebook:Secret"];
+             })
+             .AddCookie(options =>
+             {
+                 options.Events.OnRedirectToLogin = context =>
+                 {
+                     context.Response.StatusCode = 401;
+                     return Task.CompletedTask;
+                 };
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,36 +68,24 @@ namespace ImageHUB
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
 
-            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["Image.SavePath"]));
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = pfp,
-                RequestPath = "/img"
-            });
-
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
-                FileProvider = pfp,
-                RequestPath = "/img"
-            });
-
             app.UseSpaStaticFiles();
+
+            app.UseRouting();
+
             app.UseAuthentication();
 
+            app.UseAuthorization();
 
-            app.UseHttpsRedirection();
-
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

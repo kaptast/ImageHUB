@@ -63,7 +63,7 @@ namespace ImageHUB
             {
                 logger.LogWarning("Using Sqlite database");
                 options.UseSqlite("Data Source=database/imgHub.db");
-            }, ServiceLifetime.Singleton);
+            }, ServiceLifetime.Transient);
 
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();

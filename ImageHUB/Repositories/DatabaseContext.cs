@@ -12,8 +12,8 @@ namespace ImageHUB.Repositories
 
         private object lockObject = new object();
 
-        public DatabaseContext()
-            : base()
+        public DatabaseContext(DbContextOptions options)
+            : base(options)
         {
             Database.Migrate();
         }
@@ -114,9 +114,6 @@ namespace ImageHUB.Repositories
                     transaction.Commit();
                 }
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=database/imgHub.db");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

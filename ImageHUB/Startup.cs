@@ -3,17 +3,14 @@ using ImageHUB.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ImageHUB
 {
@@ -29,26 +26,8 @@ namespace ImageHUB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-            {
-                options.RespectBrowserAcceptHeader = true;
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
+            services.AddControllers();
             services.AddDirectoryBrowser();
-
-            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
-            {
-                options.UseSqlite("Data Source=database/imgHub.db");
-            }, ServiceLifetime.Transient);
-
-            //services.AddSingleton<IDatabaseContext, DatabaseContext>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IRepository, Repository>();
-            services.AddScoped<IImageStorage, ImageStorage>();
-            services.AddScoped<IImageService, ImageService>();
-            services.AddScoped<IProfileService, ProfileService>();
 
             services.AddAuthentication(options =>
             {
@@ -56,21 +35,40 @@ namespace ImageHUB
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddFacebook(options =>
-            {
-                options.AppId = this.Configuration["Facebook:AppId"];
-                options.AppSecret = this.Configuration["Facebook:Secret"];
-            }).AddCookie();
+             .AddFacebook(options =>
+             {
+                 options.AppId = this.Configuration["Facebook:AppId"];
+                 options.AppSecret = this.Configuration["Facebook:Secret"];
+             })
+             .AddCookie(options =>
+             {
+                 options.Events.OnRedirectToLogin = context =>
+                 {
+                     context.Response.StatusCode = 401;
+                     return Task.CompletedTask;
+                 };
+             });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+
+            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
+            {
+                options.UseSqlite("Data Source=database/imgHub.db");
+            }, ServiceLifetime.Transient);
+
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IImageStorage, ImageStorage>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IProfileService, ProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -84,7 +82,8 @@ namespace ImageHUB
 
             app.UseHttpsRedirection();
 
-            var pfp = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
+            var pfp = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = pfp,
@@ -98,13 +97,18 @@ namespace ImageHUB
             });
 
             app.UseSpaStaticFiles();
+
+            app.UseRouting();
+
             app.UseAuthentication();
-            app.UseIdentity();
-            app.UseMvc(endpoints =>
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

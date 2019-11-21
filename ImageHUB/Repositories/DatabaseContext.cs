@@ -118,9 +118,6 @@ namespace ImageHUB.Repositories
                 }
         }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=database/imgHub.db");*/
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProfileFriend>().HasKey(bc => new { bc.ProfileID, bc.FriendID });

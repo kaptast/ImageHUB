@@ -8,23 +8,26 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageHUB.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191115204107_ManyToMany")]
-    partial class ManyToMany
+    [Migration("20191121234311_sqlite")]
+    partial class sqlite
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099");
+                .HasAnnotation("ProductVersion", "3.0.0");
 
             modelBuilder.Entity("ImageHUB.Repositories.Post", b =>
                 {
                     b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("OwnerID");
+                    b.Property<string>("OwnerID")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 
@@ -36,13 +39,16 @@ namespace ImageHUB.Migrations
             modelBuilder.Entity("ImageHUB.Repositories.Profile", b =>
                 {
                     b.Property<string>("ID")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Avatar");
+                    b.Property<string>("Avatar")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 
@@ -51,11 +57,14 @@ namespace ImageHUB.Migrations
 
             modelBuilder.Entity("ImageHUB.Repositories.ProfileFriend", b =>
                 {
-                    b.Property<string>("ProfileID");
+                    b.Property<string>("ProfileID")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("FriendID");
+                    b.Property<string>("FriendID")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("Accepted");
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ProfileID", "FriendID");
 
@@ -76,12 +85,14 @@ namespace ImageHUB.Migrations
                     b.HasOne("ImageHUB.Repositories.Profile", "Friend")
                         .WithMany("FriendsWith")
                         .HasForeignKey("FriendID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ImageHUB.Repositories.Profile", "Profile")
                         .WithMany("FriendsTo")
                         .HasForeignKey("ProfileID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

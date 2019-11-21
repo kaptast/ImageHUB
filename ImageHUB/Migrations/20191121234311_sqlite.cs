@@ -2,7 +2,7 @@
 
 namespace ImageHUB.Migrations
 {
-    public partial class ManyToMany : Migration
+    public partial class sqlite : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,9 +24,9 @@ namespace ImageHUB.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Image = table.Column<string>(nullable: true),
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Image = table.Column<string>(nullable: true),
                     OwnerID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

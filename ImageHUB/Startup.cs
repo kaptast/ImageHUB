@@ -60,12 +60,19 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
+            /*services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
                 options.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString(),mySqlOptions => 
                 {
                     mySqlOptions.ServerVersion(new Version(5,7,17), ServerType.MySql);
                 }
-            ));
+            ));*/
+            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
+            {
+                logger.LogWarning("Using Sqlite database");
+                options.UseSqlite("Data Source=database/imgHub.db");
+            }, ServiceLifetime.Transient);
+
+
 
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();

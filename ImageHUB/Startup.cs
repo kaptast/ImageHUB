@@ -59,7 +59,7 @@ namespace ImageHUB
             services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
             {
                 options.UseSqlite("Data Source=database/imgHub.db");
-            }, ServiceLifetime.Transient);
+            }, ServiceLifetime.Singleton);
 
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();

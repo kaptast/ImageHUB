@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Threading.Tasks;
+using System;
 
 namespace ImageHUB
 {
@@ -58,12 +60,12 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-
-            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
-            {
-                logger.LogWarning("Using Sqlite database");
-                options.UseSqlite("Data Source=database/imgHub.db");
-            }, ServiceLifetime.Transient);
+            services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
+                options.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString(),mySqlOptions => 
+                {
+                    mySqlOptions.ServerVersion(new Version(5,7,17), ServerType.MySql);
+                }
+            ));
 
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();

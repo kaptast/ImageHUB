@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ImageHUB.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace ImageHUB.Services
 {
@@ -10,10 +11,12 @@ namespace ImageHUB.Services
     {
         private readonly IImageService imageService;
         private readonly IRepository repository;
-        public ProfileService(IImageService imageService, IRepository repo)
+        private readonly ILogger<Startup> logger;
+        public ProfileService(IImageService imageService, IRepository repo, ILogger<Startup> logger)
         {
             this.imageService = imageService;
             this.repository = repo;
+            this.logger = logger;
         }
 
         public Profile GetProfileByID(string id, string userName)

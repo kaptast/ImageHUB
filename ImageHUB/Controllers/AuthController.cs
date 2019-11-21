@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,10 +17,12 @@ namespace ImageHUB.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IProfileService profileService;
+        private readonly ILogger<Startup> logger;
 
-        public AuthController(IProfileService pService)
+        public AuthController(IProfileService pService, ILogger<Startup> logger)
         {
-            profileService = pService;
+            this.profileService = pService;
+            this.logger = logger;
         }
 
         [Route("isloggedin")]
@@ -28,6 +31,8 @@ namespace ImageHUB.Controllers
         {
             string userName = HttpContext.User.Identity.Name;
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            logger.LogInformation("IsLoggedIn userID: {0}", userId);
 
             var profile = this.profileService.GetProfileByID(userId, userName);
 

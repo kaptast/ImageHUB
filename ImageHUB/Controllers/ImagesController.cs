@@ -18,13 +18,11 @@ namespace ImageHUB.Controllers
     {
         private readonly IImageService imageService;
         private readonly IProfileService profileService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ImagesController(IImageService imageService, IProfileService profileService, IHttpContextAccessor httpContextAccessor)
+        public ImagesController(IImageService imageService, IProfileService profileService)
         {
             this.imageService = imageService;
             this.profileService = profileService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -32,9 +30,9 @@ namespace ImageHUB.Controllers
         public async Task<IActionResult> Upload(IFormFile file)
         {
             string name = HttpContext.User.Identity.Name;
-            string id = Hashes.ComputeSha256Hash(name);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var owner = this.profileService.GetProfileByID(id, name);
+            var owner = this.profileService.GetProfileByID(userId, name);
 
             await this.imageService.SaveImageAsync(file, owner);
 

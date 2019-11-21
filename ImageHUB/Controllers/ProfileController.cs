@@ -17,12 +17,10 @@ namespace ImageHUB.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService profileService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ProfileController(IProfileService profileService, IHttpContextAccessor httpContextAccessor)
+        public ProfileController(IProfileService profileService)
         {
             this.profileService = profileService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -30,11 +28,10 @@ namespace ImageHUB.Controllers
         public Repositories.Profile Get()
         {
             string userName = HttpContext.User.Identity.Name;
-            string id = Hashes.ComputeSha256Hash(userName);
-            //string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var profile = this.profileService.GetProfileByID(id, userName);
-            profile.Avatar = id;
+            var profile = this.profileService.GetProfileByID(userId, userName);
+            profile.Avatar = userId;
 
             return profile;
         }
@@ -47,23 +44,23 @@ namespace ImageHUB.Controllers
             string userName = HttpContext.User.Identity.Name;
 
             //string userID = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string userID = Hashes.ComputeSha256Hash(userName);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id.Equals("0"))
             {
 
-                id = userID;
+                id = userId;
             }
 
             var profile = this.profileService.GetProfileByID(id, userName);
             profile.Avatar = id;
 
-            if (profile.ID.Equals(userID))
+            if (profile.ID.Equals(userId))
             {
                 profile.ShowFriendButton = false;
                 profile.Status = FriendStatus.NotFriends;
             } else
             {
-                profile.Status = this.profileService.IsFriendsWith(userID, profile.ID);
+                profile.Status = this.profileService.IsFriendsWith(userId, profile.ID);
                 profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
             }
 

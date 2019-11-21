@@ -19,6 +19,8 @@ namespace ImageHUB.Services
 
         void AcceptFriend(string userID, string friendID);
 
+        void AddProfile(string userID, string userName);
+
         FriendStatus IsFriendsWith(string userID, string friendID);
     }
 }

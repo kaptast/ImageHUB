@@ -93,5 +93,16 @@ namespace ImageHUB.Services
 
             return FriendStatus.NotFriends;
         }
+
+        public void AddProfile(string userID, string userName)
+        {
+            var profile = new Profile()
+            {
+                ID = userID,
+                UserName = userName,
+                Avatar = userID
+            };
+            this.repository.AddNewProfile(profile);
+        }
     }
 }

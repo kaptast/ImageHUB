@@ -17,12 +17,10 @@ namespace ImageHUB.Controllers
     public class FriendController : ControllerBase
     {
         private readonly IProfileService profileService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public FriendController(IProfileService profileService, IHttpContextAccessor httpContextAccessor)
+        public FriendController(IProfileService profileService)
         {
             this.profileService = profileService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -31,7 +29,8 @@ namespace ImageHUB.Controllers
         public void AddFriend(string id)
         {
             string userName = HttpContext.User.Identity.Name;
-            string userId = Hashes.ComputeSha256Hash(userName);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            System.Diagnostics.Trace.WriteLine(string.Format("AddFriend userID: {0}", userId));
 
             this.profileService.AddFriend(userId, id);
         }
@@ -41,8 +40,7 @@ namespace ImageHUB.Controllers
         [Authorize]
         public void AcceptFriend(string id)
         {
-            string userName = HttpContext.User.Identity.Name;
-            string userId = Hashes.ComputeSha256Hash(userName);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             this.profileService.AcceptFriend(userId, id);
         }

@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ImageHUB
@@ -23,7 +26,7 @@ namespace ImageHUB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllers();
             services.AddDirectoryBrowser();
 
             services.AddAuthentication(options =>
@@ -52,7 +55,13 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddSingleton<IRepository, Repository>();
+
+            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
+            {
+                options.UseSqlite("Data Source=database/imgHub.db");
+            }, ServiceLifetime.Transient);
+
+            services.AddScoped<IRepository, Repository>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IProfileService, ProfileService>();
@@ -67,10 +76,25 @@ namespace ImageHUB
             }
             else
             {
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+
+            var pfp = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
 
             app.UseSpaStaticFiles();
 
@@ -89,7 +113,7 @@ namespace ImageHUB
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "app";
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {

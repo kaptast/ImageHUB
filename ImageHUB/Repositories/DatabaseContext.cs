@@ -51,7 +51,10 @@ namespace ImageHUB.Repositories
 
         public Profile GetProfileByID(string id)
         {
-            return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
+            lock (lockObject)
+            {
+                return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
+            }
         }
 
         public void AddNewProfile(Profile profile)

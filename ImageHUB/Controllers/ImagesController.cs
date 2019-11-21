@@ -26,7 +26,6 @@ namespace ImageHUB.Controllers
 
         [HttpPost]
         [Route("upload")]
-        [Authorize]
         public async Task<IActionResult> Upload(IFormFile file)
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -40,11 +39,11 @@ namespace ImageHUB.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public IEnumerable<Repositories.Post> Get()
+        public IEnumerable<Post> Get()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return this.imageService.GetAllImageUrls(id);
+            var posts = this.imageService.GetAllImageUrls(id);
+            return posts;
         }
     }
 }

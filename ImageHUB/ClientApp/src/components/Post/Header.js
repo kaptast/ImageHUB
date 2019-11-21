@@ -29,12 +29,12 @@ const useStyles = makeStyles({
 
 export default function Header(props) {
     const classes = useStyles();
-    const avatar = 'http://graph.facebook.com/'+ props.value.owner.id +'/picture?type=large';
-    const profileLink = "/profile/" + props.value.owner.id;
+    const avatar = 'http://graph.facebook.com/'+ props.value.ownerDTO.id +'/picture?type=large';
+    const profileLink = "/profile/" + props.value.ownerDTO.id;
     return (
         <div className={classes.container}>
                 <Avatar alt={props.value.userName} src={avatar} className={classes.avatar} />
-                <Typography variant="subtitle2"><Link to={profileLink} className={classes.link}>{props.value.owner.userName}</Link></Typography>
+                <Typography variant="subtitle2"><Link to={profileLink} className={classes.link}>{props.value.ownerDTO.userName}</Link></Typography>
                 <div className={classes.actions}>
                     <Actions />
                 </div>

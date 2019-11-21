@@ -21,7 +21,7 @@ export const actionCreators = {
         const homePosts = res.data;
         dispatch({ type: receiveHomePostsType, index, homePosts });
       }).catch(err => {
-        console.log(err);
+        console.log(err.message);
         console.log("to get images");
       });
   }

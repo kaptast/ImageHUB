@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,14 +13,20 @@ namespace ImageHUB.Repositories
 
         private object lockObject = new object();
 
-        public DatabaseContext(DbContextOptions options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-            lock (lockObject)
-            {
-                Database.Migrate();
-            }
+            Database.Migrate();
         }
+
+        /*public DatabaseContext()
+        {
+            Database.Migrate();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
+            optionsBuilder.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString());
+        }*/
 
         public IEnumerable<Post> GetAllPosts(string userID)
         {

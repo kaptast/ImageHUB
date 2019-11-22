@@ -31,12 +31,12 @@ namespace ImageHUB.Repositories
         public IEnumerable<Post> GetAllPosts(string userID)
         {
             var friends = this.GetFriends(userID, false);
-            return this.Posts?.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(userID) || friends.Contains(p.Owner))?.OrderByDescending(p => p.ID)?.ToList();
+            return this.Posts?.Include(p => p.Owner).Where(p => p.Owner.UserID.Equals(userID) || friends.Contains(p.Owner))?.OrderByDescending(p => p.ID)?.ToList();
         }
 
         public IEnumerable<Post> GetPostByUserID(string id)
         {
-            return this.Posts?.Include(p => p.Owner).Where(p => p.Owner.ID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
+            return this.Posts?.Include(p => p.Owner).Where(p => p.Owner.UserID.Equals(id))?.OrderByDescending(p => p.ID).ToList();
         }
 
         public void SaveImage(string path, Profile owner)
@@ -63,7 +63,7 @@ namespace ImageHUB.Repositories
         {
             lock (lockObject)
             {
-                return this.Profiles.Where(p => p.ID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
+                return this.Profiles.Where(p => p.UserID.Equals(id)).Include(ft => ft.FriendsTo).ThenInclude(ft => ft.Friend).Include(fw => fw.FriendsWith).ThenInclude(fw => fw.Profile).SingleOrDefault();
             }
         }
 

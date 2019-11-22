@@ -60,7 +60,7 @@ namespace ImageHUB.Controllers
                 profile.Status = FriendStatus.NotFriends;
             } else
             {
-                profile.Status = this.profileService.IsFriendsWith(userId, profile.ID);
+                profile.Status = this.profileService.IsFriendsWith(userId, profile.UserID);
                 profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
             }
 

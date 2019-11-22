@@ -60,8 +60,7 @@ namespace ImageHUB
                 configuration.RootPath = "ClientApp/build";
             });
 
-
-            var dbPath = "Server=localhost;Database=ef;User=root;Password=12344;"; //Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString();
+            var dbPath =  Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString();
             services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
                 options.UseMySql(dbPath,mySqlOptions => 
                 {

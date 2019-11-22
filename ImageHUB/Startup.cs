@@ -65,7 +65,7 @@ namespace ImageHUB
             services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
                 options.UseMySql(dbPath,mySqlOptions => 
                 {
-                    mySqlOptions.ServerVersion(new Version(5,7,17), ServerType.MySql);
+                    mySqlOptions.ServerVersion(new Version(5,7,9), ServerType.MySql);
                 }
             ));
             /*services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>

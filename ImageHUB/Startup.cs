@@ -61,6 +61,7 @@ namespace ImageHUB
             });
 
             var dbPath =  Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString();
+            logger.LogInformation("Database connection string: {0}", dbPath);
             services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
                 options.UseMySql(dbPath,mySqlOptions => 
                 {

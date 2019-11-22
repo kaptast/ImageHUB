@@ -14,7 +14,10 @@ namespace ImageHUB.Repositories
 
         public ICollection<ProfileFriend> FriendsWith { get; set; }
 
-        public string ID {get; set;}
+        public int ID { get; set; }
+
+        public string UserID { get; set; }
+
         public string UserName { get; set; }
 
         public string Avatar { get; set; }
@@ -41,9 +44,9 @@ namespace ImageHUB.Repositories
 
     public class ProfileFriend
     {
-        public string ProfileID { get; set; }
+        public int ProfileID { get; set; }
         public Profile Profile { get; set; }
-        public string FriendID { get; set; }
+        public int FriendID { get; set; }
         public Profile Friend { get; set; }
 
         public bool Accepted { get; set; }

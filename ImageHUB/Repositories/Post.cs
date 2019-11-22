@@ -24,9 +24,9 @@ namespace ImageHUB.Repositories
             {
                 return new ProfileDTO()
                 {
-                    ID = this.Owner.ID,
+                    ID = this.Owner.UserID,
                     UserName = this.Owner.UserName,
-                    Avatar = this.Owner.ID,
+                    Avatar = this.Owner.UserID,
                 };
             }
             set { }

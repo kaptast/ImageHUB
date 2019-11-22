@@ -25,14 +25,14 @@ namespace ImageHUB.Services
             
             if (profile != null)
             {
-                profile.Posts = this.imageService.GetImageUrlsById(profile.ID);
-                profile.Friends = repository.GetFriends(profile.ID);
+                profile.Posts = this.imageService.GetImageUrlsById(profile.UserID);
+                profile.Friends = repository.GetFriends(profile.UserID);
             }
             else
             {
                 profile = new Profile()
                 {
-                    ID = id,
+                    UserID = id,
                     UserName = userName,
                     Posts = new List<Post>()
                 };
@@ -101,7 +101,7 @@ namespace ImageHUB.Services
         {
             var profile = new Profile()
             {
-                ID = userID,
+                UserID = userID,
                 UserName = userName,
                 Avatar = userID
             };

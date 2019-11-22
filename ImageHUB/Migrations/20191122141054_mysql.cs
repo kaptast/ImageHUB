@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ImageHUB.Migrations
 {
-    public partial class sqlite : Migration
+    public partial class mysql : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,7 +11,9 @@ namespace ImageHUB.Migrations
                 name: "Profiles",
                 columns: table => new
                 {
-                    ID = table.Column<string>(nullable: false),
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserID = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     Avatar = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true)
@@ -25,9 +28,9 @@ namespace ImageHUB.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Image = table.Column<string>(nullable: true),
-                    OwnerID = table.Column<string>(nullable: true)
+                    OwnerID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,8 +47,8 @@ namespace ImageHUB.Migrations
                 name: "ProfileFriend",
                 columns: table => new
                 {
-                    ProfileID = table.Column<string>(nullable: false),
-                    FriendID = table.Column<string>(nullable: false),
+                    ProfileID = table.Column<int>(nullable: false),
+                    FriendID = table.Column<int>(nullable: false),
                     Accepted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>

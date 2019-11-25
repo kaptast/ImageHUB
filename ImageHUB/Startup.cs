@@ -88,20 +88,17 @@ namespace ImageHUB
                 app.UseHsts();
             }
 
+            app.UseAuthorization();
+            app.UseAuthentication();
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
             var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
-
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-
             var pfp = new PhysicalFileProvider(path);
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = pfp,
@@ -114,7 +111,7 @@ namespace ImageHUB
                 RequestPath = "/img"
             });
 
-            app.UseSpaStaticFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 

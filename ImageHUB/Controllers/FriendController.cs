@@ -29,7 +29,7 @@ namespace ImageHUB.Controllers
         public void AddFriend(string id)
         {
             string userName = HttpContext.User.Identity.Name;
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = Hashes.ComputeSha256Hash(userName);
             System.Diagnostics.Trace.WriteLine(string.Format("AddFriend userID: {0}", userId));
 
             this.profileService.AddFriend(userId, id);
@@ -40,7 +40,8 @@ namespace ImageHUB.Controllers
         [Authorize]
         public void AcceptFriend(string id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userName = HttpContext.User.Identity.Name;
+            var userId = Hashes.ComputeSha256Hash(userName);
 
             this.profileService.AcceptFriend(userId, id);
         }

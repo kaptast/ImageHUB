@@ -29,7 +29,7 @@ namespace ImageHUB.Controllers
         public string IsLoggedIn()
         {
             string userName = HttpContext.User.Identity.Name;
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = Hashes.ComputeSha256Hash(userName);
 
             logger.LogInformation("IsLoggedIn userID: {0}", userId);
 

@@ -50,7 +50,7 @@ namespace ImageHUB.Controllers
             string userName = HttpContext.User.Identity.Name;
 
             //string userID = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = Hashes.ComputeSha256Hash(userName);
             if (id.Equals("0"))
             {
 

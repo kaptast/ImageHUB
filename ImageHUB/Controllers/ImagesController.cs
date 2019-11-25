@@ -30,7 +30,7 @@ namespace ImageHUB.Controllers
         public async Task<IActionResult> Upload(IFormFile file)
         {
             string name = HttpContext.User.Identity.Name;
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = Hashes.ComputeSha256Hash(name);
 
             var owner = this.profileService.GetProfileByID(userId, name);
 

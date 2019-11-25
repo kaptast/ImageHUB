@@ -44,8 +44,6 @@ namespace ImageHUB
              {
                  options.AppId = this.Configuration["Facebook:AppId"];
                  options.AppSecret = this.Configuration["Facebook:Secret"];
-                 options.Scope.Add("id");
-                 options.Scope.Add("name");
              })
              .AddCookie(options =>
              {

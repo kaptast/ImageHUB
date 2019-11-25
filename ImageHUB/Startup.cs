@@ -44,6 +44,7 @@ namespace ImageHUB
              {
                  options.AppId = this.Configuration["Facebook:AppId"];
                  options.AppSecret = this.Configuration["Facebook:Secret"];
+                 options.Scope.Add("https://www.facebook.com/dialog/oauth");
              })
              .AddCookie(options =>
              {

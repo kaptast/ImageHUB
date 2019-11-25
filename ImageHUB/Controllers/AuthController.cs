@@ -30,7 +30,7 @@ namespace ImageHUB.Controllers
         public string IsLoggedIn()
         {
             string userName = HttpContext.User.Identity.Name;
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            /*var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             logger.LogInformation("IsLoggedIn userID: {0}", userId);
 
@@ -39,7 +39,7 @@ namespace ImageHUB.Controllers
             if (profile == null)
             {
                 this.profileService.AddProfile(userId, userName);
-            }
+            }*/
 
             return userName;
 

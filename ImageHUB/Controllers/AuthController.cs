@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,27 @@ namespace ImageHUB.Controllers
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
+        private readonly IProfileService profileService;
+        private readonly ILogger<Startup> logger;
+        private readonly IHostingEnvironment HostingEnvironment;
+
+        public AuthController(IProfileService pService, ILogger<Startup> logger, IHostingEnvironment hostingEnv)
+        {
+            this.profileService = profileService;
+            this.logger = logger;
+            this.HostingEnvironment = hostingEnv;
+        }
+
         [Route("isloggedin")]
         [Authorize]
         public string IsLoggedIn()
         {
             string userName = HttpContext.User.Identity.Name;
+
+            if (this.HostingEnvironment.IsDevelopment())
+            {
+                logger.LogError("Development version!!!!!!!!!");
+            }
             /*var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             logger.LogInformation("IsLoggedIn userID: {0}", userId);

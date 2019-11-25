@@ -51,7 +51,7 @@ namespace ImageHUB.Controllers
 
             //string userID = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            /*if (id.Equals("0"))
+            if (id.Equals("0"))
             {
 
                 id = userId;
@@ -68,14 +68,7 @@ namespace ImageHUB.Controllers
             {
                 profile.Status = this.profileService.IsFriendsWith(userId, profile.UserID);
                 profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
-            }*/
-
-            var profile = new Profile()
-            {
-                UserName = userName,
-                UserID = userId,
-                Avatar = userId
-            };
+            }
 
             return profile;
         }
@@ -84,7 +77,6 @@ namespace ImageHUB.Controllers
         [Route("GetAll")]
         public IEnumerable<Repositories.Profile> GetAll()
         {
-            return new List<Profile>();
             return this.profileService.GetAll();
         }
 
@@ -92,7 +84,6 @@ namespace ImageHUB.Controllers
         [Route("GetAllByName")]
         public IEnumerable<Repositories.Profile> GetAllByName(string name)
         {
-            return new List<Profile>();
             return this.profileService.GetAllByName(name);
         }
     }

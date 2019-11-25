@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
@@ -19,13 +17,11 @@ namespace ImageHUB.Controllers
     {
         private readonly IProfileService profileService;
         private readonly ILogger<Startup> logger;
-        private readonly IHostingEnvironment HostingEnvironment;
 
-        public AuthController(IProfileService pService, ILogger<Startup> logger, IHostingEnvironment hostingEnv)
+        public AuthController(IProfileService pService, ILogger<Startup> logger)
         {
-            this.profileService = profileService;
+            this.profileService = pService;
             this.logger = logger;
-            this.HostingEnvironment = hostingEnv;
         }
 
         [Route("isloggedin")]
@@ -33,12 +29,7 @@ namespace ImageHUB.Controllers
         public string IsLoggedIn()
         {
             string userName = HttpContext.User.Identity.Name;
-
-            if (this.HostingEnvironment.IsDevelopment())
-            {
-                logger.LogError("Development version!!!!!!!!!");
-            }
-            /*var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             logger.LogInformation("IsLoggedIn userID: {0}", userId);
 
@@ -47,7 +38,7 @@ namespace ImageHUB.Controllers
             if (profile == null)
             {
                 this.profileService.AddProfile(userId, userName);
-            }*/
+            }
 
             return userName;
 

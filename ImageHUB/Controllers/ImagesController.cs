@@ -43,9 +43,8 @@ namespace ImageHUB.Controllers
         public IEnumerable<Post> Get()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var posts = this.imageService.GetAllImageUrls(id);
-            return new List<Post>();
-            //return posts;
+            var posts = this.imageService.GetAllImageUrls(id);
+            return posts;
         }
     }
 }

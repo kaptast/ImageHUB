@@ -16,15 +16,6 @@ namespace ImageHUB.Controllers
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
-        private readonly IProfileService profileService;
-        private readonly ILogger<Startup> logger;
-
-        public AuthController(IProfileService pService, ILogger<Startup> logger)
-        {
-            this.profileService = pService;
-            this.logger = logger;
-        }
-
         [Route("isloggedin")]
         [Authorize]
         public string IsLoggedIn()

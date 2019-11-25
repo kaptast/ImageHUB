@@ -49,7 +49,7 @@ namespace ImageHUB
              {
                  options.Events.OnRedirectToLogin = context =>
                  {
-                     //context.Response.StatusCode = 401;
+                     context.Response.StatusCode = 401;
                      return Task.CompletedTask;
                  };
              });

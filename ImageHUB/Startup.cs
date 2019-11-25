@@ -54,32 +54,25 @@ namespace ImageHUB
                  };
              });
 
+
+            var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            logger.LogInformation("Database connection string: {0}", dbPath);
+            services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
+                options.UseMySql(dbPath, mySqlOptions =>
+                {
+                    mySqlOptions.ServerVersion(new Version(5, 7, 9), ServerType.MySql);
+                }
+            ));
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IImageStorage, ImageStorage>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IProfileService, ProfileService>();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            
-            var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
-            //var dbPath = "Database=imghub;Data Source=127.0.0.1;Port=49250;User Id=azure;Password=6#vWHD_$";
-            //var dbPath =  Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString();
-            logger.LogInformation("Database connection string: {0}", dbPath);
-            services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
-                options.UseMySql(dbPath,mySqlOptions => 
-                {
-                    mySqlOptions.ServerVersion(new Version(5,7,9), ServerType.MySql);
-                }
-            ));
-            /*services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
-            {
-                logger.LogWarning("Using Sqlite database");
-                options.UseSqlite("Data Source=database/imgHub.db");
-            }, ServiceLifetime.Transient);*/
-
-            services.AddScoped<IRepository, Repository>();
-            services.AddScoped<IImageStorage, ImageStorage>();
-            services.AddScoped<IImageService, ImageService>();
-            services.AddScoped<IProfileService, ProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +89,10 @@ namespace ImageHUB
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
 
@@ -120,10 +117,6 @@ namespace ImageHUB
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

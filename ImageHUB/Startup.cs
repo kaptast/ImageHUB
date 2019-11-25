@@ -88,10 +88,6 @@ namespace ImageHUB
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
             if (!Directory.Exists(path))
             {
@@ -111,9 +107,10 @@ namespace ImageHUB
                 RequestPath = "/img"
             });
 
-            app.UseStaticFiles();
-
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -88,9 +88,9 @@ namespace ImageHUB
                 app.UseHsts();
             }
 
-            app.UseAuthorization();
-            app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
             if (!Directory.Exists(path))

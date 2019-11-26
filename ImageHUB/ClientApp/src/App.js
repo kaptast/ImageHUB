@@ -17,11 +17,7 @@ export default function App() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    axios.get("api/auth/isloggedin", {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
+    axios.get("api/auth/isloggedin").then(res => {
       setIsLoggedIn(true);
       setName(res.data.name);
       setID(res.data.id);
@@ -36,11 +32,7 @@ export default function App() {
 
   const logout = () => {
     console.log("logout");
-    axios.get("api/auth/logout", {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
+    axios.get("api/auth/logout").then(res => {
         console.log('Logout successful.');
         setIsLoggedIn(false);
       });

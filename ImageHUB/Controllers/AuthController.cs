@@ -12,7 +12,6 @@ namespace ImageHUB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Produces("application/json")]
     public class AuthController : ControllerBase
     {
         private readonly IProfileService profileService;

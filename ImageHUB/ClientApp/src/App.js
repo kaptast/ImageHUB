@@ -41,6 +41,7 @@ export default function App() {
         'Content-Type': 'application/json'
       }
     }).then(res => {
+        console.log('Logout successful.');
         setIsLoggedIn(false);
       });
   }

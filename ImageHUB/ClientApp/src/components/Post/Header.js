@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 export default function Header(props) {
     const classes = useStyles();
-    const avatar = 'http://graph.facebook.com/'+ props.value.ownerDTO.id +'/picture?type=large';
+    const avatar = 'https://graph.facebook.com/'+ props.value.ownerDTO.id +'/picture?type=large';
     const profileLink = "/profile/" + props.value.ownerDTO.id;
     return (
         <div className={classes.container}>

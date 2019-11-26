@@ -33,14 +33,13 @@ export default function App() {
   });
 
   const logout = () => {
-    console.log("logout");
-    axios.get("api/auth/logout").then(res => {
-        console.log('Logout successful.');
-        console.log(isLoggedIn);
-        setIsLoggedIn(false);
-        console.log(isLoggedIn);
-      });
-  }
+    axios.get("api/auth/logout")
+        .then(res => {
+            setIsLoggedIn(false)
+            console.log("Logout state:");
+            console.log(isLoggedIn);
+        })
+}
 
   if (!isLoggedIn) {
     return <Login />;

@@ -52,7 +52,7 @@ namespace imagehubsample
                  };
              });
 
-            var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
             logger.LogInformation("Database connection string: {0}", dbPath);
             services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
                 options.UseMySql(dbPath, mySqlOptions =>

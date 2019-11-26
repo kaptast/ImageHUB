@@ -16,7 +16,7 @@ namespace imagehubsample.Controllers
         [Authorize]
         public string IsLoggedIn()
         {
-            return HttpContext.User.Identity.Name + " " +  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return HttpContext.User.Identity.Name + " " +  HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         [Route("signin")]

@@ -65,6 +65,7 @@ namespace ImageHUB.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            logger.LogInformation("User logout");
             await HttpContext.SignOutAsync();
             return this.Ok();
         }

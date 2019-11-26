@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ImageHUB.Repositories;
+using imagehubsample;
 using Microsoft.Extensions.Logging;
 
 namespace ImageHUB.Services

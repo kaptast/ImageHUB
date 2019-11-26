@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,11 +13,29 @@ namespace imagehubsample.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly ILogger<Startup> logger;
+        
+        public AuthController(ILogger<Startup> logger)
+        {
+            this.logger = logger;
+        }
+
         [Route("isloggedin")]
         [Authorize]
         public string IsLoggedIn()
         {
-            return HttpContext.User.Identity.Name + " " +  HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userName = HttpContext.User.Identity.Name;
+            logger.LogInformation("----------------------------------------------------------------------------------------------\nIsLoggedIn UserName: {0}", userName);
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            logger.LogInformation("IsLoggedIn userID: {0}", userId);
+
+            /*var profile = this.profileService.GetProfileByID(userId, userName);
+            if (profile == null)
+            {
+                this.profileService.AddProfile(userId, userName);
+            }*/
+
+            return userName + " " + userId;
         }
 
         [Route("signin")]

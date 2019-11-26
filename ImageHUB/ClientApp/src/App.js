@@ -22,6 +22,8 @@ export default function App() {
       setName(res.data.name);
       setID(res.data.id);
       setEmail(res.data.email);
+      console.log("Logged in");
+      console.log(isLoggedIn);
     })
       .catch(err => {
         console.log(err);
@@ -34,7 +36,9 @@ export default function App() {
     console.log("logout");
     axios.get("api/auth/logout").then(res => {
         console.log('Logout successful.');
+        console.log(isLoggedIn);
         setIsLoggedIn(false);
+        console.log(isLoggedIn);
       });
   }
 

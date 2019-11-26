@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace imagehubsample.Controllers
@@ -15,7 +16,7 @@ namespace imagehubsample.Controllers
         [Authorize]
         public string IsLoggedIn()
         {
-            return HttpContext.User.Identity.Name;
+            return HttpContext.User.Identity.Name + " " +  User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         [Route("signin")]

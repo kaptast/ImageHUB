@@ -1,11 +1,16 @@
+using ImageHUB.Repositories;
+using ImageHUB.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System;
 using System.Threading.Tasks;
 
 namespace imagehubsample
@@ -46,6 +51,19 @@ namespace imagehubsample
                      return Task.CompletedTask;
                  };
              });
+
+            var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            logger.LogInformation("Database connection string: {0}", dbPath);
+            services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
+                options.UseMySql(dbPath, mySqlOptions =>
+                {
+                    mySqlOptions.ServerVersion(new Version(5, 7, 9), ServerType.MySql);
+                }
+            ));
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IImageStorage, ImageStorage>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

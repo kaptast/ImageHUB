@@ -28,7 +28,7 @@ namespace ImageHUB.Controllers
         public Repositories.Profile Get()
         {
             string userName = HttpContext.User.Identity.Name;
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             /* var profile = this.profileService.GetProfileByID(userId, userName);
              profile.Avatar = userId;*/
@@ -50,7 +50,7 @@ namespace ImageHUB.Controllers
             string userName = HttpContext.User.Identity.Name;
 
             //string userID = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userId = Hashes.ComputeSha256Hash(userName);
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id.Equals("0"))
             {
 

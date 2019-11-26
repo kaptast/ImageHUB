@@ -30,7 +30,7 @@ namespace ImageHUB.Controllers
         public async Task<IActionResult> Upload(IFormFile file)
         {
             string name = HttpContext.User.Identity.Name;
-            var userId = Hashes.ComputeSha256Hash(name);
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var owner = this.profileService.GetProfileByID(userId, name);
 
@@ -42,7 +42,7 @@ namespace ImageHUB.Controllers
         [HttpGet]
         public IEnumerable<Post> Get()
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var posts = this.imageService.GetAllImageUrls(id);
             return posts;
         }

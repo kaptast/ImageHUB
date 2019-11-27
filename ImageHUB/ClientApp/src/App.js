@@ -38,7 +38,11 @@ export default function App() {
             setIsLoggedIn(false)
             console.log("Logout state:");
             console.log(isLoggedIn);
-        })
+        }).catch(err => {
+          console.log(err);
+          console.log("failed to log out");
+          setIsLoggedIn(false);
+        });
 }
 
   if (!isLoggedIn) {

@@ -32,17 +32,17 @@ export default function App() {
     return (
         <div>
             {isLoggedIn && 
-                <>
+                <div>
                     <div>Welcome {name}!</div>
                     <button onClick={logout}>Logout</button>
-                </>}
+                </div>}
 
             {!isLoggedIn && 
-                <>
+                <div>
                 <form id="external-login" method="post" action="api/auth/signin">
                     <button>Login</button>
                 </form>
-                </>}
+                </div>}
         </div>
     ) 
 }

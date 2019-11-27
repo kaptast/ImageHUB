@@ -23,9 +23,7 @@ export default function (props) {
     <div>
       <SearchBar userName={props.name} loggedIn={props.loggedIn} logout={props.logout}/>
       <div className={classes.heroContent}>
-        <Container maxWidth="xl">
-          {props.children}
-        </Container>
+
       </div>
     </div>
   );

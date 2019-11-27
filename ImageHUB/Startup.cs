@@ -54,7 +54,6 @@ namespace ImageHUB
                  };
              });
 
-
             var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
             logger.LogInformation("Database connection string: {0}", dbPath);
             services.AddDbContextPool<IDatabaseContext, DatabaseContext>(options =>
@@ -84,30 +83,8 @@ namespace ImageHUB
             }
             else
             {
-
                 app.UseHsts();
             }
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            var pfp = new PhysicalFileProvider(path);
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = pfp,
-                RequestPath = "/img"
-            });
-
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
-                FileProvider = pfp,
-                RequestPath = "/img"
-            });
-
-            
 
             app.UseHttpsRedirection();
 
@@ -118,6 +95,13 @@ namespace ImageHUB
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
 
             app.UseEndpoints(endpoints =>
             {

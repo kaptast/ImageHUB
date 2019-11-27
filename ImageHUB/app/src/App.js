@@ -42,6 +42,22 @@ export default function App() {
     }
 
     return (
-        <Login />
+        <div>{isLoggedIn && (
+                <BrowserRouter>
+                    <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
+                        <Switch>
+                            <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
+                            <Route path='/profile/:index?' component={Profile} />
+                            <Route path='/messages' component={Messages} />
+                            <Route path='/search/:index?' component={Search} />
+                            <Route path='/login' component={Login} />
+                        </Switch>
+                    </Layout>
+                </BrowserRouter>
+            )}
+            {!isLoggedIn && (
+                <Login />
+            )}
+        </div>
     );
 }

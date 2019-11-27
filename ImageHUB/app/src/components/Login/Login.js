@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from './Logo';
 import LoginButton from './LoginButton';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -14,11 +15,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+
 export default function Login() {
     const classes = useStyles();
 
     return (
         <div className={classes.container}>
+            <Container maxWidth='sm'>
                 <Grid container justify="center" spacing={5}>
                     <Grid item>
                         <Logo />
@@ -27,6 +30,7 @@ export default function Login() {
                         <LoginButton />
                     </Grid>
                 </Grid>
+            </Container>
         </div>
     );
 }

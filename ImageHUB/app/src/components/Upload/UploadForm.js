@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
-import { DropzoneArea } from 'material-ui-dropzone';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -50,7 +49,7 @@ class UploadForm extends Component {
                 <form onSubmit={this.onFormSubmit.bind(this)} style={{ padding: 20 }}>
                     <Grid container className={classes.container} spacing={2}>
                         <Grid item xs={12}>
-                            <DropzoneArea acceptedFiles={['image/*']} filesLimit={1} name="files" onChange={this.onChange.bind(this)} />
+                            
                         </Grid>
                         <Grid item xs={12}>
                             <Button

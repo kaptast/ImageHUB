@@ -84,22 +84,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function SearchBar(props) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  function handleProfileMenuOpen(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
   function handleMobileMenuClose() {
     setMobileMoreAnchorEl(null);
-  }
-
-  function handleMenuClose() {
-    setAnchorEl(null);
-    handleMobileMenuClose();
   }
 
   function handleMobileMenuOpen(event) {

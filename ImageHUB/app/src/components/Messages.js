@@ -2,7 +2,6 @@ import '../index.css';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { actionCreators } from '../store/WeatherForecasts';
 import Grid from '@material-ui/core/Grid';
 
@@ -23,7 +22,7 @@ class FetchData extends Component {
     return (
       <Grid container>
         <Grid item xs={12}>
-          <img src="https://media.giphy.com/media/3d4OvvUo8WlpfibzzL/giphy.gif" />
+          <img alt="WIP" src="https://media.giphy.com/media/3d4OvvUo8WlpfibzzL/giphy.gif" />
         </Grid>
       </Grid>
     );

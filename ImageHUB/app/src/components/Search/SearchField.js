@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { fade, withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -56,7 +56,7 @@ class SearchField extends React.Component {
     }
 
     catchReturn(event) {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             event.preventDefault();
             this.props.history.push('/search/'+ this.state.searchInputValue);
         }

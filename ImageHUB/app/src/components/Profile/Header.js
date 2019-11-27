@@ -36,7 +36,7 @@ export default function Header(props) {
 
     console.log(props);
 
-    let friends = props.profile.friends.length == 1 ? "friend" : "friends";
+    let friends = props.profile.friends.length === 1 ? "friend" : "friends";
     let posts = props.profile.posts.length === 1 ? "post" : "posts";
 
     const avatar = 'https://graph.facebook.com/' + props.profile.avatar + '/picture?type=large';
@@ -65,12 +65,12 @@ export default function Header(props) {
                                 <Button variant="outlined" onClick={() => handleClick(props.profile.id)}>Add Friend</Button>
                             </Grid>
                         )}
-                        {props.profile.status == 1 && (
+                        {props.profile.status === 1 && (
                             <Grid item xs={4}>
                                 <Button variant="outlined" disabled>Pending</Button>
                             </Grid>
                         )}
-                        {props.profile.status == 3 && (
+                        {props.profile.status === 3 && (
                             <Grid item xs={4}>
                                 <Button variant="outlined" onClick={() => acceptClick(props.profile.id)}>Accept friend</Button>
                             </Grid>

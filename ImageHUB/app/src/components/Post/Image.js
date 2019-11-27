@@ -1,7 +1,6 @@
 import React from 'react';
 import CardMedia from '@material-ui/core/CardMedia';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     img: {

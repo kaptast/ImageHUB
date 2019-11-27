@@ -69,12 +69,14 @@ namespace ImageHUB.Controllers
             /*await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return this.Ok();*/
             await SignOut("/login");
+            //HttpContext.Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
             return this.Ok();
         }
 
         public async Task SignOut(string redirectUri)
         {
             // inject the HttpContextAccessor to get "context"
+            await HttpContext.SignOutAsync();
             await HttpContext.SignOutAsync("Cookies");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var prop = new AuthenticationProperties()

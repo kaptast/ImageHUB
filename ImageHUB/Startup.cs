@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace ImageHUB
 {
@@ -35,7 +36,7 @@ namespace ImageHUB
 
             services.AddAuthentication(options =>
             {
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })

@@ -26,26 +26,20 @@ namespace ImageHUB.Controllers
 
         [Route("isloggedin")]
         [Authorize]
+        [HttpGet]
         public string IsLoggedIn()
         {
             string userName = HttpContext.User.Identity.Name;
             logger.LogInformation("----------------------------------------------------------------------------------------------\nIsLoggedIn UserName: {0}", userName);
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             logger.LogInformation("IsLoggedIn userID: {0}", userId);
-
             var profile = this.profileService.GetProfileByID(userId, userName);
 
-            if (profile == null)
-            {
-                this.profileService.AddProfile(userId, userName);
-            }
-
             return userName;
-
         }
 
         [Route("signin")]
+        [HttpPost]
         public IActionResult SignInWithFacebook()
         {
             var redirectUrl = Url.Action(nameof(AuthController.SignInCallback), "Auth", new { returnUrl = "/" });
@@ -66,25 +60,8 @@ namespace ImageHUB.Controllers
         public async Task<IActionResult> Logout()
         {
             logger.LogInformation("User logout");
-            /*await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return this.Ok();*/
             await HttpContext.SignOutAsync();
-            //HttpContext.Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
             return this.Ok();
-        }
-
-        public async Task SignOut(string redirectUri)
-        {
-            // inject the HttpContextAccessor to get "context"
-            await HttpContext.SignOutAsync();
-            await HttpContext.SignOutAsync("Cookies");
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var prop = new AuthenticationProperties()
-            {
-                RedirectUri = redirectUri
-            };
-            // after signout this will redirect to your provided target
-            await HttpContext.SignOutAsync("oidc", prop);
         }
     }
 }

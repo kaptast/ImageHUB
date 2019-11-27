@@ -33,10 +33,9 @@ namespace ImageHUB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddAuthentication(options =>
             {
-                options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
@@ -53,6 +52,12 @@ namespace ImageHUB
                      return Task.CompletedTask;
                  };
              });
+             
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "app/build";
+            });
 
             var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
             logger.LogInformation("Database connection string: {0}", dbPath);
@@ -66,12 +71,6 @@ namespace ImageHUB
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IProfileService, ProfileService>();
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "app/build";
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,15 +85,15 @@ namespace ImageHUB
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
             app.UseHttpsRedirection();
 
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

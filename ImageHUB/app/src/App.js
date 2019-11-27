@@ -42,11 +42,11 @@ export default function App() {
     }
 
     return (
-        <div>{isLoggedIn &&
+        <div>{isLoggedIn && (
                 <BrowserRouter>
                     <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
                         <Switch>
-                            <Route exact path='/' component={Home} />
+                            <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
                             <Route path='/profile/:index?' component={Profile} />
                             <Route path='/messages' component={Messages} />
                             <Route path='/search/:index?' component={Search} />
@@ -54,10 +54,10 @@ export default function App() {
                         </Switch>
                     </Layout>
                 </BrowserRouter>
-            }
-            {!isLoggedIn &&
+            )}
+            {!isLoggedIn && (
                 <Login />
-            }
+            )}
         </div>
     );
 }

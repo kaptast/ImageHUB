@@ -66,8 +66,23 @@ namespace ImageHUB.Controllers
         public async Task<IActionResult> Logout()
         {
             logger.LogInformation("User logout");
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            /*await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return this.Ok();*/
+            await SignOut("/login");
             return this.Ok();
+        }
+
+        public async Task SignOut(string redirectUri)
+        {
+            // inject the HttpContextAccessor to get "context"
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var prop = new AuthenticationProperties()
+            {
+                RedirectUri = redirectUri
+            };
+            // after signout this will redirect to your provided target
+            await HttpContext.SignOutAsync("oidc", prop);
         }
     }
 }

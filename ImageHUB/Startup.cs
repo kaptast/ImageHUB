@@ -32,7 +32,6 @@ namespace ImageHUB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDirectoryBrowser();
 
             services.AddAuthentication(options =>
             {

@@ -34,32 +34,33 @@ export default function App() {
 
   const logout = () => {
     axios.get("api/auth/logout")
-        .then(res => {
-            setIsLoggedIn(false)
-            console.log("Logout state:");
-            console.log(isLoggedIn);
-        }).catch(err => {
-          console.log(err);
-          console.log("failed to log out");
-          setIsLoggedIn(false);
-        });
-}
-
-  if (!isLoggedIn) {
-    return <Login />;
-  } else {
-    return (
-      <BrowserRouter>
-        <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
-          <Switch>
-            <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
-            <Route path='/profile/:index?' component={Profile} />
-            <Route path='/messages' component={Messages} />
-            <Route path='/search/:index?' component={Search} />
-            <Route path='/login' component={Login} />
-          </Switch>
-        </Layout>
-      </BrowserRouter>
-    );
+      .then(res => {
+        setIsLoggedIn(false)
+        console.log("Logout state:");
+        console.log(isLoggedIn);
+      }).catch(err => {
+        console.log(err);
+        console.log("failed to log out");
+        setIsLoggedIn(false);
+      });
   }
+  return (
+    <div>
+      {isLoggedIn &&
+        <BrowserRouter>
+          <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
+            <Switch>
+              <Route exact path='/' render={(props) => <Home {...props} name={name} />} />
+              <Route path='/profile/:index?' component={Profile} />
+              <Route path='/messages' component={Messages} />
+              <Route path='/search/:index?' component={Search} />
+              <Route path='/login' component={Login} />
+            </Switch>
+          </Layout>
+        </BrowserRouter>}
+      {!isLoggedIn &&
+        <Login />}
+    </div>
+  );
+}
 }

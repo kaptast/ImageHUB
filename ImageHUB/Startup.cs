@@ -84,7 +84,7 @@ namespace ImageHUB
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+
                 app.UseHsts();
             }
 
@@ -107,9 +107,7 @@ namespace ImageHUB
                 RequestPath = "/img"
             });
 
-            app.UseAuthentication();
-
-            app.UseAuthorization();
+            
 
             app.UseHttpsRedirection();
 
@@ -117,7 +115,9 @@ namespace ImageHUB
 
             app.UseRouting();
 
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

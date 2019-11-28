@@ -35,9 +35,9 @@ namespace ImageHUB
             services.AddControllers();
             services.AddAuthentication(options =>
             {
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = FacebookDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = FacebookDefaults.AuthenticationScheme;
             })
              .AddFacebook(options =>
              {

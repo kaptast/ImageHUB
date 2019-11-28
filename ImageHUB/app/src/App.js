@@ -42,6 +42,17 @@ export default function App() {
     }
 
     return (
-        <Login />
+        <div>
+            {isLoggedIn &&
+                <div>
+                    <p>{name}</p>
+                    <button onClick={logout}>Logout</button>
+                </div>}
+            {!isLoggedIn &&
+                <form id="external-login" method="post" action="api/auth/singin">
+                    <button>Login</button>
+                </form>
+            }
+        </div>
     );
 }

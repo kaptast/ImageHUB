@@ -1,11 +1,8 @@
-﻿using ImageHUB.Services;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace imagehubsample.Controllers
@@ -14,27 +11,11 @@ namespace imagehubsample.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly ILogger<Startup> logger;
-        private readonly IProfileService profileService;
-        
-        public AuthController(ILogger<Startup> logger, IProfileService pService)
-        {
-            this.logger = logger;
-            this.profileService = pService;
-        }
-
         [Route("isloggedin")]
         [Authorize]
         public string IsLoggedIn()
         {
-            string userName = HttpContext.User.Identity.Name;
-            logger.LogInformation("----------------------------------------------------------------------------------------------\nIsLoggedIn UserName: {0}", userName);
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            logger.LogInformation("IsLoggedIn userID: {0}", userId);
-
-            var profile = this.profileService.GetProfileByID(userId, userName);
-
-            return userName + " " + userId;
+            return HttpContext.User.Identity.Name;
         }
 
         [Route("signin")]

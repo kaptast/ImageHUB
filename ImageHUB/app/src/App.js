@@ -24,6 +24,8 @@ export default function App() {
         axios.get("api/auth/logout")
             .then(res => {
                 setIsLoggedIn(false)
+                console.log(isLoggedIn);
+                cookies.remove('userInfo');
             })
     }
 

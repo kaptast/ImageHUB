@@ -87,9 +87,10 @@ namespace ImageHUB
 
             app.UseHttpsRedirection();
 
-            app.UseSpaStaticFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
 

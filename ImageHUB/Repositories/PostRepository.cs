@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ImageHUB.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ImageHUB.Repositories
 {
@@ -29,17 +30,17 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Post> GetAll()
         {
-            return this.database.Posts.ToList();
+            return this.database.Posts.Include(p => p.Owner).ToList();
         }
 
         public Post GetByID(string id)
         {
-            return this.database.Posts.Where(p => p.ID.ToString().Equals(id)).SingleOrDefault();
+            return this.database.Posts.Include(p => p.Owner).Where(p => p.ID.ToString().Equals(id)).SingleOrDefault();
         }
 
         public IEnumerable<Post> GetPostsByOwner(string ownerID)
         {
-            return this.database.Posts.Where(p => p.Owner.UserID.Equals(ownerID)).ToList();
+            return this.database.Posts.Include(p => p.Owner).Where(p => p.Owner.UserID.Equals(ownerID)).ToList();
         }
 
         public void Update(Post entity)

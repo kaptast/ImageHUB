@@ -4,9 +4,10 @@ import axios from 'axios'
 import './custom.css'
 
 export default function App() {
-    
+
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [name, setName] = useState("")
+    const [id, setId] = useState("");
 
     useEffect(() => {
         axios.get("api/auth/isloggedin")
@@ -19,7 +20,20 @@ export default function App() {
                 console.log(err)
                 console.log("failed to log in.")
                 setIsLoggedIn(false)
-            })
+            });
+
+        if (isLoggedIn) {
+            axios.get("api/profile")
+                .then(res => {
+                    console.log("profile get ok")
+                    console.log(res)
+                    setId(res.data.userID)
+                })
+                .catch(err => {
+                    console.log(err)
+                    console.log("failed to get profile")
+                })
+        }
     })
 
     const logout = () => {
@@ -31,18 +45,18 @@ export default function App() {
 
     return (
         <div>
-            {isLoggedIn && 
+            {isLoggedIn &&
                 <>
-                    <div>Welcome {name}!</div>
+                    <div>Welcome {name} with {id}!</div>
                     <button onClick={logout}>Logout</button>
                 </>}
 
-            {!isLoggedIn && 
+            {!isLoggedIn &&
                 <>
-                <form id="external-login" method="post" action="api/auth/signin">
-                    <button>Login</button>
-                </form>
+                    <form id="external-login" method="post" action="api/auth/signin">
+                        <button>Login</button>
+                    </form>
                 </>}
         </div>
-    ) 
+    )
 }

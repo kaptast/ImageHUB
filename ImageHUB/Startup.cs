@@ -47,15 +47,15 @@ namespace imagehubsample
                  };
              });
 
-            var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=nincs";
-            //var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=nincs";
+            var dbPath = "Server=127.0.0.1;Port=49250;Database=localdb;User Id=azure; Password=6#vWHD_$;";
             services.AddDbContextPool<DatabaseContext>(options =>
                 options.UseMySql(dbPath, mySqlOptions =>
                 {
                     mySqlOptions.ServerVersion(new Version(5, 7, 9), ServerType.MySql);
                 }
             ));
-            services.AddTransient<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IProfileService, ProfileService>();
 
             // In production, the React files will be served from this directory

@@ -41,6 +41,9 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+launch.json
+tasks.json
+
 *_i.c
 *_p.c
 *_i.h

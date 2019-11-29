@@ -17,8 +17,15 @@ namespace ImageHUB.Repositories
 
         public void Add(Profile entity)
         {
-            this.database.Profiles.Add(entity);
-            this.database.SaveChanges();
+            try
+            {
+                this.database.Profiles.Add(entity);
+                this.database.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
         }
 
         public void Delete(Profile entity)

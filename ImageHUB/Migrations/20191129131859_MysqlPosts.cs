@@ -13,7 +13,7 @@ namespace ImageHUB.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<string>(nullable: true),
+                    UserID = table.Column<string>(maxLength: 100, nullable: true),
                     UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -45,6 +45,12 @@ namespace ImageHUB.Migrations
                 name: "IX_Posts_OwnerID",
                 table: "Posts",
                 column: "OwnerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_UserID",
+                table: "Profiles",
+                column: "UserID",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

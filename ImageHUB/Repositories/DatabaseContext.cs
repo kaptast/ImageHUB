@@ -15,7 +15,12 @@ namespace ImageHUB.Repositories
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Profile>().HasIndex(u => u.UserID).IsUnique();
         }
     }
 }

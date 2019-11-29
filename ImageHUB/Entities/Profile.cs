@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ImageHUB.Entities
 {
     public class Profile : IEntity
     {
         public int ID { get; set; }
+    
+        [MaxLength(100)]
         public string UserID { get; set; }
         public string UserName { get; set; }
         public IEnumerable<Post> Posts { get; set; }

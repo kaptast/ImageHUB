@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace imagehubsample
@@ -48,7 +50,8 @@ namespace imagehubsample
              });
 
             //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=nincs";
-            var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=migrationpwd";
+            //var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
             services.AddDbContextPool<DatabaseContext>(options =>
                 options.UseMySql(dbPath, mySqlOptions =>
                 {
@@ -82,6 +85,19 @@ namespace imagehubsample
             }
 
             app.UseHttpsRedirection();
+
+            var pfp = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"])
+            );
+            app.UseStaticFiles(new StaticFileOptions{
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions{
+                FileProvider = pfp,
+                RequestPath = "/img"
+            });
 
             app.UseSpaStaticFiles();
 

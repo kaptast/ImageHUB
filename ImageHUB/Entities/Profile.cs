@@ -10,6 +10,7 @@ namespace ImageHUB.Entities
         public int ID { get; set; }
         public string UserID { get; set; }
         public string UserName { get; set; }
+        public IEnumerable<Post> Posts { get; set; }
     }
 
     public class ProfileDTO

@@ -10,6 +10,7 @@ namespace ImageHUB.Repositories
     public class DatabaseContext : DbContext
     {
         public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)

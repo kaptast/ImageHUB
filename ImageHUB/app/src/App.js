@@ -5,9 +5,11 @@ import './custom.css'
 
 export default function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [name, setName] = useState("")
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [name, setName] = useState("");
     const [id, setId] = useState("");
+    const [file, setFile] = useState(null);
+    const [urls, setUrls] = useState([]);
 
     useEffect(() => {
         axios.get("api/auth/isloggedin")
@@ -36,6 +38,21 @@ export default function App() {
         }
     })
 
+    const onChange = e => {
+        setFile(e.target.files[0]);
+    }
+
+    const onFormSubmit = event => {
+        event.preventDefault()
+        const formData = new FormData()
+        formData.append("file", file)
+        axios.post("api/post/upload", formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+        }).then(res => {
+            axios.get("api/post").then(res => setUrls(res.data))
+        })
+    }
+
     const logout = () => {
         axios.get("api/auth/logout")
             .then(res => {
@@ -49,6 +66,15 @@ export default function App() {
                 <>
                     <div>Welcome {name} with {id}!</div>
                     <button onClick={logout}>Logout</button>
+                    <p>
+                        <form onSubmit={onFormSubmit}>
+                            <h1>File Upload</h1>
+                            <input type="file" name="img" onChange={onChange} />
+                            <button type="submit">Upload</button>
+                        </form>
+                    </p>
+
+                    {urls.map(url => <div><img alt="" src={url.image}></img></div>)}
                 </>}
 
             {!isLoggedIn &&

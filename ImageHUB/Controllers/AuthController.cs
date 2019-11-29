@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace imagehubsample.Controllers
+namespace ImageHUB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

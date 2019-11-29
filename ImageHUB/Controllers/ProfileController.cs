@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using ImageHUB.Entities;
+using ImageHUB.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ImageHUB.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProfileController : ControllerBase
+    {
+        private readonly IProfileService profileService;
+
+        public ProfileController(IProfileService profileService)
+        {
+            this.profileService = profileService;
+        }
+
+        [HttpGet]
+        public Profile Get()
+        {
+            string userName = HttpContext.User.Identity.Name;
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var profile = this.profileService.GetProfileByID(userId, userName);
+
+            return profile;
+        }
+
+        [HttpGet]
+        [Route("GetById")]
+        public Profile GetById(string id)
+        {
+            string userName = HttpContext.User.Identity.Name;
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id.Equals("0"))
+            {
+
+                id = userId;
+            }
+
+            var profile = this.profileService.GetProfileByID(id, userName);
+            /*if (profile.ID.Equals(userId))
+            {
+                profile.ShowFriendButton = false;
+                profile.Status = FriendStatus.NotFriends;
+            }
+            else
+            {
+                profile.Status = this.profileService.IsFriendsWith(userId, profile.UserID);
+                profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
+            }*/
+
+            return profile;
+        }
+
+        [HttpGet]
+        [Route("GetAllByName")]
+        public IEnumerable<Profile> GetAllByName(string name)
+        {
+            return this.profileService.GetProfilesByName(name);
+        }
+    }
+}

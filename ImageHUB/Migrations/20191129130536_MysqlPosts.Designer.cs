@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageHUB.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191129125421_MysqlPosts")]
+    [Migration("20191129130536_MysqlPosts")]
     partial class MysqlPosts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

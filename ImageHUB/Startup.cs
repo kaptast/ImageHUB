@@ -50,8 +50,8 @@ namespace imagehubsample
              });
 
             //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=nincs";
-            var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=migrationpwd";
-            //var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=migrationpwd";
+            var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
             services.AddDbContextPool<DatabaseContext>(options =>
                 options.UseMySql(dbPath, mySqlOptions =>
                 {

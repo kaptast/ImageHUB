@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
-import './custom.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Login from './components/Login/Login';
+import Layout from './components/Layout';
+import { BrowserRouter } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router';
 
 export default function App() {
 
@@ -23,7 +25,9 @@ export default function App() {
                 console.log("failed to log in.")
                 setIsLoggedIn(false)
             });
+    })
 
+    useEffect(() => {
         if (isLoggedIn) {
             axios.get("api/profile")
                 .then(res => {
@@ -37,22 +41,7 @@ export default function App() {
                 })
             axios.get("api/post").then(res => setUrls(res.data))
         }
-    })
-
-    const onChange = e => {
-        setFile(e.target.files[0]);
-    }
-
-    const onFormSubmit = event => {
-        event.preventDefault()
-        const formData = new FormData()
-        formData.append("file", file)
-        axios.post("api/post/upload", formData, {
-            headers: { 'content-type': 'multipart/form-data' }
-        }).then(res => {
-            axios.get("api/post").then(res => setUrls(res.data))
-        })
-    }
+    }, [isLoggedIn])
 
     const logout = () => {
         axios.get("api/auth/logout")
@@ -65,25 +54,17 @@ export default function App() {
         <div>
             {isLoggedIn &&
                 <>
-                    <div>Welcome {name} with {id}!</div>
-                    <button onClick={logout}>Logout</button>
-                    <p>
-                        <form onSubmit={onFormSubmit}>
-                            <h1>File Upload</h1>
-                            <input type="file" name="img" onChange={onChange} />
-                            <button type="submit">Upload</button>
-                        </form>
-                    </p>
-
-                    {urls.map(url => <div><img alt="" src={"data:image/jpeg;base64," + url.image} ></img></div>)}
+                    <BrowserRouter>
+                        <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
+                            <Switch>
+                                
+                            </Switch>
+                        </Layout>
+                    </BrowserRouter>
                 </>}
 
             {!isLoggedIn &&
-                <>
-                    <form id="external-login" method="post" action="api/auth/signin">
-                        <button>Login</button>
-                    </form>
-                </>}
+                <Login />}
         </div>
     )
 }

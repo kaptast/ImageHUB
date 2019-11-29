@@ -12,10 +12,14 @@ namespace ImageHUB.Repositories
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Post> Posts { get; set; }
 
+        private object lockObject = new object();
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-            //Database.Migrate();
+            lock(lockObject){
+                Database.Migrate();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

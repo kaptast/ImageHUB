@@ -86,7 +86,7 @@ namespace imagehubsample
 
             app.UseHttpsRedirection();
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
+            /*var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -101,7 +101,7 @@ namespace imagehubsample
             app.UseDirectoryBrowser(new DirectoryBrowserOptions{
                 FileProvider = pfp,
                 RequestPath = "/img"
-            });
+            });*/
 
             app.UseSpaStaticFiles();
 

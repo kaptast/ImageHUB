@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,17 @@ namespace ImageHUB.Services
             using (var fileStream = new FileStream(pathToSave, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);
+            }
+        }
+
+        public string StoreBase64(IFormFile file)
+        {
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                string s = Convert.ToBase64String(fileBytes);
+                return s;
             }
         }
     }

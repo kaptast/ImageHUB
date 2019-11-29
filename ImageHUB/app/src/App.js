@@ -35,6 +35,7 @@ export default function App() {
                     console.log(err)
                     console.log("failed to get profile")
                 })
+            axios.get("api/post").then(res => setUrls(res.data))
         }
     })
 
@@ -74,7 +75,7 @@ export default function App() {
                         </form>
                     </p>
 
-                    {urls.map(url => <div><img alt="" src={url.image}></img></div>)}
+                    {urls.map(url => <div><img alt="" src={"data:image/jpeg;base64," + url.image} ></img></div>)}
                 </>}
 
             {!isLoggedIn &&

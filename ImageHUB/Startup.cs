@@ -55,8 +55,12 @@ namespace imagehubsample
                     mySqlOptions.ServerVersion(new Version(5, 7, 9), ServerType.MySql);
                 }
             ));
+
             services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IImageStorage, ImageStorage>();
+            services.AddScoped<IPostService, PostService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

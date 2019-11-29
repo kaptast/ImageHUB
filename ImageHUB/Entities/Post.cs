@@ -11,6 +11,8 @@ namespace ImageHUB.Entities
     {
         public string Image { get; set; }
         public int ID { get; set; }
+
+        [NotMapped]
         public bool show { get { return true; } }
 
         [JsonIgnore]

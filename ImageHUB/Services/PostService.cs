@@ -38,14 +38,13 @@ namespace ImageHUB.Services
 
         public async Task SavePostAsync(IFormFile file, Profile owner)
         {
+            await this.storage.StoreAsync(file);
             var post = new Post(){
                 Image = Path.Combine("img", file.FileName),
                 Owner = owner
             };
 
             this.repository.Add(post);
-
-            await this.storage.StoreAsync(file);
         }
     }
 }

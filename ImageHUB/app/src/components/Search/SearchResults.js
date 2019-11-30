@@ -42,7 +42,7 @@ export default function SearchResults(props) {
             .then(res => {
                 setResults(res.data);
             });
-    }, []);
+    }, [index]);
 
     return (
         <div>

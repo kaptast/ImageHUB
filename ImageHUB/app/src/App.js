@@ -3,6 +3,7 @@ import axios from 'axios';
 import Login from './components/Login/Login';
 import Layout from './components/Layout';
 import Home from './components/Home';
+import Profile from './components/Profile';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
 
@@ -40,6 +41,7 @@ export default function App() {
                         <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
                             <Switch>
                                 <Route exact path='/' component={Home} />
+                                <Route path='/profile/:index?' component={Profile} />
                                 <Route path='/login' component={Login} />
                             </Switch>
                         </Layout>

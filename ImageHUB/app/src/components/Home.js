@@ -11,17 +11,17 @@ export default function Home() {
         setIsLoading(true)
         axios.get("api/profile")
             .then(res => {
-                console.log("profile get ok")
+                console.log("profile get ok");
             })
+            .then(axios.get("api/post")
+                .then(res => {
+                    setHomePosts(res.data);
+                    setIsLoading(false);
+                }))
             .catch(err => {
                 console.log(err)
                 console.log("failed to get profile")
             });
-        axios.get("api/post").then(res => {
-            setHomePosts(res.data);
-            console.log(res.data);
-            setIsLoading(false);
-        });
     }, []);
 
     return (

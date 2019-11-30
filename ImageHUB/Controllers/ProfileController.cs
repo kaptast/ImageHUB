@@ -15,10 +15,12 @@ namespace ImageHUB.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService profileService;
+        private readonly IPostService postService;
 
-        public ProfileController(IProfileService profileService)
+        public ProfileController(IProfileService profileService, IPostService postService)
         {
             this.profileService = profileService;
+            this.postService = postService;
         }
 
         [HttpGet]
@@ -45,6 +47,8 @@ namespace ImageHUB.Controllers
             }
 
             var profile = this.profileService.GetProfileByID(id, userName);
+            profile.Posts = this.postService.GetPostsByUser(id);
+            
             /*if (profile.ID.Equals(userId))
             {
                 profile.ShowFriendButton = false;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     search: {
@@ -46,11 +47,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function SearchField(props) {
     const [searchInputValue, setSearchInputValue] = useState("");
+    let history = useHistory();
 
     const catchReturn = event => {
         if (event.key == 'Enter') {
             event.preventDefault();
-            props.history.push('/search/' + searchInputValue);
+            history.push('/search/' + searchInputValue);
         }
     }
 

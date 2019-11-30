@@ -30,7 +30,7 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Post> GetAll()
         {
-            return this.database.Posts.Include(p => p.Owner).ToList();
+            return this.database.Posts.Include(p => p.Owner).OrderByDescending(p => p.ID).ToList();
         }
 
         public Post GetByID(string id)
@@ -40,7 +40,7 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Post> GetPostsByOwner(string ownerID)
         {
-            return this.database.Posts.Include(p => p.Owner).Where(p => p.Owner.UserID.Equals(ownerID)).ToList();
+            return this.database.Posts.Include(p => p.Owner).Where(p => p.Owner.UserID.Equals(ownerID)).OrderByDescending(p => p.ID).ToList();
         }
 
         public void Update(Post entity)

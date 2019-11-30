@@ -26,11 +26,18 @@ namespace ImageHUB.Controllers
         [HttpGet]
         public IEnumerable<Post> Get()
         {
+            string userName = HttpContext.User.Identity.Name;
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            // TODO: only return filtered posts
-            var posts = this.postService.GetAllPosts();
+            var user = this.profileService.GetProfileByID(userId, userName);
 
-            return posts;
+            List<Post> posts = this.postService.GetPostsByUser(userId).ToList();
+
+            foreach (var friend in user.Friends)
+            {
+                posts.AddRange(this.postService.GetPostsByUser(friend.UserID));
+            }
+
+            return posts.OrderByDescending(p => p.ID);
         }
 
         [HttpPost]

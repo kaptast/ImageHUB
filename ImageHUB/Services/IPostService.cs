@@ -9,7 +9,6 @@ namespace ImageHUB.Services
     {
         Task SavePostAsync(IFormFile file, Profile owner);
         IEnumerable<Post> GetAllPosts();
-        IEnumerable<Post> GetFeedPostsByUser(string userID);
         IEnumerable<Post> GetPostsByUser(string userID);
     }
 }

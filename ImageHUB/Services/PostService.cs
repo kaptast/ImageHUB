@@ -25,12 +25,6 @@ namespace ImageHUB.Services
             return this.repository.GetAll();
         }
 
-        public IEnumerable<Post> GetFeedPostsByUser(string userID)
-        {
-            // TODO: append friends posts
-            return this.GetPostsByUser(userID);
-        }
-
         public IEnumerable<Post> GetPostsByUser(string userID)
         {
             return this.repository.GetPostsByOwner(userID);

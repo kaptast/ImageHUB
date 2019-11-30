@@ -49,7 +49,7 @@ namespace ImageHUB.Controllers
             var profile = this.profileService.GetProfileByID(id, userName);
             profile.Posts = this.postService.GetPostsByUser(id);
             
-            if (profile.ID.Equals(userId))
+            if (profile.UserID.Equals(userId))
             {
                 profile.ShowFriendButton = false;
                 profile.Status = FriendStatus.NotFriends;

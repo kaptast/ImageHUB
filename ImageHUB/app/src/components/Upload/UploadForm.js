@@ -19,9 +19,11 @@ const useStyles = makeStyles(theme => ({
 export default function UploadForm(props) {
 
     const [file, setFile] = useState(null);
+    const [uploadDisabled, setUploadDisabled] = useState(true);
 
     const onChange = e => {
         setFile(e.target.files[0]);
+        setUploadDisabled(false);
     }
 
     const onFormSubmit = event => {
@@ -39,21 +41,28 @@ export default function UploadForm(props) {
             <form onSubmit={onFormSubmit} style={{ padding: 20 }}>
                 <Grid container className={classes.container} spacing={2}>
                     <Grid item xs={12}>
-
+                        <input 
+                            type="file"
+                            id="avatar" 
+                            name="avatar"
+                            accept="image/png, image/jpeg"
+                            onChange={onChange}
+                        />
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="inherit"
-                            className={classes.button}
-                            startIcon={<PublishIcon />}
-                        >
-                            Upload
+                        <Grid item xs={12}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="inherit"
+                                disabled={uploadDisabled}
+                                className={classes.button}
+                                startIcon={<PublishIcon />}
+                            >
+                                Upload
                             </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
             </form>
         </div>
-    )
+            )
 }

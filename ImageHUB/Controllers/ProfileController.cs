@@ -48,6 +48,7 @@ namespace ImageHUB.Controllers
 
             var profile = this.profileService.GetProfileByID(id, userName);
             profile.Posts = this.postService.GetPostsByUser(id);
+            profile.Friends = new List<Profile>();
             
             /*if (profile.ID.Equals(userId))
             {

@@ -1,10 +1,7 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { actionCreators } from '../store/Counter';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { PostWithoutHeader } from '../components/Post/Post';
+import { PostWithoutHeader } from '../Post/Post';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Skeleton from '@material-ui/lab/Skeleton';
 
@@ -30,8 +27,10 @@ export default function ProfileFeed(props) {
     const remainder = props.posts.length % 3;
     const emptyCount = (remainder === 0) ? 0 : 3 - remainder;
 
+    const showedArray = [...props.posts];
+
     for (let i = 0; i < emptyCount; i++) {
-        props.posts.push(
+        showedArray.push(
             {
                 show: false
             }
@@ -42,7 +41,7 @@ export default function ProfileFeed(props) {
         <div className={classes.root}>
             <Grid container direction={style} alignItems="center" justify="center" spacing={3}>
                 {!props.isLoading ? (
-                    props.posts.map(post => (
+                    showedArray.map(post => (
                         <Grid item key={post.title} xs={itemSize}>
                             <PostWithoutHeader value={post} isLoading={props.isLoading} />
                         </Grid>

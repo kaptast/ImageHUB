@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Feed from './Feed/ProfileFeed';
 import Header from './Profile/Header';
+import axios from 'axios';
 
 const defaultProfile = {
     name: "",
-    index: "asd",
     posts: [],
     friends: [],
     showFriendButton: false,
@@ -19,7 +19,7 @@ export default function Profile(props) {
     useEffect(() =>{
         setIsLoading(true);
         const url = `api/profile/GetById?id=${index}`;
-        axios.get("api/profile")
+        axios.get(url)
             .then(res => {
                 setProfile(res.data);
                 setIsLoading(false);

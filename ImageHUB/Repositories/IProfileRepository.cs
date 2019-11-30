@@ -9,5 +9,8 @@ namespace ImageHUB.Repositories
     public interface IProfileRepository : IRepository<Profile>
     {
         IEnumerable<Profile> GetProfilesByName(string userName);
+        ProfileFriend GetFriendShip(string userID, string friendID);
+        IEnumerable<Profile> GetFriends(string userID, bool selectPending = false);
+        void UpdateFriendShip(ProfileFriend friendship);
     }
 }

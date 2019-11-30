@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ImageHUB.Entities
 {
@@ -14,6 +15,12 @@ namespace ImageHUB.Entities
         public string UserName { get; set; }
 
         public IEnumerable<Post> Posts { get; set; }
+
+        [JsonIgnore]
+        public ICollection<ProfileFriend> FriendsTo { get; set; }
+
+        [JsonIgnore]
+        public ICollection<ProfileFriend> FriendsWith { get; set; }
 
         [NotMapped]
         public IEnumerable<Profile> Friends { get; set; }

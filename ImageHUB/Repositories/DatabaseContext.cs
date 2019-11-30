@@ -25,6 +25,10 @@ namespace ImageHUB.Repositories
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Profile>().HasIndex(u => u.UserID).IsUnique();
+
+            builder.Entity<ProfileFriend>().HasKey(bc => new { bc.ProfileID, bc.FriendID });
+            builder.Entity<ProfileFriend>().HasOne(bc => bc.Profile).WithMany(b => b.FriendsTo).HasForeignKey(bc => bc.ProfileID);
+            builder.Entity<ProfileFriend>().HasOne(bc => bc.Friend).WithMany(c => c.FriendsWith).HasForeignKey(bc => bc.FriendID);
         }
     }
 }

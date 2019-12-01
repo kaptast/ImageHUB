@@ -72,19 +72,14 @@ const useStyles = makeStyles(theme => ({
 function pictureIsAllowedByTags(tags) {
     const illegalTags = ['train', 'trains'];
     let returnValue = true;
-
     let pictureTags = [];
 
     tags.forEach(tag =>{
         pictureTags.push(tag.name);
     })
 
-    console.log(pictureTags);
-
     illegalTags.forEach(tag => {
-        console.log(tag);
         if (pictureTags.includes(tag)){
-            console.log('tag included');
             returnValue = false;
         }
     })

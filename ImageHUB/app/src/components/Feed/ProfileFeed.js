@@ -41,8 +41,8 @@ export default function ProfileFeed(props) {
         <div className={classes.root}>
             <Grid container direction={style} alignItems="center" justify="center" spacing={3}>
                 {!props.isLoading ? (
-                    showedArray.map(post => (
-                        <Grid item key={post.title} xs={itemSize}>
+                    showedArray.map((post, key) => (
+                        <Grid item key={key} xs={itemSize}>
                             <PostWithoutHeader value={post} isLoading={props.isLoading} />
                         </Grid>
                     ))

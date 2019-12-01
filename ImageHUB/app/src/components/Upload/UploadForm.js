@@ -8,6 +8,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import TextField from '@material-ui/core/TextField';
 import { useSnackbar } from 'notistack';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tags from '../Post/Tags';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -68,6 +69,29 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+function pictureIsAllowedByTags(tags) {
+    const illegalTags = ['train', 'trains'];
+    let returnValue = true;
+
+    let pictureTags = [];
+
+    tags.forEach(tag =>{
+        pictureTags.push(tag.name);
+    })
+
+    console.log(pictureTags);
+
+    illegalTags.forEach(tag => {
+        console.log(tag);
+        if (pictureTags.includes(tag)){
+            console.log('tag included');
+            returnValue = false;
+        }
+    })
+
+    return Boolean(returnValue);
+}
+
 export default function UploadForm(props) {
     const [file, setFile] = useState(null);
     const [fileUrl, setFileUrl] = useState("");
@@ -76,19 +100,44 @@ export default function UploadForm(props) {
     const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
+    const [tags, setTags] = useState([]);
 
     const onChange = e => {
         if (e.target.files[0].size <= 1048576) {
             setIsLoading(true);
+
+            enqueueSnackbar('Analyzing picture.', { variant: 'info' });
+
             setFile(e.target.files[0]);
             if (fileUrl !== "") {
                 URL.revokeObjectURL(fileUrl);
             }
             setFileUrl(URL.createObjectURL(e.target.files[0]));
             setFileName(e.target.files[0].name);
-            setUploadDisabled(false);
             setHaveImage(true);
-            setIsLoading(false);
+            
+            const formData = new FormData()
+            formData.append("file", e.target.files[0])
+            axios.post("https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze?visualFeatures=Tags&language=en", formData, {
+                headers: { 
+                    'Content-Type': 'multipart/form-data',
+                    'Ocp-Apim-Subscription-Key': '1edc24671b7c4b84a3e0ccbf129cc0f0'
+                }
+            }).then(res => {
+                setTags(res.data.tags);
+
+                if (pictureIsAllowedByTags(res.data.tags)){
+                    setUploadDisabled(false);
+                } else {
+                    setUploadDisabled(true);
+                    enqueueSnackbar('Picture contains not allowed content.', { variant: 'error' });
+                }
+                
+                setIsLoading(false);
+            }).catch(err => {
+                console.log(err);
+                setIsLoading(false);
+            });
         } else {
             enqueueSnackbar('The file is too large! Maximum filesize is 1 MB.', { variant: 'error' });
         }
@@ -122,6 +171,9 @@ export default function UploadForm(props) {
                 <Grid item xs={12}>
                     {haveImage && <img className={classes.image} src={fileUrl} />}
                     {!haveImage && <Skeleton variant="rect" className={classes.skeleton} />}
+                </Grid>
+                <Grid item xs={12}>
+                    <Tags tags={tags}/>
                 </Grid>
                 <form onSubmit={onFormSubmit} className={classes.form}>
                     <Grid item xs={12} className={classes.picker}>

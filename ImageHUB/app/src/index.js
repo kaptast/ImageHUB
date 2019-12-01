@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
+import gray from '@material-ui/core/colors/blueGrey';
 import App from './App';
+import { SnackbarProvider } from 'notistack';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -14,7 +16,7 @@ const theme = createMuiTheme({
     primary: {
       main: '#fff',
     },
-    secondary: red,
+    secondary: gray,
     error: red,
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -37,9 +39,11 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
-    <BrowserRouter basename={baseUrl}>
-      <App />
-    </BrowserRouter>
+    <SnackbarProvider maxSnack={3}>
+      <BrowserRouter basename={baseUrl}>
+        <App />
+      </BrowserRouter>
+    </SnackbarProvider>
   </MuiThemeProvider>,
   rootElement);
 

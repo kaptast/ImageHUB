@@ -42,14 +42,16 @@ namespace ImageHUB.Controllers
 
         [HttpPost]
         [Route("upload")]
-        public async Task Upload(IFormFile file)
+        public IActionResult Upload(IFormFile file)
         {
             string userName = HttpContext.User.Identity.Name;
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var owner = this.profileService.GetProfileByID(userId, userName);
 
-            await this.postService.SavePostAsync(file, owner);
+            this.postService.SavePostAsync(file, owner);
+
+            return this.Ok();
         }
     }
 }

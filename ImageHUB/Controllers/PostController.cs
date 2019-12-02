@@ -42,8 +42,19 @@ namespace ImageHUB.Controllers
 
         [HttpPost]
         [Route("upload")]
-        public IActionResult Upload(IFormFile file)
+        public IActionResult Upload(IFormCollection formData)
         {
+            var file = formData.Files[0];
+            string[] tags;
+            if (formData.ContainsKey("tags"))
+            {
+                var list = formData["tags"];
+                if (list.Count > 0)
+                {
+                    tags = list[0].Split(',');
+                }
+            }
+            
             string userName = HttpContext.User.Identity.Name;
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 

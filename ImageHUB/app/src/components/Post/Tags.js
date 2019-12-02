@@ -23,7 +23,7 @@ export default function ChipsArray(props) {
         return (
           <Chip
             key={key}
-            label={data.name}
+            label={data}
             className={classes.chip}
           />
         );

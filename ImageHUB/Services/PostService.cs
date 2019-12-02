@@ -30,7 +30,7 @@ namespace ImageHUB.Services
             return this.repository.GetPostsByOwner(userID);
         }
 
-        public async Task SavePostAsync(IFormFile file, Profile owner)
+        public async Task SavePostAsync(IFormFile file, Profile owner, IEnumerable<string> tags)
         {
             var base64Image = this.storage.StoreBase64(file);
             var post = new Post(){

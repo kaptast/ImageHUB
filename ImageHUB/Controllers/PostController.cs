@@ -45,14 +45,10 @@ namespace ImageHUB.Controllers
         public IActionResult Upload(IFormCollection formData)
         {
             var file = formData.Files[0];
-            string[] tags;
-            if (formData.ContainsKey("tags"))
+            List<string> tags = new List<string>();
+            if (formData.ContainsKey("tags") && formData["tags"].Count > 0)
             {
-                var list = formData["tags"];
-                if (list.Count > 0)
-                {
-                    tags = list[0].Split(',');
-                }
+                tags = formData["tags"][0].Split(',').ToList();
             }
             
             string userName = HttpContext.User.Identity.Name;
@@ -60,7 +56,7 @@ namespace ImageHUB.Controllers
 
             var owner = this.profileService.GetProfileByID(userId, userName);
 
-            this.postService.SavePostAsync(file, owner);
+            this.postService.SavePostAsync(file, owner, tags);
 
             return this.Ok();
         }

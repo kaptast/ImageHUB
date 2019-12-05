@@ -182,7 +182,7 @@ export default function UploadForm(props) {
                             id="file-input"
                         />
                         <label htmlFor="file-input">
-                            <Button className={classes.button} variant="outlined" component="span">
+                            <Button className={classes.button} variant="contained" component="span">
                                 Browse
                             </Button>
                         </label>

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ImageHUB.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,10 +40,11 @@ namespace ImageHUB.Repositories
             return this.database.Tags.Where(x => x.Name.Equals(name)).SingleOrDefault();
         }
 
-        public IEnumerable<Post> GetPostsByTag(string tag)
+        public IEnumerable<Post> GetPostsByTag(string name)
         {
-            throw new NotImplementedException();
-            //return this.database.Tags.Include(t => t.Posts).ThenInclude(pt => pt.Post).Where(t => t.Name.Equals(tag)).ToList();
+            var tag = this.database.Tags.Include(t => t.Posts).ThenInclude(pt => pt.Post).ThenInclude(p => p.Owner).Include(t => t.Posts).ThenInclude(pt => pt.Post).ThenInclude(p => p.Tags).ThenInclude(pt => pt.Tag).Where(x => x.Name.Equals(name)).SingleOrDefault();
+        
+            return tag.Posts.Select(p => p.Post);
         }
 
         public void Update(Tag entity)

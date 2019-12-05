@@ -27,6 +27,11 @@ namespace ImageHUB.Services
             return this.repository.GetAll();
         }
 
+        public IEnumerable<Post> GetPostsByTag(string name)
+        {
+            return this.tagRepository.GetPostsByTag(name);
+        }
+
         public IEnumerable<Post> GetPostsByUser(string userID)
         {
             return this.repository.GetPostsByOwner(userID);

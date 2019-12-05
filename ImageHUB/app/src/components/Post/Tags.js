@@ -44,12 +44,14 @@ export function SmallChipsArray(props) {
     smallArray.push(props.tags[3]);
   }
 
+  console.log(smallArray);
+
   return (
     <div className={classes.root}>
       {showMenu &&
         <div>
           {smallArray.map((data, key) => (
-            <Link to={'tag/' + data}>
+            <Link to={'/tag/' + data}>
               <Chip
                 key={key}
                 label={data}

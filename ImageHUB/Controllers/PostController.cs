@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using ImageHUB.Entities;
 using ImageHUB.Services;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +36,13 @@ namespace ImageHUB.Controllers
             }
 
             return posts.OrderByDescending(p => p.ID);
+        }
+
+        [HttpGet]
+        [Route("GetPostsByTag")]
+        public IEnumerable<Post> GetPostsByTag(string tag)
+        {
+            return this.postService.GetPostsByTag(tag);
         }
 
         [HttpPost]

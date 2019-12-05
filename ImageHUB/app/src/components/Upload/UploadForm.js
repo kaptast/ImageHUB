@@ -72,14 +72,14 @@ const useStyles = makeStyles(theme => ({
 function pictureIsAllowedByTags(tags) {
     const illegalTags = ['train', 'trains'];
     let returnValue = true;
-    
+
 
     /*tags.forEach(tag =>{
         pictureTags.push(tag.name);
     })*/
 
     illegalTags.forEach(tag => {
-        if (tags.includes(tag)){
+        if (tags.includes(tag)) {
             returnValue = false;
         }
     })
@@ -110,25 +110,25 @@ export default function UploadForm(props) {
             setFileUrl(URL.createObjectURL(e.target.files[0]));
             setFileName(e.target.files[0].name);
             setHaveImage(true);
-            
+
             const formData = new FormData()
             formData.append("file", e.target.files[0])
             axios.post("https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze?visualFeatures=Tags&language=en", formData, {
-                headers: { 
+                headers: {
                     'Content-Type': 'multipart/form-data',
                     'Ocp-Apim-Subscription-Key': '1edc24671b7c4b84a3e0ccbf129cc0f0'
                 }
             }).then(res => {
-                let pictureTags = res.data.tags.map(({name}) => name);
+                let pictureTags = res.data.tags.map(({ name }) => name);
                 setTags(pictureTags);
 
-                if (pictureIsAllowedByTags(pictureTags)){
+                if (pictureIsAllowedByTags(pictureTags)) {
                     setUploadDisabled(false);
                 } else {
                     setUploadDisabled(true);
                     enqueueSnackbar('Picture contains not allowed content.', { variant: 'error' });
                 }
-                
+
                 setIsLoading(false);
             }).catch(err => {
                 console.log(err);
@@ -149,11 +149,11 @@ export default function UploadForm(props) {
         }).then(res => {
             console.log("upload ok");
         })
-        .then(props.parentCallback())
-        .catch(err => {
-            console.log(err);
-            console.log("failed to upload file");
-        });
+            .then(props.parentCallback())
+            .catch(err => {
+                console.log(err);
+                console.log("failed to upload file");
+            });
     }
 
     const classes = useStyles();
@@ -165,14 +165,18 @@ export default function UploadForm(props) {
                 </div>
             }
             <Grid container className={classes.container}>
-                <Grid item xs={12}>
-                    {haveImage && <img className={classes.image} src={fileUrl} />}
-                    {!haveImage && <Skeleton variant="rect" className={classes.skeleton} />}
-                </Grid>
-                <Grid item xs={12}>
-                    <Tags tags={tags}/>
-                </Grid>
                 <form onSubmit={onFormSubmit} className={classes.form}>
+                    <Grid item xs={12}>
+                        {haveImage && <img className={classes.image} src={fileUrl} />}
+                        {!haveImage &&
+                            <label htmlFor="file-input">
+                                <Skeleton variant="rect" className={classes.skeleton} />
+                            </label>
+                        }
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Tags tags={tags} />
+                    </Grid>
                     <Grid item xs={12} className={classes.picker}>
                         <input
                             type="file"

@@ -72,14 +72,14 @@ const useStyles = makeStyles(theme => ({
 function pictureIsAllowedByTags(tags) {
     const illegalTags = ['train', 'trains'];
     let returnValue = true;
-    let pictureTags = [];
+    
 
-    tags.forEach(tag =>{
+    /*tags.forEach(tag =>{
         pictureTags.push(tag.name);
-    })
+    })*/
 
     illegalTags.forEach(tag => {
-        if (pictureTags.includes(tag)){
+        if (tags.includes(tag)){
             returnValue = false;
         }
     })
@@ -119,9 +119,10 @@ export default function UploadForm(props) {
                     'Ocp-Apim-Subscription-Key': '1edc24671b7c4b84a3e0ccbf129cc0f0'
                 }
             }).then(res => {
-                setTags(res.data.tags);
+                let pictureTags = res.data.tags.map(({name}) => name);
+                setTags(pictureTags);
 
-                if (pictureIsAllowedByTags(res.data.tags)){
+                if (pictureIsAllowedByTags(pictureTags)){
                     setUploadDisabled(false);
                 } else {
                     setUploadDisabled(true);
@@ -141,7 +142,8 @@ export default function UploadForm(props) {
     const onFormSubmit = event => {
         event.preventDefault()
         const formData = new FormData()
-        formData.append("file", file)
+        formData.append("file", file);
+        formData.append("tags", tags);
         axios.post("api/post/upload", formData, {
             headers: { 'content-type': 'multipart/form-data' }
         }).then(res => {

@@ -18,6 +18,8 @@ namespace ImageHUB.Entities
         [JsonIgnore]
         public Profile Owner { get; set; }
 
+        public ICollection<PostTag> Tags { get; set; }
+
         [NotMapped]
         public ProfileDTO OwnerDTO
         {

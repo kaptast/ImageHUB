@@ -30,17 +30,17 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Post> GetAll()
         {
-            return this.database.Posts.Include(p => p.Owner).OrderByDescending(p => p.ID).ToList();
+            return this.database.Posts.Include(p => p.Owner).Include(p => p.Tags).ThenInclude(pt => pt.Tag).OrderByDescending(p => p.ID).ToList();
         }
 
         public Post GetByID(string id)
         {
-            return this.database.Posts.Include(p => p.Owner).Where(p => p.ID.ToString().Equals(id)).SingleOrDefault();
+            return this.database.Posts.Include(p => p.Owner).Include(p => p.Tags).ThenInclude(pt => pt.Tag).Where(p => p.ID.ToString().Equals(id)).SingleOrDefault();
         }
 
         public IEnumerable<Post> GetPostsByOwner(string ownerID)
         {
-            return this.database.Posts.Include(p => p.Owner).Where(p => p.Owner.UserID.Equals(ownerID)).OrderByDescending(p => p.ID).ToList();
+            return this.database.Posts.Include(p => p.Owner).Include(p => p.Tags).ThenInclude(pt => pt.Tag).Where(p => p.Owner.UserID.Equals(ownerID)).OrderByDescending(p => p.ID).ToList();
         }
 
         public void Update(Post entity)

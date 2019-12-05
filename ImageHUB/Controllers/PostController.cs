@@ -42,14 +42,21 @@ namespace ImageHUB.Controllers
 
         [HttpPost]
         [Route("upload")]
-        public IActionResult Upload(IFormFile file)
+        public IActionResult Upload(IFormCollection formData)
         {
+            var file = formData.Files[0];
+            List<string> tags = new List<string>();
+            if (formData.ContainsKey("tags") && formData["tags"].Count > 0)
+            {
+                tags = formData["tags"][0].Split(',').ToList();
+            }
+            
             string userName = HttpContext.User.Identity.Name;
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var owner = this.profileService.GetProfileByID(userId, userName);
 
-            this.postService.SavePostAsync(file, owner);
+            this.postService.SavePostAsync(file, owner, tags);
 
             return this.Ok();
         }

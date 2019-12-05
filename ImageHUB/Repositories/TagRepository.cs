@@ -10,6 +10,11 @@ namespace ImageHUB.Repositories
     public class TagRepository : ITagRepository
     {
         private DatabaseContext database;
+
+        public TagRepository(DatabaseContext db)
+        {
+            this.database = db;
+        }
         public void Add(Tag entity)
         {
             this.database.Tags.Add(entity);
@@ -24,16 +29,22 @@ namespace ImageHUB.Repositories
 
         public IEnumerable<Tag> GetAll()
         {
-            this.database.Tags.ToList();
+            return this.database.Tags.ToList();
         }
 
         public Tag GetByID(string id)
         {
-            this.database.Tags.Where(x => x.ID.Equals(id)).SingleOrDefault();
+            return this.database.Tags.Where(x => x.ID.Equals(id)).SingleOrDefault();
+        }
+
+        public Tag GetByName(string name)
+        {
+            return this.database.Tags.Where(x => x.Name.Equals(name)).SingleOrDefault();
         }
 
         public IEnumerable<Post> GetPostsByTag(string tag)
         {
+            throw new NotImplementedException();
             //return this.database.Tags.Include(t => t.Posts).ThenInclude(pt => pt.Post).Where(t => t.Name.Equals(tag)).ToList();
         }
 

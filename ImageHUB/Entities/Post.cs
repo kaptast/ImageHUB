@@ -18,6 +18,7 @@ namespace ImageHUB.Entities
         [JsonIgnore]
         public Profile Owner { get; set; }
 
+        [JsonIgnore]
         public ICollection<PostTag> Tags { get; set; }
 
         [NotMapped]
@@ -29,5 +30,17 @@ namespace ImageHUB.Entities
             }
         }
 
+        [NotMapped]
+        public List<string> PostTags {
+            get
+            {
+                var list = new List<string>();
+                foreach(var tag in this.Tags){
+                    list.Add(tag.Tag.Name);
+                }
+
+                return list;
+            }
+        }
     }
 }

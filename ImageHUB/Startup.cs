@@ -61,6 +61,7 @@ namespace imagehubsample
 
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IImageStorage, ImageStorage>();
             services.AddScoped<IPostService, PostService>();

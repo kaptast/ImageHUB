@@ -9,5 +9,7 @@ namespace ImageHUB.Repositories
     public interface ITagRepository : IRepository<Tag>
     {
         IEnumerable<Post> GetPostsByTag(string tag);
+
+        Tag GetByName(string name);
     }
 }

@@ -13,6 +13,7 @@ namespace ImageHUB.Entities
 
         public string Name { get; set; }
 
+        [JsonIgnore]
         public ICollection<PostTag> Posts { get; set; }
     }
 

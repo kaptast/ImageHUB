@@ -12,12 +12,14 @@ namespace ImageHUB.Services
     public class PostService : IPostService
     {
         private readonly IPostRepository repository;
+        private readonly ITagRepository tagRepository;
         private readonly IImageStorage storage;
 
-        public PostService(IPostRepository repo, IImageStorage storage)
+        public PostService(IPostRepository repo, IImageStorage storage, ITagRepository tagRepo)
         {
             this.repository = repo;
             this.storage = storage;
+            this.tagRepository = tagRepo;
         }
 
         public IEnumerable<Post> GetAllPosts()
@@ -37,8 +39,35 @@ namespace ImageHUB.Services
                 Image = base64Image,//Path.Combine("img", file.FileName),
                 Owner = owner
             };
+            post.Tags = this.GenerateTagConnections(post, tags);
 
             this.repository.Add(post);
+        }
+
+        private List<PostTag> GenerateTagConnections(Post post, IEnumerable<string> tags)
+        {
+            var postTags = new List<PostTag>();
+
+            foreach(var tag in tags)
+            {
+                var dbTag = this.tagRepository.GetByName(tag);
+
+                if (dbTag == null)
+                {
+                    dbTag = new Tag(){
+                        Name = tag
+                    };
+                    this.tagRepository.Add(dbTag);
+                    dbTag = this.tagRepository.GetByName(tag); // refresh from database
+                }
+
+                var postTag = new PostTag();
+                postTag.Post = post;
+                postTag.Tag = dbTag;
+                postTags.Add(postTag);
+            }
+
+            return postTags;
         }
     }
 }

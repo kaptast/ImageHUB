@@ -11,7 +11,6 @@ namespace ImageHUB.Repositories
     {
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Post> Posts { get; set; }
-
         public DbSet<Tag> Tags { get; set; }
 
         private object lockObject = new object();

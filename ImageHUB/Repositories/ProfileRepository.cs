@@ -78,5 +78,11 @@ namespace ImageHUB.Repositories
             this.database.Update(friendship);
             this.database.SaveChanges();
         }
+
+        public void DeleteFriendShip(ProfileFriend friendship)
+        {
+            this.database.Remove(friendship);
+            this.database.SaveChanges();
+        }
     }
 }

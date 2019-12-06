@@ -37,5 +37,14 @@ namespace ImageHUB.Controllers
 
             this.profileService.AcceptFriend(userId, id);
         }
+
+        [HttpDelete]
+        [Route("DeleteFriend")]
+        public void DeleteFriend(string id)
+        {
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            this.profileService.DeleteFriend(userId, id);
+        }
     }
 }

@@ -4,7 +4,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { Typography, Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import IconButton from '@material-ui/core/IconButton';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import axios from 'axios';

@@ -20,18 +20,12 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         minHeight: 300,
         minWidth: 300,
-        [theme.breakpoints.up('md')]: {
-            width: 600,
-        }
     },
     skeleton: {
         width: '100%',
-        minHeight: 300,
-        minWidth: 300,
+        height: 300,
         [theme.breakpoints.up('md')]: {
-            width: 600,
-            maxHeight: 500,
-            minHeight: 500
+            height: 500
         }
     },
     input: {
@@ -49,11 +43,22 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
     },
     form: {
-        padding: 20,
-        width: '100%'
+        width: '100%',
+        minHeight: 300,
+        [theme.breakpoints.up('md')]: {
+            width: 600
+        }
+    },
+    formButtons: {
+        margin: 20,
+        width: '70%',
+        [theme.breakpoints.up('md')]: {
+            width: 500
+        }
     },
     wrapper: {
-        position: 'relative'
+        position: 'relative',
+        maxWidth: 580
     },
     spinner: {
         position: 'absolute',
@@ -65,7 +70,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(100, 100, 100, 0.5)'
+        backgroundColor: 'rgba(100, 100, 100, 0.7)'
     }
 }));
 
@@ -166,6 +171,7 @@ export default function UploadForm(props) {
             }
             <Grid container className={classes.container}>
                 <form onSubmit={onFormSubmit} className={classes.form}>
+                    <input type="file" accept="image/png, image/jpeg" onChange={onChange} className={classes.input} id="file-input" />
                     <Grid item xs={12}>
                         {haveImage && <img className={classes.image} src={fileUrl} />}
                         {!haveImage &&
@@ -174,46 +180,41 @@ export default function UploadForm(props) {
                             </label>
                         }
                     </Grid>
-                    <Grid item xs={12}>
-                        <Tags tags={tags} />
-                    </Grid>
-                    <Grid item xs={12} className={classes.picker}>
-                        <input
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            onChange={onChange}
-                            className={classes.input}
-                            id="file-input"
-                        />
-                        <label htmlFor="file-input">
-                            <Button className={classes.button} variant="contained" component="span">
-                                Browse
+                    <div className={classes.formButtons}>
+                        <Grid item xs={12}>
+                            <Tags tags={tags} />
+                        </Grid>
+                        <Grid item xs={12} className={classes.picker}>
+                            <label htmlFor="file-input">
+                                <Button className={classes.button} variant="contained" component="span">
+                                    Browse
                             </Button>
-                        </label>
-                        <TextField
-                            id="standard-read-only-input"
-                            label="File name"
-                            defaultValue=""
-                            color="secondary"
-                            value={fileName}
-                            className={classes.textField}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="inherit"
-                            disabled={uploadDisabled}
-                            className={classes.button}
-                            startIcon={<PublishIcon />}
-                        >
-                            Upload
+                            </label>
+                            <TextField
+                                id="standard-read-only-input"
+                                label="File name"
+                                defaultValue=""
+                                color="secondary"
+                                value={fileName}
+                                className={classes.textField}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="inherit"
+                                disabled={uploadDisabled}
+                                className={classes.button}
+                                startIcon={<PublishIcon />}
+                            >
+                                Upload
                             </Button>
-                    </Grid>
+                        </Grid>
+                    </div>
                 </form>
             </Grid>
         </div>

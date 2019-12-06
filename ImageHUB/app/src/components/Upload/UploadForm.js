@@ -75,13 +75,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function pictureIsAllowedByTags(tags) {
-    const illegalTags = ['train', 'trains'];
+    const illegalTags = ['train', 'trains', 'wagon', 'wagons', 'railroad train'];
     let returnValue = true;
-
-
-    /*tags.forEach(tag =>{
-        pictureTags.push(tag.name);
-    })*/
 
     illegalTags.forEach(tag => {
         if (tags.includes(tag)) {
@@ -105,7 +100,6 @@ export default function UploadForm(props) {
     const onChange = e => {
         if (e.target.files[0].size <= 1048576) {
             setIsLoading(true);
-
             enqueueSnackbar('Analyzing picture.', { variant: 'info' });
 
             setFile(e.target.files[0]);
@@ -153,12 +147,12 @@ export default function UploadForm(props) {
             headers: { 'content-type': 'multipart/form-data' }
         }).then(res => {
             console.log("upload ok");
-        })
-            .then(props.parentCallback())
-            .catch(err => {
-                console.log(err);
-                console.log("failed to upload file");
-            });
+        }).then(
+            props.parentCallback()
+        ).catch(err => {
+            console.log(err);
+            console.log("failed to upload file");
+        });
     }
 
     const classes = useStyles();

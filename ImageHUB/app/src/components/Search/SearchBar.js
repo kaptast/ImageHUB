@@ -10,7 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MessageIcon from '@material-ui/icons/Message';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import UploadButton from '../Upload/Upload';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -121,14 +120,6 @@ export default function SearchBar(props) {
         </IconButton>
         <p>Feed</p>
       </MenuItem>
-      <MenuItem to={`/messages`} component={props => <Link {...props} />}>
-        <IconButton aria-label="show new mails" color="inherit">
-          <Badge badgeContent={0} color="secondary">
-            <MessageIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
       <MenuItem to={`/profile`} component={props => <Link {...props} />}>
         <IconButton edge="account" aria-label="account of current user" color="inherit">
           <AccountCircle />
@@ -156,11 +147,6 @@ export default function SearchBar(props) {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <UploadButton />
-            <IconButton aria-label="show 4 new mails" color="inherit" to={`/messages`} component={props => <Link {...props} />}>
-              <Badge badgeContent={0} color="secondary">
-                <MessageIcon />
-              </Badge>
-            </IconButton>
             <IconButton aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
               <AccountCircle />
             </IconButton>

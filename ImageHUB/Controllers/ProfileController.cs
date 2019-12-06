@@ -48,7 +48,7 @@ namespace ImageHUB.Controllers
 
             var profile = this.profileService.GetProfileByID(id, userName);
             profile.Posts = this.postService.GetPostsByUser(id);
-            
+
             if (profile.UserID.Equals(userId))
             {
                 profile.ShowFriendButton = false;
@@ -67,7 +67,24 @@ namespace ImageHUB.Controllers
         [Route("GetAllByName")]
         public IEnumerable<Profile> GetAllByName(string name)
         {
-            return this.profileService.GetProfilesByName(name);
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profiles = this.profileService.GetProfilesByName(name);
+
+            foreach (var profile in profiles)
+            {
+                if (profile.UserID.Equals(userId))
+                {
+                    profile.ShowFriendButton = false;
+                    profile.Status = FriendStatus.NotFriends;
+                }
+                else
+                {
+                    profile.Status = this.profileService.IsFriendsWith(userId, profile.UserID);
+                    profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
+                }
+            }
+
+            return profiles;
         }
     }
 }

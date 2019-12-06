@@ -9,7 +9,7 @@ import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import axios from 'axios';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     container: {
         display: 'flex',
         justifyContent: 'flex',
@@ -24,12 +24,16 @@ const useStyles = makeStyles({
         height: 100
     },
     buttons: {
-        minWidth: 216
+        [theme.breakpoints.up('md')]: {
+            minWidth: 216
+        },
     },
     button: {
-        minWidth: 160
+        [theme.breakpoints.up('md')]: {
+            minWidth: 160
+        },
     }
-});
+}));
 
 function handleClick(id) {
     let url = `api/friend/AddFriend?id=${id}`;
@@ -129,7 +133,9 @@ export default function Header(props) {
                         )}
                         {friendStatus === 2 && (
                             <Grid item xs={4}>
-                                <Button className={classes.buttons} variant="outlined" color="warning" startIcon={<PersonAddDisabledIcon />} onClick={clickedDeleteFriend} aria-label="delete friend" component="span" />
+                                <Button className={classes.buttons} variant="outlined" color="warning" startIcon={<PersonAddDisabledIcon />} onClick={clickedDeleteFriend} aria-label="delete friend" component="span">
+                                    Delete friend
+                                </Button>
                             </Grid>
                         )}
                     </Grid>

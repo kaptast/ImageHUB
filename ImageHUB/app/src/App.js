@@ -43,7 +43,7 @@ export default function App() {
                         <Layout name={name} loggedIn={isLoggedIn} logout={logout}>
                             <Switch>
                                 <Route exact path='/' component={Home} />
-                                <Route path='/profile/:index?' component={Profile} />
+                                <Route path='/profile/:index?' component={Profile}/>
                                 <Route path='/search/:index?' component={Search} />
                                 <Route path='/tag/:index?' component={Tags} />
                                 <Route path='/login' component={Login} />

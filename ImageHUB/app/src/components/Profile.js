@@ -14,7 +14,7 @@ export default function Profile(props) {
     const [profile, setProfile] = useState(defaultProfile);
     const [isLoading, setIsLoading] = useState(true);
 
-    const index = parseInt(props.match.params.index, 10) || 0;
+    const index = props.match.params.index || "0";
 
     useEffect(() =>{
         setIsLoading(true);
@@ -24,7 +24,7 @@ export default function Profile(props) {
                 setProfile(res.data);
                 setIsLoading(false);
             });
-    }, []);
+    }, [props.match.params.index]);
 
     return (
       <div>

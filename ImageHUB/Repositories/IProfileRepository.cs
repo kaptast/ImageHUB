@@ -12,5 +12,6 @@ namespace ImageHUB.Repositories
         ProfileFriend GetFriendShip(string userID, string friendID);
         IEnumerable<Profile> GetFriends(string userID, bool selectPending = false);
         void UpdateFriendShip(ProfileFriend friendship);
+        void DeleteFriendShip(ProfileFriend friendship);
     }
 }

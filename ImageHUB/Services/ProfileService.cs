@@ -80,6 +80,20 @@ namespace ImageHUB.Services
             this.repository.UpdateFriendShip(friendShip);
         }
 
+        public void DeleteFriend(string userID, string friendID)
+        {
+            var friendShip = this.repository.GetFriendShip(userID, friendID);
+
+            if (friendShip == null)
+            {
+                friendShip = this.repository.GetFriendShip(friendID, userID);
+            }
+
+            if (friendShip == null) return;
+
+            this.repository.DeleteFriendShip(friendShip);
+        }
+
         public FriendStatus IsFriendsWith(string userID, string friendID)
         {
             var friendShip = this.repository.GetFriendShip(userID, friendID);

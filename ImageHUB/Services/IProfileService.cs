@@ -9,6 +9,7 @@ namespace ImageHUB.Services
         IEnumerable<Profile> GetProfilesByName(string userName);
         void AddFriend(string userID, string friendID);
         void AcceptFriend(string userID, string friendID);
+        void DeleteFriend(string userID, string friendID);
         FriendStatus IsFriendsWith(string userID, string friendID);
     }
 }

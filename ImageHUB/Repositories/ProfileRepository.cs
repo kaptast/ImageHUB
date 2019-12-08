@@ -54,6 +54,12 @@ namespace ImageHUB.Repositories
             return friends;
         }
 
+        public IEnumerable<Profile> GetWaitingFriends(string userID)
+        {
+            var user = this.GetByID(userID);
+            return user.FriendsWith?.Where(p => p.Accepted == false).Select(x => x.Profile)?.ToList();
+        }
+
         public ProfileFriend GetFriendShip(string userID, string friendID)
         {
             var user = this.GetByID(userID);

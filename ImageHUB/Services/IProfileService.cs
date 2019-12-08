@@ -11,5 +11,6 @@ namespace ImageHUB.Services
         void AcceptFriend(string userID, string friendID);
         void DeleteFriend(string userID, string friendID);
         FriendStatus IsFriendsWith(string userID, string friendID);
+        IEnumerable<Profile> GetWaitingFriends(string userID);
     }
 }

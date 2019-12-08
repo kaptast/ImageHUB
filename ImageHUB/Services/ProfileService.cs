@@ -114,5 +114,10 @@ namespace ImageHUB.Services
 
             return FriendStatus.NotFriends;
         }
+
+        public IEnumerable<Profile> GetWaitingFriends(string userID)
+        {
+            return this.repository.GetWaitingFriends(userID);
+        }
     }
 }

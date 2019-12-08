@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ImageHUB.Entities;
 using ImageHUB.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,19 @@ namespace ImageHUB.Controllers
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             this.profileService.DeleteFriend(userId, id);
+        }
+
+        [HttpGet]
+        [Route("WaitingFriends")]
+        public IEnumerable<Profile> GetWaitingFriends(string id)
+        {
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id.Equals("0") || id.Equals(userId))
+            {
+                return this.profileService.GetWaitingFriends(userId);
+            }
+
+            return null;
         }
     }
 }

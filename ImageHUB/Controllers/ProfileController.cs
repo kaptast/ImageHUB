@@ -42,7 +42,6 @@ namespace ImageHUB.Controllers
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id.Equals("0"))
             {
-
                 id = userId;
             }
 
@@ -85,6 +84,20 @@ namespace ImageHUB.Controllers
             }
 
             return profiles;
+        }
+
+        [HttpGet]
+        [Route("GetNotifications")]
+        public int GetNotifications(string id)
+        {
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (id == null || (id != null && (id.Equals("0") || id.Equals(userId))))
+            {
+                return this.profileService.GetWaitingFriends(userId).Count();
+            }
+
+            return 0;
         }
     }
 }

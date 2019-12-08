@@ -32,7 +32,7 @@ export default function App() {
         axios.get("api/auth/logout")
             .then(res => {
                 setIsLoggedIn(false)
-            })
+            });
     }
 
     return (

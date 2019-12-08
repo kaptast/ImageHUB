@@ -14,160 +14,173 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import UploadButton from '../Upload/Upload';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchField from './SearchField';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-      textDecoration: 'none'
+    grow: {
+        flexGrow: 1,
     },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade('#bdbdbd', 0.15),
-    '&:hover': {
-      backgroundColor: fade('#bdbdbd', 0.25),
+    menuButton: {
+        marginRight: theme.spacing(2),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
+    title: {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+            textDecoration: 'none'
+        },
     },
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 120,
-      '&:focus': {
-        width: 300,
-      },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade('#bdbdbd', 0.15),
+        '&:hover': {
+            backgroundColor: fade('#bdbdbd', 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(3),
+            width: 'auto',
+        },
     },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    searchIcon: {
+        width: theme.spacing(7),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+    inputRoot: {
+        color: 'inherit',
     },
-  },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 7),
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+            width: 120,
+            '&:focus': {
+                width: 300,
+            },
+        },
+    },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+        },
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
 }));
 
 export default function SearchBar(props) {
-  const classes = useStyles();
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const classes = useStyles();
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [notificationCount, setNotificationCount] = React.useState(0);
 
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  function handleMobileMenuClose() {
-    setMobileMoreAnchorEl(null);
-  }
+    function handleMobileMenuClose() {
+        setMobileMoreAnchorEl(null);
+    }
 
-  function handleMobileMenuOpen(event) {
-    setMobileMoreAnchorEl(event.currentTarget);
-  }
+    function handleMobileMenuOpen(event) {
+        setMobileMoreAnchorEl(event.currentTarget);
+    }
 
-  function handleLogout(event) {
-    props.logout();
-  }
+    function handleLogout(event) {
+        props.logout();
+    }
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <UploadButton />
-        <p>Upload</p>
-      </MenuItem>
-      <MenuItem to={`/`} component={props => <Link {...props} />}>
-        <IconButton aria-label="feed" color="inherit">
-          <HomeIcon />
-        </IconButton>
-        <p>Feed</p>
-      </MenuItem>
-      <MenuItem to={`/profile`} component={props => <Link {...props} />}>
-        <IconButton edge="account" aria-label="account of current user" color="inherit">
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      <MenuItem onClick={handleLogout} >
-        <IconButton edge="account" aria-label="account of current user" color="inherit">
-          <ExitToAppIcon />
-        </IconButton>
-        <p>Logout</p>
-      </MenuItem>
-    </Menu>
-  );
+    React.useEffect(() => {
+        axios.get("api/profile/GetNotifications")
+            .then(res => setNotificationCount(res.data))
+            .catch(err => {
+                console.log(err)
+                console.log("failed to get notifications")
+            });
+    }, []);
 
-  return (
-    <div className={classes.grow}>
-      <AppBar>
-        <Toolbar>
+    const mobileMenuId = 'primary-search-account-menu-mobile';
+    const renderMobileMenu = (
+        <Menu
+            anchorEl={mobileMoreAnchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={mobileMenuId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMobileMenuOpen}
+            onClose={handleMobileMenuClose}
+        >
+            <MenuItem>
+                <UploadButton />
+                <p>Upload</p>
+            </MenuItem>
+            <MenuItem to={`/`} component={props => <Link {...props} />}>
+                <IconButton aria-label="feed" color="inherit">
+                    <HomeIcon />
+                </IconButton>
+                <p>Feed</p>
+            </MenuItem>
+            <MenuItem to={`/profile`} component={props => <Link {...props} />}>
+                <IconButton edge="account" aria-label="account of current user" color="inherit">
+                    <AccountCircle />
+                </IconButton>
+                <p>Profile</p>
+            </MenuItem>
+            <MenuItem onClick={handleLogout} >
+                <IconButton edge="account" aria-label="account of current user" color="inherit">
+                    <ExitToAppIcon />
+                </IconButton>
+                <p>Logout</p>
+            </MenuItem>
+        </Menu>
+    );
 
-          <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props} />}>
-            ImageHUB
+    return (
+        <div className={classes.grow}>
+            <AppBar>
+                <Toolbar>
+
+                    <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props} />}>
+                        ImageHUB
           </Typography>
-          <SearchField />
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <UploadButton />
-            <IconButton aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
-              <AccountCircle />
-            </IconButton>
-            <IconButton edge="end" color="inherit" onClick={handleLogout}>
-              <ExitToAppIcon />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-    </div>
-  );
+                    <SearchField />
+                    <div className={classes.grow} />
+                    <div className={classes.sectionDesktop}>
+                        <UploadButton />
+                        <IconButton aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
+                            <Badge badgeContent={notificationCount} color="error">
+                                <AccountCircle />
+                            </Badge>
+                        </IconButton>
+                        <IconButton edge="end" color="inherit" onClick={handleLogout}>
+                            <ExitToAppIcon />
+                        </IconButton>
+                    </div>
+                    <div className={classes.sectionMobile}>
+                        <IconButton
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                            <MoreIcon />
+                        </IconButton>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            {renderMobileMenu}
+        </div>
+    );
 }

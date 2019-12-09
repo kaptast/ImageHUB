@@ -167,7 +167,7 @@ export default function UploadForm(props) {
                 <form onSubmit={onFormSubmit} className={classes.form}>
                     <input type="file" accept="image/png, image/jpeg" onChange={onChange} className={classes.input} id="file-input" />
                     <Grid item xs={12}>
-                        {haveImage && <img className={classes.image} src={fileUrl} />}
+                        {haveImage && <img className={classes.image} alt="uploaded" src={fileUrl} />}
                         {!haveImage &&
                             <label htmlFor="file-input">
                                 <Skeleton variant="rect" className={classes.skeleton} />
@@ -182,7 +182,7 @@ export default function UploadForm(props) {
                             <label htmlFor="file-input">
                                 <Button className={classes.button} variant="contained" component="span">
                                     Browse
-                            </Button>
+                                </Button>
                             </label>
                             <TextField
                                 id="standard-read-only-input"

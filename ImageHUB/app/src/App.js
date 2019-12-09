@@ -17,7 +17,6 @@ export default function App() {
     useEffect(() => {
         axios.get("api/auth/isloggedin")
             .then(res => {
-                console.log("ok.")
                 setIsLoggedIn(true)
                 setName(res.data)
             })

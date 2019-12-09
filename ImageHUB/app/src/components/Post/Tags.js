@@ -14,6 +14,14 @@ const useStyles = makeStyles(theme => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  link: {
+    textDecoration: 'none',
+    color: 'black',
+    '&:focus, &:hover, &:visited, &:link, &:active': {
+      textDecoration: 'none',
+      color: 'black'
+    }
+  }
 }));
 
 export default function ChipsArray(props) {
@@ -44,14 +52,12 @@ export function SmallChipsArray(props) {
     smallArray.push(props.tags[3]);
   }
 
-  console.log(smallArray);
-
   return (
     <div className={classes.root}>
       {showMenu &&
         <div>
           {smallArray.map((data, key) => (
-            <Link to={'/tag/' + data}>
+            <Link className={classes.link} key={key} to={'/tag/' + data}>
               <Chip
                 key={key}
                 label={data}
@@ -65,7 +71,7 @@ export function SmallChipsArray(props) {
       {!showMenu &&
         <div>
           {props.tags.map((data, key) => (
-            <Link to={"tag/" + data}>
+            <Link className={classes.link} key={key} to={"tag/" + data}>
               <Chip
                 key={key}
                 label={data}

@@ -80,6 +80,14 @@ const useStyles = makeStyles(theme => ({
             display: 'none',
         },
     },
+    link: {
+        textDecoration: 'none',
+        color: 'black',
+        '&:focus, &:hover, &:visited, &:link, &:active': {
+            textDecoration: 'none',
+            color: 'black'
+        }
+    }
 }));
 
 export default function SearchBar(props) {
@@ -125,20 +133,24 @@ export default function SearchBar(props) {
                 <UploadButton />
                 <p>Upload</p>
             </MenuItem>
-            <MenuItem to={`/`} component={props => <Link {...props} />}>
-                <IconButton aria-label="feed" color="inherit">
-                    <HomeIcon />
-                </IconButton>
-                <p>Feed</p>
-            </MenuItem>
-            <MenuItem to={`/profile`} component={props => <Link {...props} />}>
-                <IconButton edge="account" aria-label="account of current user" color="inherit">
-                    <AccountCircle />
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
+            <Link className={classes.link} to={`/`}>
+                <MenuItem>
+                    <IconButton aria-label="feed" color="inherit">
+                        <HomeIcon />
+                    </IconButton>
+                    <p>Feed</p>
+                </MenuItem>
+            </Link>
+            <Link className={classes.link} to={`/profile`}>
+                <MenuItem>
+                    <IconButton aria-label="account of current user" color="inherit">
+                        <AccountCircle />
+                    </IconButton>
+                    <p>Profile</p>
+                </MenuItem>
+            </Link>
             <MenuItem onClick={handleLogout} >
-                <IconButton edge="account" aria-label="account of current user" color="inherit">
+                <IconButton aria-label="account of current user" color="inherit">
                     <ExitToAppIcon />
                 </IconButton>
                 <p>Logout</p>
@@ -150,20 +162,23 @@ export default function SearchBar(props) {
         <div className={classes.grow}>
             <AppBar>
                 <Toolbar>
-
-                    <Typography className={classes.title} color="inherit" variant="h5" noWrap to={`/`} component={props => <Link {...props} />}>
-                        ImageHUB
-          </Typography>
+                    <Link className={classes.link} to={`/`} >
+                        <Typography className={classes.title} color="inherit" variant="h5" noWrap>
+                            ImageHUB
+                        </Typography>
+                    </Link>
                     <SearchField />
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <UploadButton />
-                        <IconButton aria-label="account of current user" color="inherit" to={`/profile`} component={props => <Link {...props} />}>
-                            <Badge badgeContent={notificationCount} color="error">
-                                <AccountCircle />
-                            </Badge>
-                        </IconButton>
-                        <IconButton edge="end" color="inherit" onClick={handleLogout}>
+                        <Link className={classes.link} to={`/profile`}>
+                            <IconButton aria-label="account of current user" color="inherit">
+                                <Badge badgeContent={notificationCount} color="error">
+                                    <AccountCircle />
+                                </Badge>
+                            </IconButton>
+                        </Link>
+                        <IconButton color="inherit" onClick={handleLogout}>
                             <ExitToAppIcon />
                         </IconButton>
                     </div>

@@ -41,23 +41,19 @@ function deleteClick(id) {
 export default function SearchResult(props) {
     const classes = useStyles();
     const [friendStatus, setFriendStatus] = useState(0);
-    const [showAddButton, setShowAddButton] = useState(false);
 
     useEffect(() => {
         setFriendStatus(props.profile.status);
-        setShowAddButton(props.profile.showFriendButton);
     }, [props.profile.id])
 
     const clickedAcceptFriend = () => {
         acceptClick(props.profile.userID);
         setFriendStatus(2);
-        setShowAddButton(false);
     }
 
     const clickedDeleteFriend = () => {
         deleteClick(props.profile.userID);
         setFriendStatus(0);
-        setShowAddButton(true);
     }
 
     return (

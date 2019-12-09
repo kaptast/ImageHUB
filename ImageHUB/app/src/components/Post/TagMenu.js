@@ -7,9 +7,17 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     chip: {
-      display: 'inline-block'
+        display: 'inline-block'
     },
-  }));
+    link: {
+        textDecoration: 'none',
+        color: 'black',
+        '&:focus, &:hover, &:visited, &:link, &:active': {
+            textDecoration: 'none',
+            color: 'black'
+        }
+    }
+}));
 
 export default function TagMenu(props) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -27,7 +35,7 @@ export default function TagMenu(props) {
     return (
         <div className={classes.chip}>
             <Chip label="..." onClick={handleClick} />
-            <Menu 
+            <Menu
                 id="tags-menu"
                 anchorEl={anchorEl}
                 keepMounted
@@ -35,9 +43,11 @@ export default function TagMenu(props) {
                 onClose={handleClose}
             >
                 {props.tags.map((data, key) => (
-                    <MenuItem to={'tag/' + data} component={props => <Link {...props} />}>
-                        {data}
-                    </MenuItem>
+                    <Link className={classes.link} key={key} to={'tag/' + data}>
+                        <MenuItem >
+                            {data}
+                        </MenuItem>
+                    </Link>
                 ))}
             </Menu>
         </div>

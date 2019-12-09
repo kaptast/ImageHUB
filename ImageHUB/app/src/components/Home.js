@@ -11,7 +11,6 @@ export default function Home() {
         setIsLoading(true)
         axios.get("api/profile")
             .then(res => {
-                console.log("profile get ok");
             })
             .then(axios.get("api/post")
                 .then(res => {

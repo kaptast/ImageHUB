@@ -11,7 +11,8 @@ import Dialog from '@material-ui/core/Dialog';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        minWidth: 500
+        minWidth: 500,
+        padding: 10
     },
     inline: {
         display: 'inline',
@@ -29,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 function FriendList(props) {
     const [waitingFriends, setWaitingFriends] = useState([]);
     const classes = useStyles();
-
     useEffect(() => {
         const url = `api/friend/WaitingFriends?id=${props.profile.userID}`;
         axios.get(url)
@@ -46,10 +46,8 @@ function FriendList(props) {
             });
     }, []);
 
-    
-
     return (
-        <div onClick={props.parentCallback}>
+        <div className={classes.root} onClick={props.parentCallback}>
             {waitingFriends.length > 0 &&
                 <>
                     <Typography variant="h6">Pending</Typography>
@@ -73,7 +71,7 @@ function FriendList(props) {
 
 function FriendsDialog(props) {
     const { onClose, open } = props;
-
+    
     const handleClose = () => {
         onClose();
     };
@@ -87,7 +85,7 @@ function FriendsDialog(props) {
 
 export default function FriendButton(props) {
     const [open, setOpen] = useState(false);
-
+    
     let friends = props.profile.friends.length === 1 ? "friend" : "friends";
 
     const handleClickOpen = () => {

@@ -3,7 +3,7 @@ import Feed from './Feed/HomeFeed';
 import axios from 'axios';
 
 
-export default function Profile(props) {
+export default function Tags(props) {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -17,6 +17,7 @@ export default function Profile(props) {
                 setPosts(res.data);
                 setIsLoading(false);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -59,6 +59,7 @@ export default function Header(props) {
     useEffect(() => {
         setFriendStatus(props.profile.status);
         setShowAddButton(props.profile.showFriendButton);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.profile.id])
 
     const clickedAddFriend = () => {

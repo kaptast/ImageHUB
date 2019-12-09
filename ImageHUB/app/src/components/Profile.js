@@ -33,7 +33,7 @@ export default function Profile(props) {
       url = `api/profile/GetNotifications?id=${index}`;
       axios.get(url)
           .then(res => setNotificationCount(res.data));
-
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.index]);
 
   return (

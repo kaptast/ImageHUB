@@ -50,7 +50,7 @@ export default function SearchField(props) {
     let history = useHistory();
 
     const catchReturn = event => {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             event.preventDefault();
             history.push('/search/' + searchInputValue);
         }

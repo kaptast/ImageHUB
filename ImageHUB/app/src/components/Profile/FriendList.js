@@ -42,7 +42,8 @@ function FriendList(props) {
                 console.log(err);
                 console.log("Failed to get waiting friends");
             });
-    }, []);
+ 
+    }, [props.profile.userID]);
 
     return (
         <div className={classes.root} onClick={props.parentCallback}>

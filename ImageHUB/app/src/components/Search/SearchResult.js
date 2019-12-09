@@ -44,6 +44,7 @@ export default function SearchResult(props) {
 
     useEffect(() => {
         setFriendStatus(props.profile.status);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.profile.id])
 
     const clickedAcceptFriend = () => {

@@ -20,7 +20,7 @@ namespace ImageHUB.Repositories
         {
             lock (lockObject)
             {
-                Database.Migrate();
+                Database.EnsureCreated();
             }
         }
 

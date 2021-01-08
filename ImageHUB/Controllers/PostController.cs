@@ -61,7 +61,7 @@ namespace ImageHUB.Controllers
 
             var owner = this.profileService.GetProfileByID(userId, userName);
 
-            this.postService.SavePostAsync(file, owner, tags);
+            this.postService.SavePost(file, owner, tags);
 
             return this.Ok();
         }

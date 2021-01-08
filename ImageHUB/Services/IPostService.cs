@@ -7,7 +7,7 @@ namespace ImageHUB.Services
 {
     public interface IPostService
     {
-        Task SavePostAsync(IFormFile file, Profile owner, IEnumerable<string> tags);
+        void SavePost(IFormFile file, Profile owner, IEnumerable<string> tags);
         IEnumerable<Post> GetAllPosts();
         IEnumerable<Post> GetPostsByUser(string userID);
 

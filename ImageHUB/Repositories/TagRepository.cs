@@ -43,8 +43,8 @@ namespace ImageHUB.Repositories
         public IEnumerable<Post> GetPostsByTag(string name)
         {
             var tag = this.database.Tags.Include(t => t.Posts).ThenInclude(pt => pt.Post).ThenInclude(p => p.Owner).Include(t => t.Posts).ThenInclude(pt => pt.Post).ThenInclude(p => p.Tags).ThenInclude(pt => pt.Tag).Where(x => x.Name.Equals(name)).SingleOrDefault();
-        
-            return tag.Posts.Select(p => p.Post);
+                    
+            return tag?.Posts.Select(p => p.Post);
         }
 
         public void Update(Tag entity)

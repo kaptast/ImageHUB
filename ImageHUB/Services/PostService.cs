@@ -10,7 +10,7 @@ using ImageHUB.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
-
+using Microsoft.Extensions.Configuration;
 
 namespace ImageHUB.Services
 {
@@ -19,15 +19,17 @@ namespace ImageHUB.Services
         private readonly IPostRepository repository;
         private readonly ITagRepository tagRepository;
         private readonly IImageStorage storage;
+        public IConfiguration Configuration { get; }
 
-        public PostService(IPostRepository repo, IImageStorage storage, ITagRepository tagRepo)
+        public PostService(IPostRepository repo, IImageStorage storage, ITagRepository tagRepo, IConfiguration configuration)
         {
             this.repository = repo;
             this.storage = storage;
             this.tagRepository = tagRepo;
+            Configuration = configuration;
         }
 
-        public IEnumerable<Post> GetAllPosts()
+    public IEnumerable<Post> GetAllPosts()
         {
             return this.repository.GetAll();
         }
@@ -42,7 +44,7 @@ namespace ImageHUB.Services
             return this.repository.GetPostsByOwner(userID);
         }
 
-        public async Task SavePostAsync(IFormFile file, Profile owner, IEnumerable<string> tags)
+        public void SavePost(IFormFile file, Profile owner, IEnumerable<string> tags)
         {
             var base64Image = this.storage.StoreBase64(file);
             var post = new Post()
@@ -107,7 +109,7 @@ namespace ImageHUB.Services
         }
         private ComputerVisionClient Authenticate()
         {
-            string key = "1edc24671b7c4b84a3e0ccbf129cc0f0";
+            string key = this.Configuration["CognitiveServices:Key"];
             string endpoint = "https://stepimagehubvision.cognitiveservices.azure.com/";
 
             ComputerVisionClient client =

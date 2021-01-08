@@ -115,7 +115,7 @@ export default function UploadForm(props) {
             axios.post("https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze?visualFeatures=Tags&language=en", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Ocp-Apim-Subscription-Key': '0148e9a37b0949079a6734999de6658d'
+                    'Ocp-Apim-Subscription-Key': process.env.REACT_APP_SERVICE_KEY
                 }
             }).then(res => {
                 let pictureTags = res.data.tags.map(({ name }) => name);

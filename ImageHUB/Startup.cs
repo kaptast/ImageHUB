@@ -49,9 +49,13 @@ namespace imagehubsample
                  };
              });
 
-            //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=nincs";
-            //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=migrationpwd";
-            var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+
+            var dbPath = $"Server={this.Configuration["Database:Server"]};" +
+                $"Port={this.Configuration["Database:Port"]};" +
+                $"Database={this.Configuration["Database:Database"]};" +
+                $"User Id={this.Configuration["Database:UserId"]};" +
+                $"Password={this.Configuration["Database:Password"]}";
+
             services.AddDbContextPool<DatabaseContext>(options =>
                 options.UseMySql(dbPath, mySqlOptions =>
                 {
@@ -86,23 +90,6 @@ namespace imagehubsample
             }
 
             app.UseHttpsRedirection();
-
-            /*var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            
-            var pfp = new PhysicalFileProvider(path);
-            app.UseStaticFiles(new StaticFileOptions{
-                FileProvider = pfp,
-                RequestPath = "/img"
-            });
-
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions{
-                FileProvider = pfp,
-                RequestPath = "/img"
-            });*/
 
             app.UseSpaStaticFiles();
 

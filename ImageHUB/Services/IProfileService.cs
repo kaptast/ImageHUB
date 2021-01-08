@@ -1,24 +1,16 @@
-﻿using ImageHUB.Repositories;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using ImageHUB.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ImageHUB.Services
 {
     public interface IProfileService
     {
-        Profile GetProfileByID(string id, string userName);
-
-        IEnumerable<Profile> GetAll();
-
-        IEnumerable<Profile> GetAllByName(string name);
-
+        Profile GetProfileByID(string userID, string userName);
+        IEnumerable<Profile> GetProfilesByName(string userName);
         void AddFriend(string userID, string friendID);
-
         void AcceptFriend(string userID, string friendID);
-
+        void DeleteFriend(string userID, string friendID);
         FriendStatus IsFriendsWith(string userID, string friendID);
+        IEnumerable<Profile> GetWaitingFriends(string userID);
     }
 }

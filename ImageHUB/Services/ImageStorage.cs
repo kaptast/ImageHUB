@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace ImageHUB.Services
 {
@@ -12,9 +10,9 @@ namespace ImageHUB.Services
     {
         private readonly IConfiguration configuration;
 
-        public ImageStorage(IConfiguration configuration)
+        public ImageStorage(IConfiguration conf)
         {
-            this.configuration = configuration;
+            this.configuration = conf;
         }
 
         public async Task StoreAsync(IFormFile file)
@@ -26,15 +24,20 @@ namespace ImageHUB.Services
 
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), this.configuration["ImageSavePath"], file.FileName);
 
-            var path = Path.GetDirectoryName(pathToSave);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
             using (var fileStream = new FileStream(pathToSave, FileMode.Create))
             {
-               await file.CopyToAsync(fileStream);
+                await file.CopyToAsync(fileStream);
+            }
+        }
+
+        public string StoreBase64(IFormFile file)
+        {
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                string s = Convert.ToBase64String(fileBytes);
+                return s;
             }
         }
     }

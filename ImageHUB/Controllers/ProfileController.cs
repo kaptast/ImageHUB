@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ImageHUB.Repositories;
+using ImageHUB.Entities;
 using ImageHUB.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,49 +15,47 @@ namespace ImageHUB.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService profileService;
+        private readonly IPostService postService;
 
-        public ProfileController(IProfileService profileService)
+        public ProfileController(IProfileService profileService, IPostService postService)
         {
             this.profileService = profileService;
+            this.postService = postService;
         }
 
         [HttpGet]
-        public Repositories.Profile Get()
+        public Profile Get()
         {
-            string userName = User.FindFirstValue(ClaimTypes.Name);
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string email = User.FindFirstValue(ClaimTypes.Email);
+            string userName = HttpContext.User.Identity.Name;
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var profile = this.profileService.GetProfileByID(id, userName);
-            profile.Avatar = id;
-            profile.Email = email;
+            var profile = this.profileService.GetProfileByID(userId, userName);
 
             return profile;
         }
 
         [HttpGet]
         [Route("GetById")]
-        public Repositories.Profile GetById(string id)
+        public Profile GetById(string id)
         {
-            string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userName = HttpContext.User.Identity.Name;
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id.Equals("0"))
             {
-
-                id = userID;
+                id = userId;
             }
 
-            string userName = User.FindFirstValue(ClaimTypes.Name);
-
             var profile = this.profileService.GetProfileByID(id, userName);
-            profile.Avatar = id;
+            profile.Posts = this.postService.GetPostsByUser(id);
 
-            if (profile.ID.Equals(userID))
+            if (profile.UserID.Equals(userId))
             {
                 profile.ShowFriendButton = false;
                 profile.Status = FriendStatus.NotFriends;
-            } else
+            }
+            else
             {
-                profile.Status = this.profileService.IsFriendsWith(userID, profile.ID);
+                profile.Status = this.profileService.IsFriendsWith(userId, profile.UserID);
                 profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
             }
 
@@ -66,17 +63,41 @@ namespace ImageHUB.Controllers
         }
 
         [HttpGet]
-        [Route("GetAll")]
-        public IEnumerable<Repositories.Profile> GetAll()
+        [Route("GetAllByName")]
+        public IEnumerable<Profile> GetAllByName(string name)
         {
-            return this.profileService.GetAll();
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profiles = this.profileService.GetProfilesByName(name);
+
+            foreach (var profile in profiles)
+            {
+                if (profile.UserID.Equals(userId))
+                {
+                    profile.ShowFriendButton = false;
+                    profile.Status = FriendStatus.NotFriends;
+                }
+                else
+                {
+                    profile.Status = this.profileService.IsFriendsWith(userId, profile.UserID);
+                    profile.ShowFriendButton = profile.Status == FriendStatus.NotFriends ? true : false;
+                }
+            }
+
+            return profiles;
         }
 
         [HttpGet]
-        [Route("GetAllByName")]
-        public IEnumerable<Repositories.Profile> GetAllByName(string name)
+        [Route("GetNotifications")]
+        public int GetNotifications(string id)
         {
-            return this.profileService.GetAllByName(name);
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (id == null || (id != null && (id.Equals("0") || id.Equals(userId))))
+            {
+                return this.profileService.GetWaitingFriends(userId).Count();
+            }
+
+            return 0;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ImageHUB.Repositories;
+using ImageHUB.Entities;
 using ImageHUB.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace ImageHUB.Controllers
         [Route("AddFriend")]
         public void AddFriend(string id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             this.profileService.AddFriend(userId, id);
         }
@@ -34,9 +34,31 @@ namespace ImageHUB.Controllers
         [Route("AcceptFriend")]
         public void AcceptFriend(string id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             this.profileService.AcceptFriend(userId, id);
+        }
+
+        [HttpDelete]
+        [Route("DeleteFriend")]
+        public void DeleteFriend(string id)
+        {
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            this.profileService.DeleteFriend(userId, id);
+        }
+
+        [HttpGet]
+        [Route("WaitingFriends")]
+        public IEnumerable<Profile> GetWaitingFriends(string id)
+        {
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id.Equals("0") || id.Equals(userId))
+            {
+                return this.profileService.GetWaitingFriends(userId);
+            }
+
+            return null;
         }
     }
 }

@@ -9,10 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ImageHUB
+namespace imagehubsample
 {
     public class Startup
     {
@@ -27,8 +29,6 @@ namespace ImageHUB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDirectoryBrowser();
-
             services.AddAuthentication(options =>
             {
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -49,22 +49,28 @@ namespace ImageHUB
                  };
              });
 
+            //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=nincs";
+            //var dbPath = "Server=127.0.0.1;Port=3306;Database=imghub;User Id=migrator; Password=migrationpwd";
+            var dbPath = "Server=127.0.0.1;Port=55615;Database=localdb;User Id=azure; Password=6#vWHD_$;";
+            services.AddDbContextPool<DatabaseContext>(options =>
+                options.UseMySql(dbPath, mySqlOptions =>
+                {
+                    mySqlOptions.ServerVersion(new Version(5, 7, 9), ServerType.MySql);
+                }
+            ));
+
+            services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IImageStorage, ImageStorage>();
+            services.AddScoped<IPostService, PostService>();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/build";
+                configuration.RootPath = "app/build";
             });
-
-
-            services.AddEntityFrameworkSqlite().AddDbContext<IDatabaseContext, DatabaseContext>(options =>
-            {
-                options.UseSqlite("Data Source=database/imgHub.db");
-            }, ServiceLifetime.Transient);
-
-            services.AddScoped<IRepository, Repository>();
-            services.AddScoped<IImageStorage, ImageStorage>();
-            services.AddScoped<IImageService, ImageService>();
-            services.AddScoped<IProfileService, ProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,25 +82,27 @@ namespace ImageHUB
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
 
-            var pfp = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]));
-            app.UseStaticFiles(new StaticFileOptions
+            /*var path = Path.Combine(Directory.GetCurrentDirectory(), this.Configuration["ImageSavePath"]);
+            if (!Directory.Exists(path))
             {
+                Directory.CreateDirectory(path);
+            }
+            
+            var pfp = new PhysicalFileProvider(path);
+            app.UseStaticFiles(new StaticFileOptions{
                 FileProvider = pfp,
                 RequestPath = "/img"
             });
 
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions{
                 FileProvider = pfp,
                 RequestPath = "/img"
-            });
+            });*/
 
             app.UseSpaStaticFiles();
 
@@ -113,7 +121,7 @@ namespace ImageHUB
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "app";
 
                 if (env.IsDevelopment())
                 {

@@ -91,7 +91,7 @@ export default function UploadForm(props) {
     const [file, setFile] = useState(null);
     const [fileUrl, setFileUrl] = useState("");
     const [fileName, setFileName] = useState("");
-    const [uploadDisabled, setUploadDisabled] = useState(true);
+    const [uploadDisabled, setUploadDisabled] = useState(false);
     const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();

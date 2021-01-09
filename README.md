@@ -1,6 +1,7 @@
 # ImageHUB
 
 ImageHUB is a fictional photo sharing social networking service. It was developed as a class project.
+
 Features:
 * Login using Facebook Auth
 * Photo uploading
